@@ -11,55 +11,58 @@ export class InsuranceService {
   constructor(private http: HttpClient) {}
 
   // Employee methods
-  getMyEnrollments(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/my-enrollments`);
-  }
-
-  getAvailablePolicies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/policies`);
-  }
-
-  enrollInPolicy(data: any): Observable<any> {
+  enrollInsurance(data: any): Observable<any> {
     return this.http.post(`${this.API_URL}/enroll`, data);
   }
 
+  getMyPolicies(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/my-policies`);
+  }
+
+  getPolicyDetails(policyId: number): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/policy/${policyId}`);
+  }
+
+  downloadECard(policyId: number): Observable<Blob> {
+    return this.http.get(`${this.API_URL}/ecard/${policyId}`, { responseType: 'blob' });
+  }
+
   // Manager methods
-  getPendingManagerApprovals(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/pending-manager-approvals`);
+  getPendingEnrollments(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/pending-enrollments`);
   }
 
-  getPendingManagerCount(): Observable<number> {
-    return this.http.get<number>(`${this.API_URL}/pending-manager-count`);
+  approveEnrollment(enrollmentId: number): Observable<any> {
+    return this.http.post(`${this.API_URL}/approve-enrollment/${enrollmentId}`, {});
   }
 
-  approveByManager(id: number, comments?: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/approve-manager`, comments || '');
-  }
-
-  rejectByManager(id: number, reason: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/reject-manager`, reason);
-  }
-
-  // Finance methods
-  approveByFinance(id: number, comments?: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/approve-finance`, comments || '');
-  }
-
-  rejectByFinance(id: number, reason: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/reject-finance`, reason);
+  rejectEnrollment(enrollmentId: number, reason: string): Observable<any> {
+    return this.http.post(`${this.API_URL}/reject-enrollment/${enrollmentId}`, { reason });
   }
 
   // Admin methods
-  getTotalPolicies(): Observable<number> {
-    return this.http.get<number>(`${this.API_URL}/total-policies`);
+  getAllPolicies(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/all-policies`);
   }
 
-  getActivePoliciesCount(employeeId?: number): Observable<number> {
-    const url = employeeId ? `${this.API_URL}/active-count?employeeId=${employeeId}` : `${this.API_URL}/active-count`;
-    return this.http.get<number>(url);
+  updatePolicyDetails(policyId: number, data: any): Observable<any> {
+    return this.http.put(`${this.API_URL}/policy/${policyId}`, data);
   }
 
-  getEnrollmentsByEmployee(employeeId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}/enrollments`);
+  generatePolicyReport(): Observable<Blob> {
+    return this.http.get(`${this.API_URL}/policy-report`, { responseType: 'blob' });
+  }
+
+  // Utility methods
+  calculatePremium(enrollmentData: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/calculate-premium`, enrollmentData);
+  }
+
+  getNetworkHospitals(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/network-hospitals`);
+  }
+
+  getPolicyBenefits(): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/policy-benefits`);
   }
 }

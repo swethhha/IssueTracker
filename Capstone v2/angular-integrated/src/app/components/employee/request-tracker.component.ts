@@ -12,98 +12,111 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="container">
-      <div class="page-header">
-        <h1>Request Tracker</h1>
-        <p>Track all your submitted requests and their status</p>
-      </div>
+    <div style="padding: 20px; width: 100%; margin: 0;">
+      <h2>Request Tracker</h2>
+      <p>Track all your submitted requests and their status</p>
+      
+      <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <!-- Summary Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: bold; color: #2563eb;">{{ getTotalCount() }}</div>
+            <div style="color: #64748b; font-size: 14px;">Total Requests</div>
+          </div>
+          <div style="background: #fef3c7; padding: 20px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: bold; color: #d97706;">{{ getPendingCount() }}</div>
+            <div style="color: #64748b; font-size: 14px;">Pending</div>
+          </div>
+          <div style="background: #dcfce7; padding: 20px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: bold; color: #16a34a;">{{ getApprovedCount() }}</div>
+            <div style="color: #64748b; font-size: 14px;">Approved</div>
+          </div>
+          <div style="background: #fecaca; padding: 20px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: bold; color: #dc2626;">{{ getRejectedCount() }}</div>
+            <div style="color: #64748b; font-size: 14px;">Rejected</div>
+          </div>
+        </div>
 
-      <div class="filter-section">
-        <div class="filter-controls">
-          <select [(ngModel)]="selectedType" (change)="filterRequests()" class="filter-select">
+        <!-- Filters -->
+        <div style="display: flex; gap: 15px; margin-bottom: 25px; align-items: center;">
+          <select [(ngModel)]="selectedType" (change)="filterRequests()" style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; background: white;">
             <option value="">All Types</option>
-            <option value="payroll">Payroll</option>
-            <option value="loan">Loan</option>
-            <option value="reimbursement">Reimbursement</option>
+            <option value="loan">Loans</option>
+            <option value="reimbursement">Reimbursements</option>
             <option value="insurance">Insurance</option>
-            <option value="medical">Medical Claim</option>
+            <option value="medical">Medical Claims</option>
           </select>
 
-          <select [(ngModel)]="selectedStatus" (change)="filterRequests()" class="filter-select">
+          <select [(ngModel)]="selectedStatus" (change)="filterRequests()" style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; background: white;">
             <option value="">All Status</option>
             <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
+            <option value="ManagerApproved">Manager Approved</option>
+            <option value="Approved">Finance Approved</option>
             <option value="Rejected">Rejected</option>
           </select>
 
-          <button class="btn btn-outline" (click)="refreshData()">
-            <span class="material-icons">refresh</span>
-            Refresh
+          <button (click)="refreshData()" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+            🔄 Refresh
+          </button>
+          
+          <button (click)="clearFilters()" style="background: #64748b; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+            Clear Filters
           </button>
         </div>
-      </div>
 
-      <div class="requests-grid">
-        <div class="request-card" *ngFor="let request of filteredRequests">
-          <div class="request-header">
-            <div class="request-type">
-              <span class="type-badge" [ngClass]="getTypeClass(request.type)">
-                {{ getTypeLabel(request.type) }}
-              </span>
-            </div>
-            <div class="request-status">
-              <span class="status-badge" [ngClass]="getStatusClass(request.status)">
-                {{ request.status }}
-              </span>
-            </div>
-          </div>
-
-          <div class="request-content">
-            <div class="request-info">
-              <h3 class="request-title">{{ request.title }}</h3>
-              <p class="request-description">{{ request.description }}</p>
-              
-              <div class="request-details">
-                <div class="detail-item">
-                  <span class="detail-label">Amount:</span>
-                  <span class="detail-value">₹{{ request.amount | number:'1.0-0' }}</span>
-                </div>
-                <div class="detail-item">
-                  <span class="detail-label">Submitted:</span>
-                  <span class="detail-value">{{ request.submittedDate | date:'medium' }}</span>
-                </div>
-                <div class="detail-item" *ngIf="request.processedDate">
-                  <span class="detail-label">Processed:</span>
-                  <span class="detail-value">{{ request.processedDate | date:'medium' }}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="request-actions">
-              <button class="btn btn-outline btn-sm" (click)="viewDetails(request)">
-                View Details
-              </button>
-              <button 
-                class="btn btn-danger btn-sm" 
-                *ngIf="request.status === 'Pending'"
-                (click)="cancelRequest(request)"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+        <!-- Requests Table -->
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; background: white;">
+            <thead>
+              <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Type</th>
+                <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Description</th>
+                <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Amount</th>
+                <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Status</th>
+                <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Submitted</th>
+                <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let request of filteredRequests" style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 12px;">
+                  <span [style.background]="getTypeBadgeColor(request.type)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; color: white;">
+                    {{ getTypeLabel(request.type) }}
+                  </span>
+                </td>
+                <td style="padding: 12px;">
+                  <div style="font-weight: 500; color: #374151;">{{ request.title }}</div>
+                  <div style="font-size: 14px; color: #64748b;">{{ request.description }}</div>
+                </td>
+                <td style="padding: 12px; font-weight: 500; color: #374151;">₹{{ request.amount | number:'1.0-0' }}</td>
+                <td style="padding: 12px;">
+                  <span [style.background]="getStatusBadgeColor(request.status)" [style.color]="getStatusTextColor(request.status)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; border: 1px solid; border-color: inherit;">
+                    {{ getStatusLabel(request.status) }}
+                  </span>
+                </td>
+                <td style="padding: 12px; color: #64748b; font-size: 14px;">{{ request.submittedDate | date:'MMM dd, yyyy' }}</td>
+                <td style="padding: 12px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 100px; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                      <div [style.width]="getProgressWidth(request.status)" [style.background]="getProgressColor(request.status)" style="height: 100%; transition: width 0.3s;"></div>
+                    </div>
+                    <span style="font-size: 12px; color: #64748b;">{{ getProgressText(request.status) }}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      <div class="empty-state" *ngIf="filteredRequests.length === 0">
-        <div class="empty-icon">
-          <span class="material-icons">assignment</span>
+        <!-- Empty State -->
+        <div *ngIf="filteredRequests.length === 0" style="text-align: center; padding: 40px; color: #64748b;">
+          <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+          <h3 style="color: #374151; margin-bottom: 8px;">No requests found</h3>
+          <p style="margin-bottom: 20px;">No requests match your current filters. Try adjusting your search criteria.</p>
+          <button (click)="clearFilters()" style="background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+            Clear Filters
+          </button>
         </div>
-        <h3>No requests found</h3>
-        <p>No requests match your current filters. Try adjusting your search criteria.</p>
-        <button class="btn btn-primary" (click)="clearFilters()">
-          Clear Filters
-        </button>
       </div>
     </div>
   `,
@@ -315,46 +328,96 @@ export class RequestTrackerComponent implements OnInit {
     this.loadAllRequests();
   }
 
-  loadAllRequests() {
-    // Demo data for all request types
-    this.allRequests = [
-      {
-        id: 1,
-        type: 'loan',
-        title: 'Personal Loan Application',
-        description: 'Home renovation loan',
-        amount: 200000,
-        status: 'Pending',
-        submittedDate: new Date(2024, 11, 1)
-      },
-      {
-        id: 2,
-        type: 'reimbursement',
-        title: 'Travel Reimbursement',
-        description: 'Client meeting travel expenses',
-        amount: 5000,
-        status: 'Approved',
-        submittedDate: new Date(2024, 10, 15)
-      },
-      {
-        id: 3,
-        type: 'insurance',
-        title: 'Health Insurance Enrollment',
-        description: 'Family health coverage',
-        amount: 25000,
-        status: 'Pending',
-        submittedDate: new Date(2024, 11, 10)
-      },
-      {
-        id: 4,
-        type: 'medical',
-        title: 'Medical Claim - Surgery',
-        description: 'Hospital treatment expenses',
-        amount: 15000,
-        status: 'Rejected',
-        submittedDate: new Date(2024, 10, 20)
-      }
-    ];
+  async loadAllRequests() {
+    this.allRequests = [];
+    
+    try {
+      // Load loans
+      const loans = await this.loanService.getMyLoans().toPromise();
+      loans?.forEach(loan => {
+        this.allRequests.push({
+          id: loan.loanId,
+          type: 'loan',
+          title: `${loan.loanType} Loan`,
+          description: loan.purpose,
+          amount: loan.amount,
+          status: loan.status,
+          submittedDate: new Date(loan.appliedDate)
+        });
+      });
+    } catch (error) {
+      console.log('Error loading loans:', error);
+    }
+
+    try {
+      // Load reimbursements
+      const reimbursements = await this.reimbursementService.getMyReimbursements().toPromise();
+      reimbursements?.forEach(reimb => {
+        this.allRequests.push({
+          id: reimb.reimbursementId,
+          type: 'reimbursement',
+          title: `${reimb.category} Reimbursement`,
+          description: reimb.description,
+          amount: reimb.amount,
+          status: reimb.status,
+          submittedDate: new Date(reimb.requestDate)
+        });
+      });
+    } catch (error) {
+      console.log('Error loading reimbursements:', error);
+    }
+
+    try {
+      // Load medical claims
+      const claims = await this.medicalClaimService.getMyClaims().toPromise();
+      claims?.forEach(claim => {
+        this.allRequests.push({
+          id: claim.claimId,
+          type: 'medical',
+          title: `Medical Claim - ${claim.treatmentType}`,
+          description: claim.diagnosis,
+          amount: claim.claimAmount,
+          status: claim.status,
+          submittedDate: new Date(claim.claimDate)
+        });
+      });
+    } catch (error) {
+      console.log('Error loading medical claims:', error);
+    }
+
+    // Add demo data if no real data
+    if (this.allRequests.length === 0) {
+      this.allRequests = [
+        {
+          id: 1,
+          type: 'loan',
+          title: 'Personal Loan Application',
+          description: 'Home renovation expenses',
+          amount: 200000,
+          status: 'Pending',
+          submittedDate: new Date(2024, 11, 1)
+        },
+        {
+          id: 2,
+          type: 'reimbursement',
+          title: 'Travel Reimbursement',
+          description: 'Client meeting travel expenses',
+          amount: 5000,
+          status: 'ManagerApproved',
+          submittedDate: new Date(2024, 10, 15)
+        },
+        {
+          id: 3,
+          type: 'medical',
+          title: 'Medical Claim - Surgery',
+          description: 'Hospital treatment expenses',
+          amount: 15000,
+          status: 'Approved',
+          submittedDate: new Date(2024, 10, 20)
+        }
+      ];
+    }
+    
     this.filterRequests();
   }
 
@@ -395,8 +458,101 @@ export class RequestTrackerComponent implements OnInit {
     return status.toLowerCase();
   }
 
+  getTotalCount(): number {
+    return this.allRequests.length;
+  }
+
+  getPendingCount(): number {
+    return this.allRequests.filter(r => r.status === 'Pending').length;
+  }
+
+  getApprovedCount(): number {
+    return this.allRequests.filter(r => r.status === 'Approved').length;
+  }
+
+  getRejectedCount(): number {
+    return this.allRequests.filter(r => r.status === 'Rejected').length;
+  }
+
+  getTypeBadgeColor(type: string): string {
+    const colors: { [key: string]: string } = {
+      'loan': '#7c3aed',
+      'reimbursement': '#059669',
+      'insurance': '#ea580c',
+      'medical': '#dc2626'
+    };
+    return colors[type] || '#64748b';
+  }
+
+  getStatusBadgeColor(status: string): string {
+    const colors: { [key: string]: string } = {
+      'Pending': '#fef3c7',
+      'ManagerApproved': '#dbeafe',
+      'Approved': '#dcfce7',
+      'Rejected': '#fecaca'
+    };
+    return colors[status] || '#f1f5f9';
+  }
+
+  getStatusTextColor(status: string): string {
+    const colors: { [key: string]: string } = {
+      'Pending': '#92400e',
+      'ManagerApproved': '#1e40af',
+      'Approved': '#166534',
+      'Rejected': '#991b1b'
+    };
+    return colors[status] || '#64748b';
+  }
+
+  getStatusLabel(status: string): string {
+    const labels: { [key: string]: string } = {
+      'Pending': 'Pending',
+      'ManagerApproved': 'Manager Approved',
+      'Approved': 'Finance Approved',
+      'Rejected': 'Rejected'
+    };
+    return labels[status] || status;
+  }
+
+  getProgressWidth(status: string): string {
+    const widths: { [key: string]: string } = {
+      'Pending': '25%',
+      'ManagerApproved': '75%',
+      'Approved': '100%',
+      'Rejected': '100%'
+    };
+    return widths[status] || '0%';
+  }
+
+  getProgressColor(status: string): string {
+    const colors: { [key: string]: string } = {
+      'Pending': '#d97706',
+      'ManagerApproved': '#2563eb',
+      'Approved': '#059669',
+      'Rejected': '#dc2626'
+    };
+    return colors[status] || '#e5e7eb';
+  }
+
+  getProgressText(status: string): string {
+    const texts: { [key: string]: string } = {
+      'Pending': '1/3',
+      'ManagerApproved': '2/3',
+      'Approved': '3/3',
+      'Rejected': 'X'
+    };
+    return texts[status] || '0/3';
+  }
+
   viewDetails(request: any) {
-    alert(`Request Details:\nType: ${request.type}\nAmount: ₹${request.amount}\nStatus: ${request.status}`);
+    const details = `Request Details:
+
+Type: ${this.getTypeLabel(request.type)}
+Description: ${request.description}
+Amount: ₹${request.amount.toLocaleString()}
+Status: ${this.getStatusLabel(request.status)}
+Submitted: ${request.submittedDate.toLocaleDateString()}`;
+    alert(details);
   }
 
   cancelRequest(request: any) {

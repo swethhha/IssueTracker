@@ -3,6 +3,7 @@ import { LoginComponent } from './components/auth/login.component';
 import { RegisterComponent } from './components/auth/register.component';
 import { LayoutComponent } from './shared/layout/layout.component';
 import { EmployeeDashboardComponent } from './components/dashboard/employee-dashboard.component';
+import { financeRoutes } from './components/finance/finance-routing';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -22,8 +23,10 @@ export const routes: Routes = [
       { path: 'medical-claims', loadComponent: () => import('./components/employee/medical-claim-form.component').then(m => m.MedicalClaimFormComponent) },
       { path: 'request-tracker', loadComponent: () => import('./components/employee/request-tracker.component').then(m => m.RequestTrackerComponent) },
       { path: 'approvals', loadComponent: () => import('./components/manager/approval-center.component').then(m => m.ApprovalCenterComponent) },
-      { path: 'finance-approvals', loadComponent: () => import('./components/finance/finance-approvals.component').then(m => m.FinanceApprovalsComponent) },
-      { path: 'reports', loadComponent: () => import('./components/finance/reports.component').then(m => m.ReportsComponent) }
+      {
+        path: 'finance',
+        loadChildren: () => import('./components/finance/finance-routing').then(m => m.financeRoutes)
+      }
     ]
   }
 ];

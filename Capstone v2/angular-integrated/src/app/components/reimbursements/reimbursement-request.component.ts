@@ -9,14 +9,13 @@ import { ReimbursementService } from '../../services/reimbursement.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="standardized-layout">
-      <div class="page-header">
-        <h1 class="page-title">Submit Reimbursement Request</h1>
-        <p class="page-description">Submit your expense reimbursement with receipts</p>
-      </div>
-
-      <div class="max-w-2xl mx-auto">
-        <form [formGroup]="reimbursementForm" (ngSubmit)="onSubmit()" class="card">
+    <div style="padding: 20px; width: 100%; margin: 0;">
+      <h2>Submit Reimbursement Request</h2>
+      <p>Submit your expense reimbursement with receipts</p>
+      
+      <div style="width: 100%;">
+        <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <form [formGroup]="reimbursementForm" (ngSubmit)="onSubmit()">
           <div class="card-header">
             <h3 class="text-lg font-semibold text-gray-900">Reimbursement Request Form</h3>
           </div>
@@ -148,9 +147,10 @@ import { ReimbursementService } from '../../services/reimbursement.service';
             </button>
           </div>
         </form>
+        </div>
 
         <!-- Category Limits Information -->
-        <div class="card mt-6">
+        <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 30px;">
           <div class="card-header">
             <h3 class="text-lg font-semibold text-gray-900">Category Limits & Processing Time</h3>
           </div>

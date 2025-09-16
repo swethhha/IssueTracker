@@ -11,12 +11,16 @@ export class MedicalClaimService {
   constructor(private http: HttpClient) {}
 
   // Employee methods
-  getMyClaims(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/my-claims`);
+  submitClaim(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/request`, data);
   }
 
-  requestClaim(data: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/request`, data);
+  getMyClaims(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/my`);
+  }
+
+  getMyPendingCount(): Observable<number> {
+    return this.http.get<number>(`${this.API_URL}/my-pending-count`);
   }
 
   // Manager methods
@@ -29,37 +33,33 @@ export class MedicalClaimService {
   }
 
   approveByManager(id: number, comments?: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/manager-approve`, comments || '');
+    return this.http.post(`${this.API_URL}/${id}/approve-manager`, comments || '');
   }
 
   rejectByManager(id: number, reason: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/manager-reject`, reason);
+    return this.http.post(`${this.API_URL}/${id}/reject-manager`, reason);
   }
 
   // Finance methods
-  getPendingFinanceApprovals(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/pending-finance-approvals`);
-  }
-
   getPendingFinanceCount(): Observable<number> {
-    return this.http.get<number>(`${this.API_URL}/pending-finance-approvals`);
+    return this.http.get<number>(`${this.API_URL}/pending-finance-count`);
   }
 
   approveByFinance(id: number, comments?: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/finance-approve`, comments || '');
+    return this.http.post(`${this.API_URL}/${id}/approve-finance`, comments || '');
   }
 
   rejectByFinance(id: number, reason: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/finance-reject`, reason);
+    return this.http.post(`${this.API_URL}/${id}/reject-finance`, reason);
   }
 
   // Admin methods
   getTotalClaims(): Observable<number> {
-    return this.http.get<number>(`${this.API_URL}/total-claims`);
+    return this.http.get<number>(`${this.API_URL}/total`);
   }
 
-  submitClaim(data: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/request`, data);
+  getAllClaims(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}`);
   }
 
   approveClaim(id: number, managerId: number): Observable<any> {

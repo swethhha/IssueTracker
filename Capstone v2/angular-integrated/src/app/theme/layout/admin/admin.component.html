@@ -1,11 +1,4 @@
-<app-navigation
-  class="pcoded-navbar menupos-fixed menu-light"
-  [ngClass]="{
-    'navbar-collapsed': navCollapsed,
-    'mob-open': navCollapsedMob
-  }"
-  (NavCollapsedMob)="navMobClick()"
-></app-navigation>
+<app-collapsible-sidebar></app-collapsible-sidebar>
 <app-nav-bar
   class="navbar pcoded-header navbar-expand-lg navbar-light header-blue headerPos-fixed"
   (NavCollapse)="this.navCollapsed = !this.navCollapsed"

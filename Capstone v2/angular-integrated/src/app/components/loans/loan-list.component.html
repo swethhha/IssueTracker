@@ -1,12 +1,8 @@
-<div class="dashboard-container">
-  <div class="dashboard-header">
-    <div class="header-content">
-      <h1 class="dashboard-title">Loan Management</h1>
-      <p class="dashboard-description">Apply for loans and track your applications</p>
-    </div>
-  </div>
-
-  <div class="card">
+<div style="padding: 20px; width: 100vw; margin-left: calc(-50vw + 50%); box-sizing: border-box;">
+  <h2>Loan Management</h2>
+  <p>Apply for loans and track your applications</p>
+  
+  <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
       <!-- Apply for Loan Button -->
       <div class="mb-3" *ngIf="canApply()">
         <button class="btn btn-primary" (click)="toggleForm()">

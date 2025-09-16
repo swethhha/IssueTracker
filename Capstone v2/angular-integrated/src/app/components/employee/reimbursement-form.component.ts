@@ -429,22 +429,28 @@ export class ReimbursementFormComponent {
     if (this.reimbursementForm.valid) {
       this.isLoading = true;
       
-      const formData = {
-        ...this.reimbursementForm.value,
-        employeeId: 1 // Get from auth service
+      const requestData = {
+        category: this.reimbursementForm.value.category,
+        amount: this.reimbursementForm.value.amount,
+        description: this.reimbursementForm.value.description,
+        requestDate: new Date().toISOString(),
+        documentPaths: []
       };
 
-      this.reimbursementService.requestReimbursement(formData).subscribe({
-        next: () => {
+      this.reimbursementService.requestReimbursement(requestData).subscribe({
+        next: (response) => {
           this.isLoading = false;
           alert('Reimbursement request submitted successfully!');
-          this.router.navigate(['/request-tracker']);
+          this.router.navigate(['/employee/requests']);
         },
-        error: () => {
+        error: (error) => {
           this.isLoading = false;
-          alert('Failed to submit reimbursement request. Please try again.');
+          console.error('Reimbursement submission error:', error);
+          alert('Failed to submit reimbursement request: ' + (error.error?.message || error.message || 'Please try again.'));
         }
       });
+    } else {
+      alert('Please fill all required fields.');
     }
   }
 

@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'app-sidebar-disabled',
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <div class="sidebar">
+    <div style="display: none;">
       <div class="sidebar-header">
         <div class="sidebar-logo">Payroll360</div>
       </div>
@@ -23,7 +23,7 @@ import { AuthService } from '../../services/auth.service';
       </nav>
       
       <div class="sidebar-footer">
-        <button class="nav-link w-full" (click)="logout()">
+        <button class="nav-link logout-btn" (click)="logout()">
           <span class="nav-icon">🚪</span>
           <span>Logout</span>
         </button>
@@ -31,13 +31,90 @@ import { AuthService } from '../../services/auth.service';
     </div>
   `,
   styles: [`
-    .sidebar-footer {
-      position: absolute;
-      bottom: 0;
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: #ffffff;
+      border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
       left: 0;
-      right: 0;
-      padding: 1rem;
-      border-top: 1px solid var(--border-color);
+      top: 0;
+      z-index: 1000;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .sidebar-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      text-align: center;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 1rem 0.75rem;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      margin-bottom: 0.25rem;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: #6b7280;
+      text-decoration: none;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      background: #f3f4f6;
+      color: #374151;
+      transform: translateX(4px);
+    }
+
+    .nav-link.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-left: 4px solid #3b82f6;
+      font-weight: 600;
+    }
+
+    .nav-icon {
+      font-size: 1.25rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sidebar-footer {
+      padding: 1rem 0.75rem;
+      border-top: 1px solid #e5e7eb;
+      margin-top: auto;
+    }
+
+    .logout-btn {
+      color: #dc2626;
+      justify-content: flex-start;
+    }
+
+    .logout-btn:hover {
+      background: #fef2f2;
+      color: #b91c1c;
     }
   `]
 })

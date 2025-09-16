@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { InsuranceGuardService } from '../../services/insurance-guard.service';
 
 @Component({
   selector: 'app-navbar',
@@ -52,9 +53,12 @@ import { NotificationService } from '../../services/notification.service';
                 <a routerLink="/insurance" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                   <i class="fas fa-shield-alt mr-2"></i>Insurance
                 </a>
-                <a routerLink="/medical-claims" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <a *ngIf="hasActiveInsurance()" routerLink="/medical-claims" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                   <i class="fas fa-hospital mr-2"></i>Medical Claims
                 </a>
+                <div *ngIf="!hasActiveInsurance()" class="block px-4 py-2 text-sm text-gray-400 cursor-not-allowed">
+                  <i class="fas fa-hospital mr-2"></i>Medical Claims (Enroll First)
+                </div>
               </div>
             </div>
 
@@ -327,5 +331,9 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  hasActiveInsurance(): boolean {
+    return InsuranceGuardService.hasActiveInsurance();
   }
 }

@@ -373,22 +373,28 @@ export class LoanApplicationComponent {
     if (this.loanForm.valid) {
       this.isLoading = true;
       
-      const formData = {
-        ...this.loanForm.value,
-        employeeId: 1 // Get from auth service
+      const loanData = {
+        loanType: this.loanForm.value.loanType,
+        amount: this.loanForm.value.amount,
+        tenureMonths: parseInt(this.loanForm.value.tenureMonths),
+        purpose: this.loanForm.value.purpose,
+        documentPaths: []
       };
 
-      this.loanService.applyForLoan(formData).subscribe({
-        next: () => {
+      this.loanService.applyForLoan(loanData).subscribe({
+        next: (response) => {
           this.isLoading = false;
           alert('Loan application submitted successfully!');
-          this.router.navigate(['/request-tracker']);
+          this.router.navigate(['/employee/requests']);
         },
-        error: () => {
+        error: (error) => {
           this.isLoading = false;
-          alert('Failed to submit loan application. Please try again.');
+          console.error('Loan submission error:', error);
+          alert('Failed to submit loan application: ' + (error.error?.message || error.message || 'Please try again.'));
         }
       });
+    } else {
+      alert('Please fill all required fields.');
     }
   }
 

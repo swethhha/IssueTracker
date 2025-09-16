@@ -92,9 +92,9 @@ import { Router, RouterModule } from '@angular/router';
               placeholder="Confirm your password"
               autocomplete="new-password"
             >
-            <div class="form-error" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+            <div class="form-error" *ngIf="(registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) || (registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched)">
               <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
-              <span *ngIf="registerForm.errors?.['passwordMismatch']">Passwords do not match</span>
+              <span *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.value">Passwords do not match</span>
             </div>
           </div>
 
@@ -357,9 +357,12 @@ export class RegisterComponent {
       this.isLoading = true;
       this.errorMessage = '';
 
-      const formData = { ...this.registerForm.value };
-      delete formData.confirmPassword; // Remove confirmPassword before sending
+      const formData = {
+        ...this.registerForm.value,
+        role: this.registerForm.value.role === 'Finance' ? 'FinanceAdmin' : this.registerForm.value.role
+      };
 
+      console.log('Sending payload:', formData);
       this.authService.register(formData).subscribe({
         next: () => {
           this.isLoading = false;
@@ -368,7 +371,13 @@ export class RegisterComponent {
         },
         error: (error: any) => {
           this.isLoading = false;
-          this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+          console.error('Registration error:', error);
+          console.error('Error details:', error.error);
+          if (error.status === 0) {
+            this.errorMessage = 'Backend server is not running. Please start the API server at https://localhost:7101';
+          } else {
+            this.errorMessage = error.error?.message || error.error || error.message || 'Registration failed. Please try again.';
+          }
         }
       });
     }

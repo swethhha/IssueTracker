@@ -1,380 +1,650 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { InsuranceService } from '../../services/insurance.service';
 
 @Component({
   selector: 'app-insurance-enrollment',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule],
   template: `
-    <div class="page-container">
-      <div class="page-header">
-        <h1>Insurance Enrollment</h1>
-        <p>Apply for insurance policies</p>
-      </div>
-
-      <div class="policies-grid">
-        <div class="policy-card" *ngFor="let policy of availablePolicies">
-          <div class="policy-header">
-            <div class="policy-icon" [ngClass]="policy.type">
-              <span class="material-icons">{{ policy.icon }}</span>
-            </div>
-            <h3>{{ policy.name }}</h3>
-            <div class="policy-premium">₹{{ policy.premium | number:'1.0-0' }}/month</div>
-          </div>
-          
-          <div class="policy-features">
-            <div class="feature" *ngFor="let feature of policy.features">
-              <span class="material-icons">check</span>
-              <span>{{ feature }}</span>
+    <div style="padding: 20px; background: #f8fafc; min-height: 100vh;">
+      <h1 style="text-align: center; margin-bottom: 30px; color: #1e293b;">Insurance Policies</h1>
+      
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; margin: 0;">
+        
+        <!-- Group Mediclaim -->
+        <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
+          <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div style="font-size: 50px;">🏥</div>
+            <div>
+              <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Group Mediclaim</h2>
+              <span style="background: #dbeafe; color: #1d4ed8; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">MOST POPULAR</span>
             </div>
           </div>
           
-          <div class="policy-coverage">
-            <div class="coverage-label">Coverage Amount</div>
-            <div class="coverage-amount">₹{{ policy.coverage | number:'1.0-0' }}</div>
+          <div style="text-align: center; background: #f0f9ff; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <div style="font-size: 28px; font-weight: bold; color: #2563eb;">₹4 Lakhs</div>
+            <div style="color: #64748b; font-size: 14px;">Family Floater</div>
+            <div style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-top: 8px; display: inline-block;">FREE FOR EMPLOYEE</div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">COVERAGE</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Comprehensive health coverage for employee and family</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Pre & Post hospitalization expenses covered</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Day care procedures and surgeries</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Maternity benefits with newborn coverage</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ No waiting period for most treatments</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">PREMIUM</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Employee: <strong>FREE</strong></li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Spouse: ₹1,500/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Child: ₹1,200/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Parent: ₹3,500/year</li>
+            </ul>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button [style.background]="isEnrolled('mediclaim') ? '#64748b' : '#2563eb'" style="flex: 1; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="startEnrollment('mediclaim')" [disabled]="isEnrolled('mediclaim')">
+              {{ isEnrolled('mediclaim') ? 'Enrolled' : 'Upload Documents' }}
+            </button>
+            <button style="flex: 1; background: transparent; color: #2563eb; border: 2px solid #2563eb; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="viewDetails('mediclaim')">
+              View Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Term Life Insurance -->
+        <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
+          <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div style="font-size: 50px;">🛡️</div>
+            <div>
+              <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Term Life Insurance</h2>
+              <span style="background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">NEW</span>
+            </div>
           </div>
           
-          <button class="btn btn-primary" (click)="enrollInPolicy(policy)" [disabled]="isLoading">
-            {{ isLoading ? 'Processing...' : 'Enroll Now' }}
-          </button>
+          <div style="text-align: center; background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <div style="font-size: 28px; font-weight: bold; color: #2563eb;">₹25 Lakhs</div>
+            <div style="color: #64748b; font-size: 14px;">Individual Coverage</div>
+            <div style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-top: 8px; display: inline-block;">PAID (60% COMPANY)</div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">COVERAGE</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Financial security for your family in case of death</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Double coverage for accidental death</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Terminal illness advance payment option</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Permanent disability coverage included</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Tax benefits under Section 80C</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">PREMIUM</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Age 25-30: ₹4,500/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Age 31-35: ₹6,800/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Age 36-40: ₹9,200/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Company Share: <strong>60%</strong></li>
+            </ul>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button [style.background]="isEnrolled('term-life') ? '#64748b' : '#10b981'" style="flex: 1; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="startEnrollment('term-life')" [disabled]="isEnrolled('term-life')">
+              {{ isEnrolled('term-life') ? 'Enrolled' : 'Upload Documents' }}
+            </button>
+            <button style="flex: 1; background: transparent; color: #10b981; border: 2px solid #10b981; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="viewDetails('term-life')">
+              View Details
+            </button>
+          </div>
         </div>
+
+        <!-- Personal Accident -->
+        <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
+          <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div style="font-size: 50px;">🚑</div>
+            <div>
+              <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Personal Accident</h2>
+              <span style="background: #fef3c7; color: #92400e; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">ESSENTIAL</span>
+            </div>
+          </div>
+          
+          <div style="text-align: center; background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <div style="font-size: 28px; font-weight: bold; color: #2563eb;">₹5 Lakhs</div>
+            <div style="color: #64748b; font-size: 14px;">Individual + Family</div>
+            <div style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-top: 8px; display: inline-block;">100% FREE</div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">COVERAGE</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Protection against accidental death and injuries</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Permanent and temporary disability benefits</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Medical expenses for accident-related treatment</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ 24x7 worldwide coverage including travel</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Emergency ambulance and hospitalization</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">PREMIUM</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Employee: ₹1,800/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Spouse: ₹1,200/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Child: ₹800/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Company Pays: <strong>100%</strong></li>
+            </ul>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button [style.background]="isEnrolled('accident') ? '#64748b' : '#f59e0b'" style="flex: 1; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="startEnrollment('accident')" [disabled]="isEnrolled('accident')">
+              {{ isEnrolled('accident') ? 'Enrolled' : 'Upload Documents' }}
+            </button>
+            <button style="flex: 1; background: transparent; color: #f59e0b; border: 2px solid #f59e0b; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="viewDetails('accident')">
+              View Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Critical Illness -->
+        <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
+          <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div style="font-size: 50px;">💊</div>
+            <div>
+              <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Critical Illness</h2>
+              <span style="background: #e0e7ff; color: #3730a3; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">COMPREHENSIVE</span>
+            </div>
+          </div>
+          
+          <div style="text-align: center; background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <div style="font-size: 28px; font-weight: bold; color: #2563eb;">₹15 Lakhs</div>
+            <div style="color: #64748b; font-size: 14px;">Individual Coverage</div>
+            <div style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-top: 8px; display: inline-block;">PAID (60% COMPANY)</div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">COVERED ILLNESSES</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Cancer treatment and related expenses</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Heart attack and cardiac procedures</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Stroke and neurological conditions</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ Kidney failure and organ transplants</li>
+              <li style="color: #10b981; margin-bottom: 8px; font-size: 14px;">✓ 30+ major critical illnesses covered</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">PREMIUM</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Age 25-35: ₹8,500/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Age 36-45: ₹12,800/year</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Employee Share: 40%</li>
+              <li style="color: #64748b; margin-bottom: 6px; font-size: 14px;">Company Share: <strong>60%</strong></li>
+            </ul>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button [style.background]="isEnrolled('critical-illness') ? '#64748b' : '#8b5cf6'" style="flex: 1; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="startEnrollment('critical-illness')" [disabled]="isEnrolled('critical-illness')">
+              {{ isEnrolled('critical-illness') ? 'Enrolled' : 'Upload Documents' }}
+            </button>
+            <button style="flex: 1; background: transparent; color: #8b5cf6; border: 2px solid #8b5cf6; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600;" (click)="viewDetails('critical-illness')">
+              View Details
+            </button>
+          </div>
+        </div>
+
       </div>
 
-      <div class="card" *ngIf="myEnrollments.length > 0">
-        <div class="card-header">
-          <h3 class="card-title">My Enrollments</h3>
-        </div>
-        <div class="card-body">
-          <div class="enrollment-list">
-            <div class="enrollment-item" *ngFor="let enrollment of myEnrollments">
-              <div class="enrollment-info">
-                <strong>{{ enrollment.policyName }}</strong>
-                <span class="enrollment-date">Enrolled: {{ enrollment.enrolledDate | date:'mediumDate' }}</span>
+      <!-- My Insurance Policies Section -->
+      <div *ngIf="enrolledPolicies.length > 0" style="width: 100%; margin: 3rem 0 0 0; padding: 0 20px;">
+        <h2 style="color: #1e293b; margin-bottom: 20px;">My Insurance Policies</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+          <div *ngFor="let policy of enrolledPolicies" [style.border]="'2px solid ' + getStatusColor(policy.status)" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <h3 style="margin: 0; color: #1e293b;">{{ policy.name }}</h3>
+              <span [style.background]="getStatusBg(policy.status)" [style.color]="getStatusColor(policy.status)" style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">{{ policy.status.toUpperCase() }}</span>
+            </div>
+            <p style="color: #64748b; margin: 5px 0;">Coverage: {{ policy.coverage }}</p>
+            <p style="color: #64748b; margin: 5px 0;">Premium: {{ policy.premium }}</p>
+            <p style="color: #64748b; margin: 5px 0;">Enrolled: {{ policy.enrolledDate | date:'MMM dd, yyyy' }}</p>
+            
+            <!-- Document Upload Section -->
+            <div *ngIf="policy.status === 'Enrolled'" style="margin: 15px 0; padding: 15px; background: #fef3c7; border-radius: 8px;">
+              <h4 style="margin: 0 0 10px 0; color: #92400e; font-size: 14px;">Documents Required:</h4>
+              <div style="margin-bottom: 10px;">
+                <input type="file" (change)="onDocumentUpload($event, policy.id)" accept=".pdf,.jpg,.png" style="margin-bottom: 5px;">
+                <p style="font-size: 12px; color: #92400e; margin: 0;">Upload required documents to activate policy</p>
               </div>
-              <div class="enrollment-status">
-                <span class="badge" [ngClass]="getBadgeClass(enrollment.status)">
-                  {{ enrollment.status }}
-                </span>
-              </div>
+              <button *ngIf="policy.documentsUploaded" (click)="activatePolicy(policy.id)" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                Activate Policy
+              </button>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+              <button *ngIf="policy.status === 'Active'" (click)="downloadECard(policy.id)" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; flex: 1;">
+                Download E-Card
+              </button>
+              <button *ngIf="policy.status === 'Enrolled'" style="background: #64748b; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; flex: 1;" disabled>
+                Pending Documents
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  `,
-  styles: [`
-    .page-container {
-      padding: var(--spacing-lg);
-      max-width: 1200px;
-      margin: 0 auto;
-    }
 
-    .page-header {
-      margin-bottom: var(--spacing-2xl);
-      text-align: center;
-    }
+    <!-- Details Modal -->
+    <div *ngIf="showDetailsModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;" (click)="closeModal()">
+      <div style="background: white; border-radius: 12px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;" (click)="$event.stopPropagation()">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2 style="margin: 0; color: #1e293b;">{{ selectedPolicy?.name }} - Requirements</h2>
+          <button style="background: none; border: none; font-size: 24px; cursor: pointer;" (click)="closeModal()">×</button>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <h3 style="color: #374151; margin-bottom: 10px;">Eligibility Requirements:</h3>
+          <ul style="color: #64748b; line-height: 1.6;">
+            <li *ngFor="let req of selectedPolicy?.requirements">{{ req }}</li>
+          </ul>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <h3 style="color: #374151; margin-bottom: 10px;">Required Documents:</h3>
+          <ul style="color: #64748b; line-height: 1.6;">
+            <li *ngFor="let doc of selectedPolicy?.documents">{{ doc }}</li>
+          </ul>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <h3 style="color: #374151; margin-bottom: 10px;">Terms & Conditions:</h3>
+          <ul style="color: #64748b; line-height: 1.6;">
+            <li *ngFor="let term of selectedPolicy?.terms">{{ term }}</li>
+          </ul>
+        </div>
+        
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button style="background: #64748b; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;" (click)="closeModal()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
 
-    .page-header h1 {
-      font-size: var(--font-size-3xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--on-surface);
-      margin: 0;
-    }
+    <!-- Document Upload Modal -->
+    <div *ngIf="showUploadModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;" (click)="closeUploadModal()">
+      <div style="background: white; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%;" (click)="$event.stopPropagation()">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2 style="margin: 0; color: #1e293b;">Upload Documents - {{ selectedEnrollmentPolicy?.name }}</h2>
+          <button style="background: none; border: none; font-size: 24px; cursor: pointer;" (click)="closeUploadModal()">×</button>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <h3 style="color: #374151; margin-bottom: 10px;">Required Documents:</h3>
+          <ul style="color: #64748b; line-height: 1.6; margin-bottom: 15px;">
+            <li *ngFor="let doc of selectedEnrollmentPolicy?.documents">{{ doc }}</li>
+          </ul>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #374151;">Upload Documents:</label>
+          <input type="file" (change)="onDocumentSelect($event)" accept=".pdf,.jpg,.png,.jpeg" multiple style="width: 100%; padding: 10px; border: 2px dashed #e2e8f0; border-radius: 8px; cursor: pointer;">
+          <p style="font-size: 12px; color: #64748b; margin: 5px 0 0 0;">Accepted formats: PDF, JPG, PNG. Multiple files allowed.</p>
+        </div>
+        
+        <div *ngIf="selectedFiles.length > 0" style="margin-bottom: 20px;">
+          <h4 style="color: #374151; margin-bottom: 10px;">Selected Files:</h4>
+          <div *ngFor="let file of selectedFiles" style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8fafc; border-radius: 6px; margin-bottom: 5px;">
+            <span style="color: #64748b; font-size: 14px;">{{ file.name }}</span>
+            <button (click)="removeFile(file)" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+              Remove
+            </button>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button style="background: #64748b; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;" (click)="closeUploadModal()">
+            Cancel
+          </button>
+          <button [disabled]="selectedFiles.length === 0" [style.background]="selectedFiles.length === 0 ? '#9ca3af' : '#10b981'" style="color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;" (click)="completeEnrollment()">
+            Complete Enrollment
+          </button>
+        </div>
+      </div>
+    </div>
 
-    .page-header p {
-      color: var(--on-surface-variant);
-      font-size: var(--font-size-lg);
-      margin: var(--spacing-sm) 0 0 0;
-    }
-
-    .policies-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: var(--spacing-xl);
-      margin-bottom: var(--spacing-2xl);
-    }
-
-    .policy-card {
-      background: var(--surface);
-      border-radius: var(--radius-xl);
-      padding: var(--spacing-xl);
-      box-shadow: var(--shadow-1);
-      transition: all 0.2s ease;
-      border: 1px solid var(--outline-variant);
-    }
-
-    .policy-card:hover {
-      box-shadow: var(--shadow-2);
-      transform: translateY(-4px);
-    }
-
-    .policy-header {
-      text-align: center;
-      margin-bottom: var(--spacing-lg);
-    }
-
-    .policy-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto var(--spacing-md);
-      border-radius: var(--radius-xl);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-    }
-
-    .policy-icon.health { background: var(--success-500); }
-    .policy-icon.life { background: var(--primary-500); }
-    .policy-icon.accident { background: var(--warning-500); }
-    .policy-icon.critical { background: var(--error-500); }
-
-    .policy-icon .material-icons {
-      font-size: 32px;
-    }
-
-    .policy-card h3 {
-      margin: 0 0 var(--spacing-sm) 0;
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-    }
-
-    .policy-premium {
-      font-size: var(--font-size-lg);
-      font-weight: var(--font-weight-bold);
-      color: var(--primary-500);
-    }
-
-    .policy-features {
-      margin: var(--spacing-lg) 0;
-    }
-
-    .feature {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      margin-bottom: var(--spacing-sm);
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-    }
-
-    .feature .material-icons {
-      font-size: 16px;
-      color: var(--success-500);
-    }
-
-    .policy-coverage {
-      background: var(--surface-variant);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-md);
-      margin: var(--spacing-lg) 0;
-      text-align: center;
-    }
-
-    .coverage-label {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .coverage-amount {
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--on-surface);
-    }
-
-    .btn {
-      width: 100%;
-      padding: var(--spacing-md);
-      border: none;
-      border-radius: var(--radius-lg);
-      font-size: var(--font-size-base);
-      font-weight: var(--font-weight-medium);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary {
-      background: var(--primary-500);
-      color: white;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--primary-600);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .enrollment-list {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-
-    .enrollment-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--spacing-md);
-      border: 1px solid var(--outline-variant);
-      border-radius: var(--radius-lg);
-    }
-
-    .enrollment-info strong {
-      display: block;
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-    }
-
-    .enrollment-date {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-    }
-
-    .badge {
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border-radius: var(--radius-xl);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
-      text-transform: uppercase;
-    }
-
-    .badge-active {
-      background: var(--success-100);
-      color: var(--success-700);
-    }
-
-    .badge-pending {
-      background: var(--warning-100);
-      color: var(--warning-700);
-    }
-
-    @media (max-width: 768px) {
-      .policies-grid {
-        grid-template-columns: 1fr;
+    <style>
+      .policy-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
       }
-    }
-  `]
+      
+      .policy-card:hover::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: #2563eb;
+        border-radius: 12px 12px 0 0;
+      }
+    </style>
+  `
 })
-export class InsuranceEnrollmentComponent implements OnInit {
-  availablePolicies: any[] = [];
-  myEnrollments: any[] = [];
-  isLoading = false;
+export class InsuranceEnrollmentComponent {
+  showDetailsModal = false;
+  showUploadModal = false;
+  selectedPolicy: any = null;
+  selectedEnrollmentPolicy: any = null;
+  selectedFiles: File[] = [];
+  currentEnrollmentType = '';
+  enrolledPolicies: any[] = [];
+  
+  policyDetails = {
+    'mediclaim': {
+      name: 'Group Mediclaim',
+      requirements: [
+        'Must be a permanent employee',
+        'Minimum 3 months of service',
+        'Age limit: 18-65 years for employee',
+        'Spouse age limit: 18-65 years',
+        'Children age limit: 3 months to 25 years'
+      ],
+      documents: [
+        'Employee ID proof',
+        'Family members ID proof',
+        'Birth certificates for children',
+        'Marriage certificate for spouse',
+        'Medical history declaration'
+      ],
+      terms: [
+        'Pre-existing diseases covered after 2 years',
+        'Maternity benefits available after 9 months',
+        'Room rent limit applies as per policy',
+        'Network hospital cashless facility available',
+        'Annual health check-up included'
+      ]
+    },
+    'term-life': {
+      name: 'Term Life Insurance',
+      requirements: [
+        'Age limit: 18-55 years at entry',
+        'Medical examination required above age 40',
+        'Minimum sum assured: ₹10 Lakhs',
+        'Good health declaration mandatory',
+        'No adverse lifestyle habits'
+      ],
+      documents: [
+        'Age proof document',
+        'Income proof (salary slips)',
+        'Medical examination reports',
+        'Identity and address proof',
+        'Nominee details and documents'
+      ],
+      terms: [
+        'Premium increases with age',
+        'Policy renewable up to age 65',
+        'Suicide exclusion for first 12 months',
+        'Grace period of 30 days for premium payment',
+        'Tax benefits under Section 80C and 10(10D)'
+      ]
+    },
+    'accident': {
+      name: 'Personal Accident Insurance',
+      requirements: [
+        'Age limit: 18-65 years',
+        'Engaged in non-hazardous occupation',
+        'Good physical and mental health',
+        'No pre-existing disabilities',
+        'Regular employment status'
+      ],
+      documents: [
+        'Employment certificate',
+        'Age and identity proof',
+        'Medical fitness certificate',
+        'Occupation details',
+        'Nominee information'
+      ],
+      terms: [
+        'Coverage valid worldwide 24x7',
+        'Immediate coverage from policy start date',
+        'No medical examination required',
+        'Hazardous activities excluded',
+        'Claims settled within 30 days'
+      ]
+    },
+    'critical-illness': {
+      name: 'Critical Illness Insurance',
+      requirements: [
+        'Age limit: 18-55 years at entry',
+        'Comprehensive medical examination',
+        'No family history of critical illness',
+        'Lifestyle questionnaire completion',
+        'Minimum 2 years employment'
+      ],
+      documents: [
+        'Detailed medical history',
+        'Family medical history',
+        'Laboratory test reports',
+        'Specialist consultation reports',
+        'Lifestyle and habits declaration'
+      ],
+      terms: [
+        'Waiting period of 90 days for most illnesses',
+        'Cancer waiting period of 180 days',
+        'Survival period of 30 days required',
+        'Lump sum benefit on diagnosis',
+        'Policy continues after first claim'
+      ]
+    }
+  };
 
-  constructor(
-    private insuranceService: InsuranceService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.loadPolicies();
-    this.loadMyEnrollments();
+  viewDetails(policyType: string) {
+    this.selectedPolicy = (this.policyDetails as any)[policyType];
+    this.showDetailsModal = true;
   }
 
-  loadPolicies() {
-    this.availablePolicies = [
-      {
-        id: 1,
-        name: 'Health Insurance',
-        type: 'health',
-        icon: 'health_and_safety',
-        premium: 25000,
-        coverage: 5000000,
-        features: [
-          'Hospitalization Coverage',
-          'OPD Benefits',
-          'Pre/Post Hospitalization',
-          'Ambulance Coverage'
-        ]
-      },
-      {
-        id: 2,
-        name: 'Term Life Insurance',
-        type: 'life',
-        icon: 'favorite',
-        premium: 12000,
-        coverage: 10000000,
-        features: [
-          'Life Coverage',
-          'Accidental Death Benefit',
-          'Terminal Illness Benefit',
-          'Premium Waiver'
-        ]
-      },
-      {
-        id: 3,
-        name: 'Accidental Insurance',
-        type: 'accident',
-        icon: 'security',
-        premium: 8000,
-        coverage: 3000000,
-        features: [
-          'Accidental Death',
-          'Permanent Disability',
-          'Temporary Disability',
-          '24/7 Coverage'
-        ]
-      },
-      {
-        id: 4,
-        name: 'Critical Illness',
-        type: 'critical',
-        icon: 'local_hospital',
-        premium: 18000,
-        coverage: 7500000,
-        features: [
-          'Cancer Coverage',
-          'Heart Disease',
-          'Stroke Coverage',
-          'Kidney Failure'
-        ]
-      }
-    ];
+  closeModal() {
+    this.showDetailsModal = false;
+    this.selectedPolicy = null;
   }
 
-  loadMyEnrollments() {
-    // Load from API or demo data
-    this.myEnrollments = [
-      {
-        id: 1,
-        policyName: 'Health Insurance',
-        enrolledDate: new Date(2024, 0, 15),
-        status: 'Active'
-      }
-    ];
+  closeUploadModal() {
+    this.showUploadModal = false;
+    this.selectedEnrollmentPolicy = null;
+    this.selectedFiles = [];
+    this.currentEnrollmentType = '';
   }
 
-  enrollInPolicy(policy: any) {
-    this.isLoading = true;
+  startEnrollment(policyType: string) {
+    if (this.isEnrolled(policyType)) {
+      return;
+    }
     
-    const enrollmentData = {
-      employeeId: 1, // Get from auth service
-      policyId: policy.id,
-      policyName: policy.name
+    this.currentEnrollmentType = policyType;
+    this.selectedEnrollmentPolicy = (this.policyDetails as any)[policyType];
+    this.showUploadModal = true;
+  }
+
+  onDocumentSelect(event: any) {
+    const files = Array.from(event.target.files) as File[];
+    this.selectedFiles = [...this.selectedFiles, ...files];
+  }
+
+  removeFile(file: File) {
+    this.selectedFiles = this.selectedFiles.filter(f => f !== file);
+  }
+
+  completeEnrollment() {
+    if (this.selectedFiles.length === 0) {
+      alert('Please upload at least one document to complete enrollment.');
+      return;
+    }
+
+    // Process enrollment with documents
+    this.enrollPolicy(this.currentEnrollmentType);
+    this.closeUploadModal();
+  }
+
+  enrollPolicy(policyType: string) {
+    const policyNames: any = {
+      'mediclaim': 'Group Mediclaim',
+      'term-life': 'Term Life Insurance', 
+      'accident': 'Personal Accident',
+      'critical-illness': 'Critical Illness'
+    };
+    
+    const coverages: any = {
+      'mediclaim': '₹4 Lakhs',
+      'term-life': '₹25 Lakhs',
+      'accident': '₹5 Lakhs', 
+      'critical-illness': '₹15 Lakhs'
+    };
+    
+    const premiums: any = {
+      'mediclaim': 'FREE (Employee)',
+      'term-life': '₹4,500-₹9,200/year',
+      'accident': '₹1,800/year',
+      'critical-illness': '₹8,500-₹12,800/year'
     };
 
-    this.insuranceService.enrollInPolicy(enrollmentData).subscribe({
-      next: () => {
-        this.isLoading = false;
-        alert(`Successfully enrolled in ${policy.name}!`);
-        this.loadMyEnrollments();
-      },
-      error: () => {
-        this.isLoading = false;
-        alert('Enrollment failed. Please try again.');
-      }
-    });
+    const newPolicy = {
+      id: this.enrolledPolicies.length + 1,
+      name: policyNames[policyType],
+      coverage: coverages[policyType],
+      premium: premiums[policyType],
+      enrolledDate: new Date(),
+      status: 'Active',
+      documentsUploaded: true,
+      uploadedFiles: this.selectedFiles.map(f => f.name)
+    };
+
+    // Check if already enrolled
+    const alreadyEnrolled = this.enrolledPolicies.find(p => p.name === newPolicy.name);
+    if (alreadyEnrolled) {
+      alert('You are already enrolled in this policy!');
+      return;
+    }
+
+    this.enrolledPolicies.push(newPolicy);
+    this.saveEnrolledPolicies();
+    alert(`Successfully enrolled in ${newPolicy.name}! Your policy is now active and you can download your E-Card.`);
   }
 
-  getBadgeClass(status: string): string {
-    return `badge-${status.toLowerCase()}`;
+  onDocumentUpload(event: any, policyId: number) {
+    const file = event.target.files[0];
+    if (file) {
+      const policy = this.enrolledPolicies.find(p => p.id === policyId);
+      if (policy) {
+        policy.documentsUploaded = true;
+        alert(`Document "${file.name}" uploaded successfully! You can now activate your policy.`);
+      }
+    }
+  }
+
+  activatePolicy(policyId: number) {
+    const policy = this.enrolledPolicies.find(p => p.id === policyId);
+    if (policy && policy.documentsUploaded) {
+      policy.status = 'Active';
+      alert(`${policy.name} has been activated! You can now download your E-Card.`);
+    }
+  }
+
+  downloadECard(policyId: number) {
+    const policy = this.enrolledPolicies.find(p => p.id === policyId);
+    if (policy && policy.status === 'Active') {
+      // Create a mock PDF download
+      const pdfContent = `
+        INSURANCE E-CARD
+        ================
+        
+        Policy Name: ${policy.name}
+        Coverage: ${policy.coverage}
+        Premium: ${policy.premium}
+        Status: ${policy.status}
+        Enrolled Date: ${policy.enrolledDate.toDateString()}
+        
+        Policy ID: ${policy.id}
+        Employee: John Doe
+        
+        This is your digital insurance card.
+        Keep this for your records.
+      `;
+      
+      const blob = new Blob([pdfContent], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${policy.name.replace(/\s+/g, '_')}_ECard.txt`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      
+      alert(`E-Card for ${policy.name} downloaded successfully!`);
+    } else {
+      alert('Policy must be active to download E-Card. Please upload documents first.');
+    }
+  }
+
+  getStatusColor(status: string): string {
+    switch (status) {
+      case 'Active': return '#10b981';
+      case 'Enrolled': return '#f59e0b';
+      case 'Pending': return '#64748b';
+      default: return '#64748b';
+    }
+  }
+
+  getStatusBg(status: string): string {
+    switch (status) {
+      case 'Active': return '#dcfce7';
+      case 'Enrolled': return '#fef3c7';
+      case 'Pending': return '#f1f5f9';
+      default: return '#f1f5f9';
+    }
+  }
+
+  isEnrolled(policyType: string): boolean {
+    const policyNames: any = {
+      'mediclaim': 'Group Mediclaim',
+      'term-life': 'Term Life Insurance',
+      'accident': 'Personal Accident',
+      'critical-illness': 'Critical Illness'
+    };
+    return this.enrolledPolicies.some(p => p.name === policyNames[policyType]);
+  }
+
+  ngOnInit() {
+    this.loadEnrolledPolicies();
+  }
+
+  loadEnrolledPolicies() {
+    const policies = localStorage.getItem('enrolledPolicies');
+    this.enrolledPolicies = policies ? JSON.parse(policies) : [];
+  }
+
+  saveEnrolledPolicies() {
+    localStorage.setItem('enrolledPolicies', JSON.stringify(this.enrolledPolicies));
+  }
+
+  enrollFromModal() {
+    this.closeModal();
+    // Get policy type from selected policy name
+    const policyTypeMap: any = {
+      'Group Mediclaim': 'mediclaim',
+      'Term Life Insurance': 'term-life',
+      'Personal Accident Insurance': 'accident', 
+      'Critical Illness Insurance': 'critical-illness'
+    };
+    const policyType = policyTypeMap[this.selectedPolicy?.name];
+    if (policyType) {
+      this.enrollPolicy(policyType);
+    }
   }
 }

@@ -11,8 +11,8 @@ import { LoanService } from '../../services/loan.service';
   template: `
     <div class="standardized-layout">
       <div class="page-header">
-        <h1 class="page-title">Apply for Loan</h1>
-        <p class="page-description">Submit your loan application with required documents</p>
+        <h1 class="page-title">Loan Application</h1>
+        <p class="page-description">Apply for personal, home, or education loans</p>
       </div>
 
       <div class="max-w-2xl mx-auto">
@@ -43,7 +43,7 @@ import { LoanService } from '../../services/loan.service';
             <div class="form-group">
               <label class="form-label required">Loan Amount (₹)</label>
               <input type="number" formControlName="amount" class="form-input" 
-                     placeholder="Enter loan amount" min="1000" max="1000000">
+                     placeholder="Enter amount" min="1000" max="1000000">
               <div *ngIf="loanForm.get('amount')?.invalid && loanForm.get('amount')?.touched" 
                    class="text-xs text-error-600 mt-1">
                 <span *ngIf="loanForm.get('amount')?.errors?.['required']">Amount is required</span>
@@ -75,7 +75,7 @@ import { LoanService } from '../../services/loan.service';
             <div class="form-group">
               <label class="form-label required">Purpose</label>
               <textarea formControlName="purpose" class="form-textarea" rows="3"
-                        placeholder="Describe the purpose of the loan"></textarea>
+                        placeholder="Purpose of loan"></textarea>
               <div *ngIf="loanForm.get('purpose')?.invalid && loanForm.get('purpose')?.touched" 
                    class="text-xs text-error-600 mt-1">
                 Purpose is required

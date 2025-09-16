@@ -1,587 +1,426 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { PayrollService } from '../../services/payroll.service';
 import { LoanService } from '../../services/loan.service';
 import { ReimbursementService } from '../../services/reimbursement.service';
-import { InsuranceService } from '../../services/insurance.service';
-import { MedicalClaimService } from '../../services/medical-claim.service';
 
 @Component({
   selector: 'app-manager-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   template: `
-    <div class="dashboard-container">
-      <div class="dashboard-header">
-        <h1>Manager Dashboard</h1>
-        <p>Review and approve employee requests</p>
+    <div class="content-header">
+      <div class="page-container">
+        <h3>Manager Dashboard</h3>
+        <p>Manage approvals and view team analytics</p>
       </div>
+    </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon payroll">
-            <span class="material-icons">receipt_long</span>
+    <div class="content-body">
+      <div class="page-container">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ totalPendingApprovals }}</div>
+              <div class="stat-label">Pending Approvals</div>
+            </div>
           </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ pendingPayrolls }}</div>
-            <div class="stat-label">Pending Payrolls</div>
+          <div class="stat-card">
+            <div class="stat-icon">✓</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ totalApprovalsThisMonth }}</div>
+              <div class="stat-label">Approvals This Month</div>
+            </div>
           </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon loan">
-            <span class="material-icons">account_balance</span>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ teamSize }}</div>
+              <div class="stat-label">Team Members</div>
+            </div>
           </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ pendingLoans }}</div>
-            <div class="stat-label">Pending Loans</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon reimbursement">
-            <span class="material-icons">receipt</span>
-          </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ pendingReimbursements }}</div>
-            <div class="stat-label">Pending Reimbursements</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon insurance">
-            <span class="material-icons">health_and_safety</span>
-          </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ pendingInsurance }}</div>
-            <div class="stat-label">Pending Insurance</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon medical">
-            <span class="material-icons">local_hospital</span>
-          </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ pendingMedical }}</div>
-            <div class="stat-label">Pending Medical Claims</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon success">
-            <span class="material-icons">check_circle</span>
-          </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ totalApprovalsThisMonth }}</div>
-            <div class="stat-label">Approvals This Month</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="dashboard-grid">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Pending Approvals</h3>
-            <a routerLink="/approvals" class="view-all-link">View All</a>
-          </div>
-          <div class="card-body">
-            <div class="approval-list">
-              <div class="approval-item" *ngFor="let approval of pendingApprovals">
-                <div class="approval-info">
-                  <strong>{{ approval.type }}</strong>
-                  <span class="approval-employee">{{ approval.employeeName }}</span>
-                  <span class="approval-amount">₹{{ approval.amount | number:'1.0-0' }}</span>
-                </div>
-                <div class="approval-date">{{ approval.submittedDate | date:'shortDate' }}</div>
-              </div>
+          <div class="stat-card">
+            <div class="stat-icon">✗</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ rejectedCount }}</div>
+              <div class="stat-label">Rejected This Month</div>
             </div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Recent Notifications</h3>
-          </div>
-          <div class="card-body">
-            <div class="notification-list">
-              <div class="notification-item" *ngFor="let notification of recentNotifications">
-                <div class="notification-icon" [ngClass]="notification.type">
-                  <span class="material-icons">{{ notification.icon }}</span>
-                </div>
-                <div class="notification-content">
-                  <div class="notification-title">{{ notification.title }}</div>
-                  <div class="notification-time">{{ notification.time | date:'short' }}</div>
-                </div>
-              </div>
+        <div class="dashboard-row">
+          <div class="card">
+            <div class="card-header">
+              <h4>Pending Approvals</h4>
             </div>
-          </div>
-        </div>
+            <div class="card-body">
+              <div class="approval-tabs">
+                <button class="tab-btn" [class.active]="activeTab === 'payroll'" (click)="activeTab = 'payroll'">
+                  Payroll ({{ pendingPayrolls.length }})
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'loans'" (click)="activeTab = 'loans'">
+                  Loans ({{ pendingLoans.length }})
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'reimbursements'" (click)="activeTab = 'reimbursements'">
+                  Reimbursements ({{ pendingReimbursements.length }})
+                </button>
+              </div>
 
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Approvals by Category</h3>
-          </div>
-          <div class="card-body">
-            <div class="chart-container">
-              <div class="chart-data">
-                <div class="data-point" *ngFor="let data of approvalsByCategory">
-                  <span class="category">{{ data.category }}</span>
-                  <div class="bar-container">
-                    <div class="bar" [style.width.%]="(data.count / maxApprovals) * 100"></div>
-                    <span class="count">{{ data.count }}</span>
+              <div class="approval-content">
+                <div *ngIf="activeTab === 'payroll'" class="approval-list">
+                  <div class="approval-item" *ngFor="let item of pendingPayrolls">
+                    <div class="approval-info">
+                      <h5>{{ item.employeeName }}</h5>
+                      <p>Period: {{ item.payPeriodStart | date:'MMM yyyy' }} | Net: {{ item.netPay | currency:'INR':'symbol':'1.0-0' }}</p>
+                    </div>
+                    <div class="approval-actions">
+                      <button class="btn btn-success btn-sm" (click)="approvePayroll(item.id)">Approve</button>
+                      <button class="btn btn-danger btn-sm" (click)="rejectPayroll(item.id)">Reject</button>
+                    </div>
                   </div>
                 </div>
+
+                <div *ngIf="activeTab === 'loans'" class="approval-list">
+                  <div class="approval-item" *ngFor="let item of pendingLoans">
+                    <div class="approval-info">
+                      <h5>{{ item.employeeName }}</h5>
+                      <p>{{ item.loanType }} | Amount: {{ item.amount | currency:'INR':'symbol':'1.0-0' }}</p>
+                    </div>
+                    <div class="approval-actions">
+                      <button class="btn btn-success btn-sm" (click)="approveLoan(item.loanId)">Approve</button>
+                      <button class="btn btn-danger btn-sm" (click)="rejectLoan(item.loanId)">Reject</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="activeTab === 'reimbursements'" class="approval-list">
+                  <div class="approval-item" *ngFor="let item of pendingReimbursements">
+                    <div class="approval-info">
+                      <h5>{{ item.employeeName }}</h5>
+                      <p>{{ item.category }} | Amount: {{ item.amount | currency:'INR':'symbol':'1.0-0' }}</p>
+                    </div>
+                    <div class="approval-actions">
+                      <button class="btn btn-success btn-sm" (click)="approveReimbursement(item.requestId)">Approve</button>
+                      <button class="btn btn-danger btn-sm" (click)="rejectReimbursement(item.requestId)">Reject</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="getCurrentItems().length === 0" class="text-center">
+                  <p>No pending {{ activeTab }} approvals</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Approval Trend (Last 6 Months)</h3>
-          </div>
-          <div class="card-body">
-            <div class="chart-container">
-              <div class="chart-data">
-                <div class="trend-point" *ngFor="let data of approvalTrend">
-                  <span class="month">{{ data.month }}</span>
-                  <span class="count">{{ data.count }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">My Services</h3>
-          </div>
-          <div class="card-body">
-            <div class="quick-actions">
-              <a routerLink="/manager/loans" class="action-btn">
-                <div class="action-icon primary">
-                  <span class="material-icons">account_balance</span>
-                </div>
-                <div class="action-text">
-                  <strong>Apply for Loan</strong>
-                  <small>Personal, Home, Education</small>
-                </div>
-              </a>
-              <a routerLink="/manager/reimbursements" class="action-btn">
-                <div class="action-icon secondary">
-                  <span class="material-icons">receipt</span>
-                </div>
-                <div class="action-text">
-                  <strong>Submit Reimbursement</strong>
-                  <small>Travel, Office, Others</small>
-                </div>
-              </a>
-              <a routerLink="/manager/insurance" class="action-btn">
-                <div class="action-icon success">
-                  <span class="material-icons">health_and_safety</span>
-                </div>
-                <div class="action-text">
-                  <strong>Insurance Enrollment</strong>
-                  <small>Health, Life, Critical</small>
-                </div>
-              </a>
-              <a routerLink="/manager/medical-claims" class="action-btn">
-                <div class="action-icon warning">
-                  <span class="material-icons">local_hospital</span>
-                </div>
-                <div class="action-text">
-                  <strong>Medical Claim</strong>
-                  <small>Hospital bills, Prescriptions</small>
-                </div>
-              </a>
-            </div>
+          <div class="chart-container">
+            <h4>Approval Analytics</h4>
+            <canvas id="approvalChart" width="300" height="200"></canvas>
           </div>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .dashboard-container {
-      padding: var(--spacing-lg);
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .dashboard-header {
-      margin-bottom: var(--spacing-2xl);
-    }
-
-    .dashboard-header h1 {
-      font-size: var(--font-size-4xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--on-surface);
+    .content-header h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
       margin: 0;
     }
 
-    .dashboard-header p {
-      color: var(--on-surface-variant);
-      font-size: var(--font-size-lg);
-      margin: var(--spacing-sm) 0 0 0;
+    .content-header p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin: 0.25rem 0 0 0;
     }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-2xl);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
     }
 
     .stat-card {
-      background: var(--surface);
-      border-radius: var(--radius-xl);
-      padding: var(--spacing-xl);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
       display: flex;
       align-items: center;
-      gap: var(--spacing-lg);
-      box-shadow: var(--shadow-1);
-      transition: all 0.2s ease;
-    }
-
-    .stat-card:hover {
-      box-shadow: var(--shadow-2);
-      transform: translateY(-2px);
+      gap: 0.75rem;
     }
 
     .stat-icon {
-      width: 56px;
-      height: 56px;
+      width: 40px;
+      height: 40px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: var(--radius-xl);
-      color: white;
+      font-size: 1.25rem;
+      color: var(--primary-color);
     }
 
-    .stat-icon.payroll { background: var(--primary-500); }
-    .stat-icon.loan { background: var(--secondary-500); }
-    .stat-icon.reimbursement { background: var(--success-500); }
-    .stat-icon.insurance { background: var(--warning-500); }
-    .stat-icon.medical { background: var(--error-500); }
-    .stat-icon.success { background: var(--success-600); }
-
-    .stat-icon .material-icons {
-      font-size: 24px;
+    .stat-content {
+      flex: 1;
     }
 
     .stat-value {
-      font-size: var(--font-size-2xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--on-surface);
-      margin-bottom: var(--spacing-xs);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
     }
 
     .stat-label {
-      color: var(--on-surface-variant);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin: 0.25rem 0 0 0;
     }
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: var(--spacing-xl);
-    }
-
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-1);
-      overflow: hidden;
-    }
-
-    .card-header {
-      padding: var(--spacing-xl);
-      border-bottom: 1px solid var(--outline-variant);
+    .approval-tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
     }
 
-    .card-title {
-      margin: 0;
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s ease;
     }
 
-    .view-all-link {
-      color: var(--primary-500);
-      text-decoration: none;
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+    .tab-btn.active {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
     }
 
-    .card-body {
-      padding: var(--spacing-xl);
+    .approval-content {
+      min-height: 300px;
     }
 
     .approval-list {
       display: flex;
       flex-direction: column;
-      gap: var(--spacing-md);
+      gap: 0.75rem;
     }
 
     .approval-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--spacing-md);
-      border: 1px solid var(--outline-variant);
-      border-radius: var(--radius-lg);
+      padding: 0.75rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
     }
 
-    .approval-info strong {
-      display: block;
-      font-weight: var(--font-weight-semibold);
-      margin-bottom: var(--spacing-xs);
+    .approval-info h5 {
+      margin: 0 0 0.25rem 0;
+      font-size: 0.875rem;
+      font-weight: 600;
     }
 
-    .approval-employee {
-      display: block;
-      color: var(--on-surface-variant);
-      font-size: var(--font-size-sm);
-      margin-bottom: var(--spacing-xs);
+    .approval-info p {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
     }
 
-    .approval-amount {
-      color: var(--primary-500);
-      font-weight: var(--font-weight-semibold);
-    }
-
-    .approval-date {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-    }
-
-    .notification-list {
+    .approval-actions {
       display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-
-    .notification-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      border: 1px solid var(--outline-variant);
-      border-radius: var(--radius-lg);
-    }
-
-    .notification-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      color: white;
-    }
-
-    .notification-icon.success { background: var(--success-500); }
-    .notification-icon.warning { background: var(--warning-500); }
-    .notification-icon.info { background: var(--primary-500); }
-
-    .notification-title {
-      font-weight: var(--font-weight-semibold);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .notification-time {
-      color: var(--on-surface-variant);
-      font-size: var(--font-size-sm);
+      gap: 0.5rem;
     }
 
     .chart-container {
-      width: 100%;
-    }
-
-    .chart-data {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-
-    .data-point {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-    }
-
-    .category {
-      min-width: 120px;
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-    }
-
-    .bar-container {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-    }
-
-    .bar {
-      height: 20px;
-      background: var(--primary-500);
-      border-radius: var(--radius-sm);
-      min-width: 4px;
-    }
-
-    .count {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-    }
-
-    .trend-point {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--spacing-sm);
-      background: var(--surface-variant);
-      border-radius: var(--radius-md);
-    }
-
-    .month {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-    }
-
-    .quick-actions {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-
-    .action-btn {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      border: 1px solid var(--outline-variant);
+      background: var(--bg-primary);
       border-radius: var(--radius-lg);
-      text-decoration: none;
-      color: var(--on-surface);
-      transition: all 0.2s ease;
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
     }
 
-    .action-btn:hover {
-      background: var(--surface-variant);
-      border-color: var(--primary-500);
-      transform: translateX(4px);
+    .chart-container h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 1rem 0;
     }
 
-    .action-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius-lg);
-      color: white;
-    }
-
-    .action-icon.primary { background: var(--primary-500); }
-    .action-icon.secondary { background: var(--secondary-500); }
-    .action-icon.success { background: var(--success-500); }
-    .action-icon.warning { background: var(--warning-500); }
-
-    .action-text strong {
-      display: block;
-      font-weight: var(--font-weight-semibold);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .action-text small {
-      color: var(--on-surface-variant);
-      font-size: var(--font-size-sm);
-    }
-
-    @media (max-width: 768px) {
-      .dashboard-container {
-        padding: var(--spacing-md);
-      }
-      
-      .stats-grid,
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
+    .card-header h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
     }
   `]
 })
 export class ManagerDashboardComponent implements OnInit {
-  pendingPayrolls = 5;
-  pendingLoans = 8;
-  pendingReimbursements = 12;
-  pendingInsurance = 3;
-  pendingMedical = 6;
-  totalApprovalsThisMonth = 45;
-  maxApprovals = 15;
-
-  pendingApprovals: any[] = [];
-  recentNotifications: any[] = [];
-  approvalsByCategory: any[] = [];
-  approvalTrend: any[] = [];
+  activeTab = 'payroll';
+  totalPendingApprovals = 0;
+  totalApprovalsThisMonth = 0;
+  teamSize = 0;
+  rejectedCount = 0;
+  pendingPayrolls: any[] = [];
+  pendingLoans: any[] = [];
+  pendingReimbursements: any[] = [];
 
   constructor(
     private payrollService: PayrollService,
     private loanService: LoanService,
-    private reimbursementService: ReimbursementService,
-    private insuranceService: InsuranceService,
-    private medicalClaimService: MedicalClaimService
+    private reimbursementService: ReimbursementService
   ) {}
 
   ngOnInit() {
     this.loadDashboardData();
+    setTimeout(() => this.initCharts(), 100);
   }
 
   loadDashboardData() {
-    this.pendingApprovals = [
-      { type: 'Loan Application', employeeName: 'John Doe', amount: 200000, submittedDate: new Date(2024, 11, 1) },
-      { type: 'Reimbursement', employeeName: 'Jane Smith', amount: 5000, submittedDate: new Date(2024, 11, 2) },
-      { type: 'Medical Claim', employeeName: 'Mike Johnson', amount: 15000, submittedDate: new Date(2024, 11, 3) },
-      { type: 'Insurance Enrollment', employeeName: 'Sarah Wilson', amount: 25000, submittedDate: new Date(2024, 11, 4) }
-    ];
+    this.payrollService.getPendingManagerApprovals().subscribe({
+      next: (payrolls) => this.pendingPayrolls = payrolls,
+      error: () => this.loadDemoData()
+    });
 
-    this.recentNotifications = [
-      {
-        type: 'success',
-        icon: 'check_circle',
-        title: 'Loan approved for John Doe - ₹2,00,000',
-        time: new Date(Date.now() - 3600000)
+    this.loanService.getPendingManagerApprovals().subscribe({
+      next: (loans) => this.pendingLoans = loans,
+      error: () => this.pendingLoans = []
+    });
+
+    this.reimbursementService.getPendingManagerApprovals().subscribe({
+      next: (reimbursements) => this.pendingReimbursements = reimbursements,
+      error: () => this.pendingReimbursements = []
+    });
+
+    this.updateStats();
+  }
+
+  loadDemoData() {
+    this.pendingPayrolls = [
+      { id: 1, employeeName: 'John Doe', payPeriodStart: new Date(), netPay: 42000 },
+      { id: 2, employeeName: 'Jane Smith', payPeriodStart: new Date(), netPay: 45000 }
+    ];
+    this.pendingLoans = [
+      { loanId: 1, employeeName: 'Mike Johnson', loanType: 'Personal', amount: 100000 }
+    ];
+    this.pendingReimbursements = [
+      { requestId: 1, employeeName: 'Sarah Wilson', category: 'Travel', amount: 5000 }
+    ];
+    this.updateStats();
+  }
+
+  updateStats() {
+    this.totalPendingApprovals = this.pendingPayrolls.length + this.pendingLoans.length + this.pendingReimbursements.length;
+    this.totalApprovalsThisMonth = 45;
+    this.teamSize = 8;
+    this.rejectedCount = 3;
+  }
+
+  getCurrentItems() {
+    switch (this.activeTab) {
+      case 'payroll': return this.pendingPayrolls;
+      case 'loans': return this.pendingLoans;
+      case 'reimbursements': return this.pendingReimbursements;
+      default: return [];
+    }
+  }
+
+  approvePayroll(id: number) {
+    this.payrollService.approveByManager(id).subscribe({
+      next: () => {
+        this.pendingPayrolls = this.pendingPayrolls.filter(p => p.id !== id);
+        this.updateStats();
       },
-      {
-        type: 'info',
-        icon: 'info',
-        title: 'New reimbursement request from Jane Smith',
-        time: new Date(Date.now() - 7200000)
+      error: () => alert('Error approving payroll')
+    });
+  }
+
+  rejectPayroll(id: number) {
+    const reason = prompt('Enter rejection reason:');
+    if (reason) {
+      this.payrollService.rejectByManager(id, reason).subscribe({
+        next: () => {
+          this.pendingPayrolls = this.pendingPayrolls.filter(p => p.id !== id);
+          this.updateStats();
+        },
+        error: () => alert('Error rejecting payroll')
+      });
+    }
+  }
+
+  approveLoan(id: number) {
+    this.loanService.approveByManager(id).subscribe({
+      next: () => {
+        this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
+        this.updateStats();
       },
-      {
-        type: 'warning',
-        icon: 'warning',
-        title: '6 pending approvals require attention',
-        time: new Date(Date.now() - 10800000)
+      error: () => alert('Error approving loan')
+    });
+  }
+
+  rejectLoan(id: number) {
+    const reason = prompt('Enter rejection reason:');
+    if (reason) {
+      this.loanService.rejectByManager(id, reason).subscribe({
+        next: () => {
+          this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
+          this.updateStats();
+        },
+        error: () => alert('Error rejecting loan')
+      });
+    }
+  }
+
+  approveReimbursement(id: number) {
+    this.reimbursementService.approveByManager(id).subscribe({
+      next: () => {
+        this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
+        this.updateStats();
+      },
+      error: () => alert('Error approving reimbursement')
+    });
+  }
+
+  rejectReimbursement(id: number) {
+    const reason = prompt('Enter rejection reason:');
+    if (reason) {
+      this.reimbursementService.rejectByManager(id, reason).subscribe({
+        next: () => {
+          this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
+          this.updateStats();
+        },
+        error: () => alert('Error rejecting reimbursement')
+      });
+    }
+  }
+
+  initCharts() {
+    const canvas = document.getElementById('approvalChart') as HTMLCanvasElement;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = '#10b981';
+        ctx.fillRect(50, 150, 50, 40);
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillRect(120, 120, 50, 70);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(190, 170, 50, 20);
+        
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px sans-serif';
+        ctx.fillText('Approved', 45, 210);
+        ctx.fillText('Pending', 120, 210);
+        ctx.fillText('Rejected', 185, 210);
       }
-    ];
-
-    this.approvalsByCategory = [
-      { category: 'Payroll', count: 15 },
-      { category: 'Loans', count: 12 },
-      { category: 'Reimbursements', count: 8 },
-      { category: 'Insurance', count: 6 },
-      { category: 'Medical', count: 4 }
-    ];
-
-    this.approvalTrend = [
-      { month: 'Jul 2024', count: 38 },
-      { month: 'Aug 2024', count: 42 },
-      { month: 'Sep 2024', count: 35 },
-      { month: 'Oct 2024', count: 48 },
-      { month: 'Nov 2024', count: 52 },
-      { month: 'Dec 2024', count: 45 }
-    ];
+    }
   }
 }

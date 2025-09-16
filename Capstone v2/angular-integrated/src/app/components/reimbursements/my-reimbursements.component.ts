@@ -10,7 +10,11 @@ import { ReimbursementResponse } from '../../models/reimbursement.models';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <div class="reimbursements-container">
+    <div style="padding: 20px; width: 100%; margin: 0;">
+      <h2>My Reimbursements</h2>
+      <p>Track your reimbursement requests and their status</p>
+      
+      <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
       <div class="page-header">
         <button class="btn btn-primary" routerLink="/reimbursements/request">
           <i class="feather icon-plus"></i>
@@ -153,12 +157,11 @@ import { ReimbursementResponse } from '../../models/reimbursement.models';
           </div>
         </div>
       </div>
+      </div>
     </div>
   `,
   styles: [`
-    .reimbursements-container {
-      padding: 24px;
-    }
+
 
     .page-header {
       display: flex;
