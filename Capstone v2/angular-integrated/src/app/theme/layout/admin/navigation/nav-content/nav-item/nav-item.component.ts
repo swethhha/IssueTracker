@@ -51,4 +51,11 @@ export class NavItemComponent {
       document.querySelector('app-navigation.pcoded-navbar')?.classList.remove('mob-open');
     }
   }
+
+  getIconName(iconClass: string): string {
+    if (iconClass?.includes('material-icons-outlined')) {
+      return iconClass.split(' ')[1] || '';
+    }
+    return '';
+  }
 }

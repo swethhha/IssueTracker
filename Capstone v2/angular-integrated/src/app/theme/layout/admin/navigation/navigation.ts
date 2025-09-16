@@ -30,7 +30,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Dashboard',
         type: 'item',
         url: '/dashboard',
-        icon: 'feather icon-home'
+        icon: 'material-icons-outlined home'
       }
     ]
   },
@@ -45,35 +45,35 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Payroll',
         type: 'item',
         url: '/payroll',
-        icon: 'feather icon-dollar-sign'
+        icon: 'material-icons-outlined payments'
       },
       {
         id: 'loans',
         title: 'Loans',
         type: 'item',
         url: '/loans',
-        icon: 'feather icon-credit-card'
+        icon: 'material-icons-outlined account_balance_wallet'
       },
       {
         id: 'reimbursements',
         title: 'Reimbursements',
         type: 'item',
         url: '/reimbursements',
-        icon: 'feather icon-file-text'
+        icon: 'material-icons-outlined receipt_long'
       },
       {
         id: 'insurance',
         title: 'Insurance',
         type: 'item',
         url: '/insurance',
-        icon: 'feather icon-shield'
+        icon: 'material-icons-outlined security'
       },
       {
         id: 'medical-claims',
         title: 'Medical Claims',
         type: 'item',
         url: '/medical-claims',
-        icon: 'feather icon-heart'
+        icon: 'material-icons-outlined local_hospital'
       }
     ]
   },
@@ -87,7 +87,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'approvals',
         title: 'Approvals',
         type: 'collapse',
-        icon: 'feather icon-check-circle',
+        icon: 'material-icons-outlined check_circle',
         children: [
           {
             id: 'payroll-approvals',
@@ -107,7 +107,15 @@ export const NavigationItems: NavigationItem[] = [
             type: 'item',
             url: '/approvals/reimbursements'
           }
-        ]
+        ],
+        breadcrumbs: false
+      },
+      {
+        id: 'analytics',
+        title: 'Analytics',
+        type: 'item',
+        url: '/analytics',
+        icon: 'material-icons-outlined analytics'
       }
     ]
   }

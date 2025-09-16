@@ -23,6 +23,7 @@ export const routes: Routes = [
       { path: 'medical-claims', loadComponent: () => import('./components/employee/medical-claim-form.component').then(m => m.MedicalClaimFormComponent) },
       { path: 'request-tracker', loadComponent: () => import('./components/employee/request-tracker.component').then(m => m.RequestTrackerComponent) },
       { path: 'approvals', loadComponent: () => import('./components/manager/approval-center.component').then(m => m.ApprovalCenterComponent) },
+      { path: 'analytics', loadComponent: () => import('./components/analytics/analytics-dashboard.component').then(m => m.AnalyticsDashboardComponent) },
       {
         path: 'finance',
         loadChildren: () => import('./components/finance/finance-routing').then(m => m.financeRoutes)

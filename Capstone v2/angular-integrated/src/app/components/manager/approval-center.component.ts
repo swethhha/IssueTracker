@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { LoanService } from '../../services/loan.service';
+import { AuthService } from '../../services/auth.service';
+import { LoanResponse } from '../../models/loan.models';
 
 @Component({
   selector: 'app-approval-center',
@@ -70,20 +73,38 @@ import { FormsModule } from '@angular/forms';
           </div>
         </div>
 
-        <div class="approval-list">
+        <!-- Loading State -->
+        <div class="text-center py-4" *ngIf="loading">
+          <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <p class="mt-2 text-muted">Loading pending approvals...</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="alert alert-danger" *ngIf="error && !loading">
+          <span class="material-icons">error</span>
+          {{ error }}
+          <button class="btn btn-outline-danger btn-sm ml-2" (click)="refreshData()">
+            <span class="material-icons">refresh</span>
+            Retry
+          </button>
+        </div>
+
+        <div class="approval-list" *ngIf="!loading && !error">
           <div class="approval-item" *ngFor="let approval of filteredApprovals">
-            <div class="approval-icon" [ngClass]="approval.category">
-              <span class="material-icons">{{ getCategoryIcon(approval.category) }}</span>
+            <div class="approval-icon loan">
+              <span class="material-icons">account_balance_wallet</span>
             </div>
             <div class="approval-details">
-              <div class="approval-title">{{ approval.title }}</div>
+              <div class="approval-title">{{ approval.loanType }} Application</div>
               <div class="approval-meta">
                 <span class="employee">{{ approval.employeeName }}</span>
                 <span class="amount">₹{{ approval.amount | number:'1.0-0' }}</span>
-                <span class="date">{{ approval.submittedDate | date:'shortDate' }}</span>
+                <span class="date">{{ approval.appliedDate | date:'shortDate' }}</span>
               </div>
             </div>
-            <div class="approval-actions">
+            <div class="approval-actions" *ngIf="canApprove()">
               <button class="btn btn-success btn-sm" (click)="quickApprove(approval)">
                 <span class="material-icons">check</span>
                 Approve
@@ -93,10 +114,13 @@ import { FormsModule } from '@angular/forms';
                 Reject
               </button>
             </div>
+            <div class="approval-actions" *ngIf="!canApprove()">
+              <span class="text-muted">No permission to approve</span>
+            </div>
           </div>
         </div>
 
-        <div class="empty-state" *ngIf="filteredApprovals.length === 0">
+        <div class="empty-state" *ngIf="!loading && !error && filteredApprovals.length === 0">
           <div class="empty-icon">
             <span class="material-icons">check_circle</span>
           </div>
@@ -389,6 +413,68 @@ import { FormsModule } from '@angular/forms';
       margin: 0;
     }
 
+    /* Loading and Error States */
+    .spinner-border {
+      width: 2rem;
+      height: 2rem;
+      border: 0.25em solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spinner-border 0.75s linear infinite;
+    }
+
+    @keyframes spinner-border {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .alert {
+      padding: var(--spacing-md);
+      border-radius: var(--radius-lg);
+      border: 1px solid;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .alert-danger {
+      background-color: var(--error-50);
+      border-color: var(--error-200);
+      color: var(--error-700);
+    }
+
+    .btn-outline-danger {
+      background: transparent;
+      color: var(--error-500);
+      border: 1px solid var(--error-500);
+    }
+
+    .btn-outline-danger:hover {
+      background: var(--error-500);
+      color: white;
+    }
+
+    .text-muted {
+      color: var(--on-surface-variant) !important;
+    }
+
+    .text-primary {
+      color: var(--primary-500) !important;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     @media (max-width: 768px) {
       .approval-categories {
         grid-template-columns: 1fr;
@@ -420,71 +506,150 @@ import { FormsModule } from '@angular/forms';
 })
 export class ApprovalCenterComponent implements OnInit {
   selectedCategory = '';
-  totalApprovalsToday = 8;
-  totalApprovalsWeek = 32;
-  totalApprovalsMonth = 145;
+  totalApprovalsToday = 0;
+  totalApprovalsWeek = 0;
+  totalApprovalsMonth = 0;
+  loading = false;
+  error: string | null = null;
+  userRole = '';
 
   categories = [
-    { name: 'Payroll Approvals', type: 'payroll', icon: 'receipt_long', pendingCount: 5, route: '/payroll-approvals' },
-    { name: 'Loan Approvals', type: 'loan', icon: 'account_balance', pendingCount: 8, route: '/loan-approvals' },
-    { name: 'Reimbursement Approvals', type: 'reimbursement', icon: 'receipt', pendingCount: 12, route: '/reimbursement-approvals' },
-    { name: 'Insurance Approvals', type: 'insurance', icon: 'health_and_safety', pendingCount: 3, route: '/insurance-approvals' },
-    { name: 'Medical Claim Approvals', type: 'medical', icon: 'local_hospital', pendingCount: 6, route: '/medical-approvals' }
+    { name: 'Payroll Approvals', type: 'payroll', icon: 'receipt_long', pendingCount: 3, route: '/finance/payroll-approvals' },
+    { name: 'Loan Approvals', type: 'loan', icon: 'account_balance', pendingCount: 5, route: '/finance/loan-approvals' },
+    { name: 'Reimbursement Approvals', type: 'reimbursement', icon: 'receipt', pendingCount: 7, route: '/finance/reimbursement-approvals' },
+    { name: 'Insurance Approvals', type: 'insurance', icon: 'health_and_safety', pendingCount: 2, route: '/finance/insurance-approvals' },
+    { name: 'Medical Claim Approvals', type: 'medical', icon: 'local_hospital', pendingCount: 4, route: '/finance/medical-approvals' }
   ];
 
-  allApprovals: any[] = [];
-  filteredApprovals: any[] = [];
+  allApprovals: LoanResponse[] = [];
+  filteredApprovals: LoanResponse[] = [];
+
+  constructor(
+    private loanService: LoanService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
+    this.userRole = this.authService.getUserRole() || '';
+    this.loadMockData();
     this.loadApprovals();
+    this.loadPendingCounts();
+  }
+
+  loadMockData() {
+    // Add mock approval data
+    this.totalApprovalsToday = 8;
+    this.totalApprovalsWeek = 23;
+    this.totalApprovalsMonth = 67;
+    
+    // Mock recent approvals - only show 5 to match loan count
+    this.allApprovals = [
+      {
+        loanId: 1,
+        employeeId: 101,
+        employeeName: 'John Doe',
+        loanType: 'Personal Loan',
+        amount: 50000,
+        tenureMonths: 24,
+        purpose: 'Home renovation',
+        appliedDate: new Date('2024-12-15'),
+        status: 'Pending',
+        monthlyInstallment: 2291
+      },
+      {
+        loanId: 2,
+        employeeId: 102,
+        employeeName: 'Jane Smith',
+        loanType: 'Education Loan',
+        amount: 75000,
+        tenureMonths: 36,
+        purpose: 'MBA Course',
+        appliedDate: new Date('2024-12-14'),
+        status: 'Pending',
+        monthlyInstallment: 2437
+      },
+      {
+        loanId: 3,
+        employeeId: 103,
+        employeeName: 'Mike Johnson',
+        loanType: 'Emergency Loan',
+        amount: 25000,
+        tenureMonths: 12,
+        purpose: 'Medical emergency',
+        appliedDate: new Date('2024-12-13'),
+        status: 'Pending',
+        monthlyInstallment: 2229
+      },
+      {
+        loanId: 4,
+        employeeId: 104,
+        employeeName: 'Sarah Wilson',
+        loanType: 'Vehicle Loan',
+        amount: 80000,
+        tenureMonths: 48,
+        purpose: 'Car purchase',
+        appliedDate: new Date('2024-12-12'),
+        status: 'Pending',
+        monthlyInstallment: 2083
+      },
+      {
+        loanId: 5,
+        employeeId: 105,
+        employeeName: 'David Brown',
+        loanType: 'Personal Loan',
+        amount: 30000,
+        tenureMonths: 18,
+        purpose: 'Debt consolidation',
+        appliedDate: new Date('2024-12-11'),
+        status: 'Pending',
+        monthlyInstallment: 1875
+      }
+    ];
+    
+    this.filterApprovals();
   }
 
   loadApprovals() {
-    this.allApprovals = [
-      {
-        id: 1,
-        category: 'loan',
-        title: 'Personal Loan Application',
-        employeeName: 'John Doe',
-        amount: 200000,
-        submittedDate: new Date(2024, 11, 1)
+    this.loading = true;
+    this.error = null;
+    
+    this.loanService.getPendingManagerApprovals().subscribe({
+      next: (loans: LoanResponse[]) => {
+        this.allApprovals = loans;
+        this.filterApprovals();
+        this.loading = false;
       },
-      {
-        id: 2,
-        category: 'reimbursement',
-        title: 'Travel Reimbursement',
-        employeeName: 'Jane Smith',
-        amount: 5000,
-        submittedDate: new Date(2024, 11, 2)
-      },
-      {
-        id: 3,
-        category: 'medical',
-        title: 'Medical Claim - Surgery',
-        employeeName: 'Mike Johnson',
-        amount: 15000,
-        submittedDate: new Date(2024, 11, 3)
-      },
-      {
-        id: 4,
-        category: 'insurance',
-        title: 'Health Insurance Enrollment',
-        employeeName: 'Sarah Wilson',
-        amount: 25000,
-        submittedDate: new Date(2024, 11, 4)
+      error: (error) => {
+        console.error('Error loading approvals:', error);
+        this.error = 'Failed to load pending approvals';
+        this.loading = false;
       }
-    ];
-    this.filterApprovals();
+    });
+  }
+
+  loadPendingCounts() {
+    this.loanService.getPendingManagerCount().subscribe({
+      next: (count: number) => {
+        const loanCategory = this.categories.find(c => c.type === 'loan');
+        if (loanCategory) {
+          loanCategory.pendingCount = count;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading pending count:', error);
+      }
+    });
   }
 
   filterApprovals() {
     this.filteredApprovals = this.selectedCategory 
-      ? this.allApprovals.filter(approval => approval.category === this.selectedCategory)
+      ? this.allApprovals
       : this.allApprovals;
   }
 
   refreshData() {
     this.loadApprovals();
+    this.loadPendingCounts();
   }
 
   getCategoryIcon(category: string): string {
@@ -499,22 +664,43 @@ export class ApprovalCenterComponent implements OnInit {
   }
 
   quickApprove(approval: any) {
-    if (confirm(`Approve ${approval.title} for ${approval.employeeName}?`)) {
-      alert('Request approved successfully!');
-      this.removeApproval(approval.id);
+    if (confirm(`Approve ${approval.loanType} for ${approval.employeeName}?`)) {
+      const comments = prompt('Add comments (optional):');
+      
+      this.loanService.approveByManager(approval.loanId, comments || '').subscribe({
+        next: () => {
+          alert('Request approved successfully!');
+          this.loadApprovals();
+          this.loadPendingCounts();
+        },
+        error: (error) => {
+          console.error('Error approving loan:', error);
+          alert('Failed to approve request. Please try again.');
+        }
+      });
     }
   }
 
   quickReject(approval: any) {
-    const reason = prompt(`Reason for rejecting ${approval.title}:`);
-    if (reason) {
-      alert('Request rejected successfully!');
-      this.removeApproval(approval.id);
+    const reason = prompt(`Reason for rejecting ${approval.loanType}:`);
+    if (reason && reason.trim()) {
+      this.loanService.rejectByManager(approval.loanId, reason).subscribe({
+        next: () => {
+          alert('Request rejected successfully!');
+          this.loadApprovals();
+          this.loadPendingCounts();
+        },
+        error: (error) => {
+          console.error('Error rejecting loan:', error);
+          alert('Failed to reject request. Please try again.');
+        }
+      });
+    } else if (reason !== null) {
+      alert('Please provide a reason for rejection.');
     }
   }
 
-  private removeApproval(id: number) {
-    this.allApprovals = this.allApprovals.filter(approval => approval.id !== id);
-    this.filterApprovals();
+  canApprove(): boolean {
+    return this.userRole === 'Manager' || this.userRole === 'Admin';
   }
 }

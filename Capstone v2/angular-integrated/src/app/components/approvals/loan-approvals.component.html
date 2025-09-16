@@ -24,8 +24,8 @@
               <th>Employee</th>
               <th>Loan Type</th>
               <th>Amount</th>
-              <th>Duration</th>
-              <th>Reason</th>
+              <th>Tenure</th>
+              <th>Purpose</th>
               <th>Applied Date</th>
               <th>Actions</th>
             </tr>
@@ -41,21 +41,21 @@
                 </div>
               </td>
               <td>{{ loan.loanType }}</td>
-              <td>{{ loan.amount | currency:'USD':'symbol':'1.2-2' }}</td>
-              <td>{{ loan.duration }} months</td>
-              <td>{{ loan.reason }}</td>
-              <td>{{ loan.applicationDate | date:'MMM dd, yyyy' }}</td>
+              <td>{{ loan.amount | currency:'INR':'symbol':'1.2-2' }}</td>
+              <td>{{ loan.tenureMonths }} months</td>
+              <td>{{ loan.purpose }}</td>
+              <td>{{ loan.appliedDate | date:'MMM dd, yyyy' }}</td>
               <td>
                 <div class="btn-group" *ngIf="canApprove()">
                   <button 
                     class="btn btn-sm btn-success"
-                    (click)="approveLoan(loan.id)"
+                    (click)="approveLoan(loan.loanId)"
                     title="Approve">
                     <i class="feather icon-check"></i> Approve
                   </button>
                   <button 
                     class="btn btn-sm btn-danger"
-                    (click)="rejectLoan(loan.id)"
+                    (click)="rejectLoan(loan.loanId)"
                     title="Reject">
                     <i class="feather icon-x"></i> Reject
                   </button>

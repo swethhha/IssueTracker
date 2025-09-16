@@ -9,7 +9,7 @@ import { LoanService } from '../../services/loan.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div style="padding: 20px; width: 100vw; margin-left: calc(-50vw + 50%); box-sizing: border-box;">
+    <div style="padding: 20px; width: 100%; box-sizing: border-box;">
       <h2 style="margin-bottom: 5px;">Salary Advance Application</h2>
       <p style="margin-bottom: 20px; color: #64748b;">Apply for salary advance against your monthly salary</p>
       

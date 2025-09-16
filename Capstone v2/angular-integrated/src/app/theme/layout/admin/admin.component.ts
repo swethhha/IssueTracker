@@ -22,7 +22,7 @@ export class AdminComponent {
   private locationStrategy = inject(LocationStrategy);
 
   // public props
-  navCollapsed!: boolean;
+  navCollapsed: boolean = false;
   navCollapsedMob: boolean;
   windowWidth: number;
 

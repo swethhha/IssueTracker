@@ -7,559 +7,437 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="approvals-container">
+    <div class="page-container">
       <div class="page-header">
-        <h2>Reimbursement Approvals</h2>
-        <div class="filters">
-          <select [(ngModel)]="selectedFilter" class="filter-select">
-            <option value="all">All Reimbursements</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-          </select>
+        <h1>Reimbursement Approvals</h1>
+        <p>Review and approve pending reimbursement requests</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon pending">
+            <span class="material-icons">pending</span>
+          </div>
+          <div class="stat-content">
+            <h3>{{ pendingCount }}</h3>
+            <p>Pending Approvals</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon approved">
+            <span class="material-icons">check_circle</span>
+          </div>
+          <div class="stat-content">
+            <h3>{{ approvedCount }}</h3>
+            <p>Approved Today</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon rejected">
+            <span class="material-icons">cancel</span>
+          </div>
+          <div class="stat-content">
+            <h3>{{ rejectedCount }}</h3>
+            <p>Rejected Today</p>
+          </div>
         </div>
       </div>
 
-      <div class="approvals-list">
-        <div *ngFor="let reimbursement of filteredReimbursements" class="approval-card">
-          <div class="card-header">
-            <div class="employee-info">
-              <h3>{{ reimbursement.employeeName }}</h3>
-              <p>{{ reimbursement.department }} • {{ reimbursement.category }}</p>
-            </div>
-            <div class="status-badge" [class]="reimbursement.status">
-              {{ reimbursement.status | titlecase }}
-            </div>
+      <div class="reimbursements-section">
+        <div class="section-header">
+          <h2>Pending Reimbursement Requests</h2>
+          <div class="filter-controls">
+            <select [(ngModel)]="selectedFilter" (change)="filterReimbursements()" class="filter-select">
+              <option value="">All Categories</option>
+              <option value="Travel">Travel</option>
+              <option value="Medical">Medical</option>
+              <option value="Office Supplies">Office Supplies</option>
+              <option value="Training">Training</option>
+            </select>
           </div>
+        </div>
 
-          <div class="reimbursement-details">
-            <div class="detail-grid">
-              <div class="detail-item">
+        <div class="reimbursements-grid">
+          <div class="reimbursement-card" *ngFor="let reimbursement of filteredReimbursements">
+            <div class="reimbursement-header">
+              <div class="employee-info">
+                <div class="employee-name">{{ reimbursement.employeeName }}</div>
+                <div class="employee-dept">{{ reimbursement.department }} • {{ reimbursement.category }}</div>
+              </div>
+              <div class="status-badge" [ngClass]="reimbursement.status.toLowerCase()">
+                {{ reimbursement.status }}
+              </div>
+            </div>
+            
+            <div class="reimbursement-details">
+              <div class="detail-row">
                 <span class="label">Amount:</span>
-                <span class="value amount">${{ reimbursement.amount | number:'1.2-2' }}</span>
+                <span class="value amount">₹{{ reimbursement.amount | number:'1.2-2' }}</span>
               </div>
-              <div class="detail-item">
+              <div class="detail-row">
                 <span class="label">Expense Date:</span>
-                <span class="value">{{ reimbursement.expenseDate }}</span>
+                <span class="value">{{ reimbursement.expenseDate | date:'shortDate' }}</span>
               </div>
-              <div class="detail-item">
-                <span class="label">Category:</span>
-                <span class="value">{{ reimbursement.category }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="label">Submitted:</span>
-                <span class="value">{{ reimbursement.submittedDate }}</span>
-              </div>
-            </div>
-            <div class="description">
-              <strong>Description:</strong> {{ reimbursement.description }}
-            </div>
-          </div>
-
-          <div class="attachments-section">
-            <h4>Receipts & Bills:</h4>
-            <div class="attachment-list">
-              <div *ngFor="let attachment of reimbursement.attachments" class="attachment-item">
-                <span class="material-icons">{{ getAttachmentIcon(attachment.type) }}</span>
-                <span class="attachment-name">{{ attachment.name }}</span>
-                <button class="btn-view" (click)="viewAttachment(attachment)">
-                  <span class="material-icons">visibility</span>
-                  View
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="reimbursement.managerComments" class="manager-comments">
-            <h4>Manager Comments:</h4>
-            <p>{{ reimbursement.managerComments }}</p>
-          </div>
-
-          <div *ngIf="reimbursement.status === 'pending'" class="approval-actions">
-            <div class="policy-check">
-              <h4>Policy Compliance:</h4>
-              <div class="check-items">
-                <label class="check-item">
-                  <input type="checkbox" [(ngModel)]="reimbursement.receiptsValid">
-                  <span>Receipts are valid and complete</span>
-                </label>
-                <label class="check-item">
-                  <input type="checkbox" [(ngModel)]="reimbursement.amountValid">
-                  <span>Amount is within policy limits</span>
-                </label>
-                <label class="check-item">
-                  <input type="checkbox" [(ngModel)]="reimbursement.categoryValid">
-                  <span>Expense category is approved</span>
-                </label>
+              <div class="detail-row">
+                <span class="label">Description:</span>
+                <span class="value">{{ reimbursement.description }}</span>
               </div>
             </div>
 
-            <div class="comments-section">
-              <label>Finance Notes:</label>
-              <textarea 
-                [(ngModel)]="reimbursement.financeNotes" 
-                placeholder="Add verification notes and comments..."
-                class="notes-input"
-              ></textarea>
-            </div>
-
-            <div class="payout-section">
-              <label>Reimbursement Payout Date:</label>
-              <input 
-                type="date" 
-                [(ngModel)]="reimbursement.payoutDate" 
-                class="date-input"
-              >
-            </div>
-
-            <div class="action-buttons">
-              <button 
-                class="btn btn-approve" 
-                (click)="approveReimbursement(reimbursement)"
-                [disabled]="!canApprove(reimbursement)"
-              >
+            <div class="reimbursement-actions">
+              <button class="btn btn-success" (click)="approveReimbursement(reimbursement)">
                 <span class="material-icons">check</span>
                 Approve
               </button>
-              <button 
-                class="btn btn-reject" 
-                (click)="rejectReimbursement(reimbursement)"
-              >
+              <button class="btn btn-danger" (click)="rejectReimbursement(reimbursement)">
                 <span class="material-icons">close</span>
                 Reject
               </button>
             </div>
           </div>
+        </div>
 
-          <div *ngIf="reimbursement.status !== 'pending'" class="approval-history">
-            <div class="history-item">
-              <span class="material-icons">{{ reimbursement.status === 'approved' ? 'check_circle' : 'cancel' }}</span>
-              <span>{{ reimbursement.status === 'approved' ? 'Approved' : 'Rejected' }} by Finance on {{ reimbursement.financeDate }}</span>
-            </div>
-            <div *ngIf="reimbursement.payoutDate && reimbursement.status === 'approved'" class="payout-info">
-              <strong>Payout Date:</strong> {{ reimbursement.payoutDate }}
-            </div>
-            <div *ngIf="reimbursement.financeNotes" class="finance-notes">
-              <strong>Finance Notes:</strong> {{ reimbursement.financeNotes }}
-            </div>
+        <div class="empty-state" *ngIf="filteredReimbursements.length === 0">
+          <div class="empty-icon">
+            <span class="material-icons">check_circle</span>
           </div>
+          <h3>No Pending Reimbursements</h3>
+          <p>All reimbursement requests have been reviewed.</p>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .approvals-container {
-      padding: var(--spacing-lg);
+    .page-container {
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #f8fafc;
+      min-height: 100vh;
     }
 
     .page-header {
+      margin-bottom: 32px;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0 0 8px 0;
+    }
+
+    .page-header p {
+      color: #64748b;
+      margin: 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .stat-icon.pending { background: #f59e0b; }
+    .stat-icon.approved { background: #10b981; }
+    .stat-icon.rejected { background: #ef4444; }
+
+    .stat-content h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      color: #1e293b;
+    }
+
+    .stat-content p {
+      color: #64748b;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .reimbursements-section {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: var(--spacing-xl);
+      margin-bottom: 24px;
     }
 
-    .page-header h2 {
-      font-size: var(--font-size-2xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--on-surface);
+    .section-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1e293b;
       margin: 0;
     }
 
     .filter-select {
-      padding: var(--spacing-sm) var(--spacing-md);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      color: var(--on-surface);
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      color: #1e293b;
     }
 
-    .approval-card {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-lg);
-      box-shadow: var(--shadow-2);
-      border: 1px solid var(--outline);
-      margin-bottom: var(--spacing-lg);
+    .reimbursements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 24px;
     }
 
-    .card-header {
+    .reimbursement-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s;
+      background: #fafbfc;
+    }
+
+    .reimbursement-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .reimbursement-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: var(--spacing-md);
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f1f5f9;
     }
 
-    .employee-info h3 {
-      font-size: var(--font-size-lg);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-      margin: 0 0 var(--spacing-xs) 0;
+    .employee-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
     }
 
-    .employee-info p {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-      margin: 0;
+    .employee-dept {
+      color: #64748b;
+      font-size: 14px;
     }
 
     .status-badge {
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
     }
 
     .status-badge.pending {
-      background: var(--warning-100);
-      color: var(--warning-700);
-    }
-
-    .status-badge.approved {
-      background: var(--success-100);
-      color: var(--success-700);
-    }
-
-    .status-badge.rejected {
-      background: var(--error-100);
-      color: var(--error-700);
+      background: #fef3c7;
+      color: #d97706;
     }
 
     .reimbursement-details {
-      background: var(--surface-variant);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
+      margin-bottom: 20px;
     }
 
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
-    }
-
-    .detail-item {
+    .detail-row {
       display: flex;
-      flex-direction: column;
-      gap: var(--spacing-xs);
+      justify-content: space-between;
+      margin-bottom: 8px;
     }
 
-    .label {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
+    .detail-row .label {
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 500;
     }
 
-    .value {
-      font-weight: var(--font-weight-medium);
-      color: var(--on-surface);
+    .detail-row .value {
+      color: #1e293b;
+      font-weight: 500;
+      font-size: 14px;
     }
 
-    .value.amount {
-      font-size: var(--font-size-lg);
-      color: var(--success-600);
+    .detail-row .amount {
+      color: #059669;
+      font-weight: 700;
+      font-size: 16px;
     }
 
-    .description {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface);
-      padding-top: var(--spacing-sm);
-      border-top: 1px solid var(--outline);
-    }
-
-    .attachments-section {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .attachments-section h4 {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-      margin: 0 0 var(--spacing-sm) 0;
-    }
-
-    .attachment-list {
+    .reimbursement-actions {
       display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-
-    .attachment-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-sm);
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--outline);
-    }
-
-    .attachment-name {
-      flex: 1;
-      font-size: var(--font-size-sm);
-      color: var(--on-surface);
-    }
-
-    .btn-view {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border: none;
-      background: var(--primary-100);
-      color: var(--primary-700);
-      border-radius: var(--radius-sm);
-      font-size: var(--font-size-xs);
-      cursor: pointer;
-    }
-
-    .policy-check {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .policy-check h4 {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-      margin: 0 0 var(--spacing-sm) 0;
-    }
-
-    .check-items {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      font-size: var(--font-size-sm);
-      color: var(--on-surface);
-      cursor: pointer;
-    }
-
-    .comments-section {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .comments-section label {
-      display: block;
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      color: var(--on-surface);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .notes-input {
-      width: 100%;
-      min-height: 80px;
-      padding: var(--spacing-sm);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-      resize: vertical;
-    }
-
-    .payout-section {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .payout-section label {
-      display: block;
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      color: var(--on-surface);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .date-input {
-      padding: var(--spacing-sm);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: var(--spacing-md);
+      gap: 8px;
     }
 
     .btn {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-sm) var(--spacing-md);
+      gap: 4px;
+      padding: 8px 16px;
       border: none;
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
+      flex: 1;
+      justify-content: center;
     }
 
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .btn-approve {
-      background: var(--success-500);
+    .btn-success {
+      background: #10b981;
       color: white;
     }
 
-    .btn-approve:hover:not(:disabled) {
-      background: var(--success-600);
+    .btn-success:hover {
+      background: #059669;
     }
 
-    .btn-reject {
-      background: var(--error-500);
+    .btn-danger {
+      background: #ef4444;
       color: white;
     }
 
-    .btn-reject:hover {
-      background: var(--error-600);
+    .btn-danger:hover {
+      background: #dc2626;
     }
 
-    .manager-comments {
-      background: var(--primary-50);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
+    .empty-state {
+      text-align: center;
+      padding: 48px;
     }
 
-    .manager-comments h4 {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--primary-700);
-      margin: 0 0 var(--spacing-xs) 0;
+    .empty-icon .material-icons {
+      font-size: 64px;
+      color: #10b981;
+      margin-bottom: 16px;
     }
 
-    .approval-actions {
-      border-top: 1px solid var(--outline);
-      padding-top: var(--spacing-md);
+    .empty-state h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0 0 8px 0;
     }
 
-    .approval-history {
-      border-top: 1px solid var(--outline);
-      padding-top: var(--spacing-md);
-    }
-
-    .history-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-      margin-bottom: var(--spacing-sm);
+    .empty-state p {
+      color: #64748b;
+      margin: 0;
     }
 
     @media (max-width: 768px) {
-      .detail-grid {
+      .reimbursements-grid {
         grid-template-columns: 1fr;
       }
       
-      .action-buttons {
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      
+      .reimbursement-actions {
         flex-direction: column;
       }
     }
   `]
 })
 export class ReimbursementApprovalsComponent implements OnInit {
-  selectedFilter = 'all';
-  
-  reimbursements = [
+  pendingCount = 7;
+  approvedCount = 15;
+  rejectedCount = 2;
+  selectedFilter = '';
+
+  allReimbursements = [
     {
       id: 1,
       employeeName: 'John Doe',
       department: 'Engineering',
       category: 'Travel',
-      amount: 850,
-      expenseDate: '2024-12-08',
-      submittedDate: '2024-12-10',
-      description: 'Business trip to client site for project implementation',
-      attachments: [
-        { type: 'receipt', name: 'Flight_Receipt.pdf' },
-        { type: 'receipt', name: 'Hotel_Bill.pdf' },
-        { type: 'receipt', name: 'Taxi_Receipt.pdf' }
-      ],
-      status: 'pending',
-      managerComments: 'Valid business expense. All receipts provided.',
-      receiptsValid: false,
-      amountValid: false,
-      categoryValid: false,
-      financeNotes: '',
-      payoutDate: '',
-      financeDate: null
+      amount: 850.00,
+      expenseDate: new Date('2024-12-10'),
+      description: 'Business trip to client site',
+      status: 'Pending'
     },
     {
       id: 2,
-      employeeName: 'Jane Smith',
+      employeeName: 'Sarah Wilson',
+      department: 'Sales',
+      category: 'Travel',
+      amount: 1200.00,
+      expenseDate: new Date('2024-12-09'),
+      description: 'Conference attendance and accommodation',
+      status: 'Pending'
+    },
+    {
+      id: 3,
+      employeeName: 'Mike Johnson',
       department: 'Marketing',
       category: 'Office Supplies',
-      amount: 125,
-      expenseDate: '2024-12-05',
-      submittedDate: '2024-12-06',
-      description: 'Office supplies for team workspace setup',
-      attachments: [
-        { type: 'receipt', name: 'Office_Supplies_Receipt.pdf' }
-      ],
-      status: 'approved',
-      managerComments: 'Approved for office setup.',
-      receiptsValid: true,
-      amountValid: true,
-      categoryValid: true,
-      financeNotes: 'All policy checks passed. Reimbursement approved.',
-      payoutDate: '2024-12-18',
-      financeDate: '2024-12-12'
+      amount: 320.50,
+      expenseDate: new Date('2024-12-08'),
+      description: 'Office equipment and stationery',
+      status: 'Pending'
     }
   ];
 
-  get filteredReimbursements() {
-    if (this.selectedFilter === 'all') {
-      return this.reimbursements;
-    }
-    return this.reimbursements.filter(r => r.status === this.selectedFilter);
+  filteredReimbursements = [...this.allReimbursements];
+
+  ngOnInit() {
+    this.filterReimbursements();
   }
 
-  ngOnInit() {}
-
-  getAttachmentIcon(type: string): string {
-    return type === 'receipt' ? 'receipt' : 'description';
-  }
-
-  viewAttachment(attachment: any) {
-    alert(`Viewing attachment: ${attachment.name}`);
-  }
-
-  canApprove(reimbursement: any): boolean {
-    return reimbursement.receiptsValid && reimbursement.amountValid && reimbursement.categoryValid;
+  filterReimbursements() {
+    this.filteredReimbursements = this.selectedFilter 
+      ? this.allReimbursements.filter(reimbursement => reimbursement.category === this.selectedFilter)
+      : this.allReimbursements;
   }
 
   approveReimbursement(reimbursement: any) {
-    if (!this.canApprove(reimbursement)) {
-      alert('Please complete all policy compliance checks before approving.');
-      return;
+    if (confirm(`Approve reimbursement for ${reimbursement.employeeName}?`)) {
+      this.allReimbursements = this.allReimbursements.filter(r => r.id !== reimbursement.id);
+      this.filterReimbursements();
+      this.pendingCount--;
+      this.approvedCount++;
+      alert('Reimbursement approved successfully!');
     }
-    
-    if (!reimbursement.financeNotes.trim()) {
-      alert('Please add finance notes before approving.');
-      return;
-    }
-    
-    reimbursement.status = 'approved';
-    reimbursement.financeDate = new Date().toLocaleDateString();
-    alert(`Reimbursement approved for ${reimbursement.employeeName}`);
   }
 
   rejectReimbursement(reimbursement: any) {
-    if (!reimbursement.financeNotes.trim()) {
-      alert('Please add rejection reason in finance notes.');
-      return;
+    const reason = prompt(`Reason for rejecting reimbursement:`);
+    if (reason && reason.trim()) {
+      this.allReimbursements = this.allReimbursements.filter(r => r.id !== reimbursement.id);
+      this.filterReimbursements();
+      this.pendingCount--;
+      this.rejectedCount++;
+      alert('Reimbursement rejected successfully!');
     }
-    
-    reimbursement.status = 'rejected';
-    reimbursement.financeDate = new Date().toLocaleDateString();
-    alert(`Reimbursement rejected for ${reimbursement.employeeName}`);
   }
 }

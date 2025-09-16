@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { LoanService } from '../../services/loan.service';
 
+
 @Component({
   selector: 'app-loan-application',
   standalone: true,
@@ -137,8 +138,7 @@ import { LoanService } from '../../services/loan.service';
   styles: [`
     .page-container {
       padding: var(--spacing-lg);
-      max-width: 800px;
-      margin: 0 auto;
+      width: 100%;
     }
 
     .page-header {
@@ -327,7 +327,8 @@ export class LoanApplicationComponent {
   constructor(
     private fb: FormBuilder,
     private loanService: LoanService,
-    private router: Router
+    private router: Router,
+
   ) {
     this.loanForm = this.fb.group({
       loanType: ['', Validators.required],
@@ -374,23 +375,22 @@ export class LoanApplicationComponent {
       this.isLoading = true;
       
       const loanData = {
+        employeeId: 1,
         loanType: this.loanForm.value.loanType,
         amount: this.loanForm.value.amount,
         tenureMonths: parseInt(this.loanForm.value.tenureMonths),
-        purpose: this.loanForm.value.purpose,
-        documentPaths: []
+        purpose: this.loanForm.value.purpose
       };
 
       this.loanService.applyForLoan(loanData).subscribe({
         next: (response) => {
           this.isLoading = false;
           alert('Loan application submitted successfully!');
-          this.router.navigate(['/employee/requests']);
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading = false;
-          console.error('Loan submission error:', error);
-          alert('Failed to submit loan application: ' + (error.error?.message || error.message || 'Please try again.'));
+          alert('Failed to submit loan application. Please ensure backend is running.');
         }
       });
     } else {

@@ -1,1 +1,375 @@
-// This file is intentionally left empty to allow customers to add custom CSS if needed.
+.analytics-dashboard {
+  padding: 24px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  
+  .header-content h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 4px 0;
+  }
+  
+  .header-content p {
+    color: #64748b;
+    margin: 0;
+  }
+}
+
+.period-selector {
+  display: flex;
+  gap: 8px;
+  
+  .period-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    &.active {
+      background: #4f46e5;
+      color: white;
+      border-color: #4f46e5;
+    }
+    
+    &:hover:not(.active) {
+      background: #f1f5f9;
+    }
+  }
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+  
+  .kpi-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    i {
+      font-size: 24px;
+      color: white;
+    }
+  }
+  
+  .kpi-content h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: #1e293b;
+  }
+  
+  .kpi-content p {
+    color: #64748b;
+    margin: 0 0 8px 0;
+    font-size: 14px;
+  }
+  
+  .trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    
+    &.up {
+      color: #10b981;
+    }
+    
+    &.down {
+      color: #ef4444;
+    }
+    
+    i {
+      font-size: 16px;
+    }
+  }
+  
+  &.blue .kpi-icon {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  }
+  
+  &.green .kpi-icon {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+  
+  &.orange .kpi-icon {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+  }
+  
+  &.red .kpi-icon {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+  }
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  
+  &.large {
+    grid-column: span 2;
+  }
+  
+  .chart-header {
+    margin-bottom: 20px;
+    
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0 0 4px 0;
+    }
+    
+    .chart-subtitle {
+      color: #64748b;
+      font-size: 14px;
+    }
+  }
+}
+
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.activity-card, .performers-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+  
+  .subtitle {
+    color: #64748b;
+    font-size: 14px;
+  }
+  
+  .view-all-btn {
+    background: none;
+    border: none;
+    color: #4f46e5;
+    cursor: pointer;
+    font-weight: 500;
+  }
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: #f8fafc;
+  }
+  
+  .activity-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .activity-content {
+    flex: 1;
+    
+    p {
+      margin: 0 0 4px 0;
+      font-size: 14px;
+    }
+    
+    .activity-amount {
+      font-weight: 600;
+      color: #1e293b;
+      margin-right: 8px;
+    }
+    
+    .activity-time {
+      color: #64748b;
+      font-size: 12px;
+    }
+  }
+  
+  .activity-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+    
+    &.pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
+    
+    &.approved {
+      background: #d1fae5;
+      color: #059669;
+    }
+    
+    &.completed {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+  }
+}
+
+.performers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.performer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: #f8fafc;
+  }
+  
+  .performer-rank {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  
+  .performer-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .performer-info {
+    flex: 1;
+    
+    .performer-name {
+      margin: 0 0 2px 0;
+      font-weight: 500;
+      color: #1e293b;
+    }
+    
+    .performer-dept {
+      color: #64748b;
+      font-size: 12px;
+    }
+  }
+  
+  .performer-score {
+    font-weight: 600;
+    color: #10b981;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-dashboard {
+    padding: 16px;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+    
+    .chart-card.large {
+      grid-column: span 1;
+    }
+  }
+  
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}

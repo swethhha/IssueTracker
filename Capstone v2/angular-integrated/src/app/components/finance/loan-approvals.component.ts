@@ -7,555 +7,456 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="approvals-container">
+    <div class="page-container">
       <div class="page-header">
-        <h2>Loan Approvals</h2>
-        <div class="filters">
-          <select [(ngModel)]="selectedFilter" class="filter-select">
-            <option value="all">All Loans</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-          </select>
+        <h1>Loan Approvals</h1>
+        <p>Review and approve pending loan applications</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon pending">
+            <span class="material-icons">pending</span>
+          </div>
+          <div class="stat-content">
+            <h3>{{ pendingCount }}</h3>
+            <p>Pending Approvals</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon approved">
+            <span class="material-icons">check_circle</span>
+          </div>
+          <div class="stat-content">
+            <h3>{{ approvedCount }}</h3>
+            <p>Approved Today</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon rejected">
+            <span class="material-icons">cancel</span>
+          </div>
+          <div class="stat-content">
+            <h3>{{ rejectedCount }}</h3>
+            <p>Rejected Today</p>
+          </div>
         </div>
       </div>
 
-      <div class="approvals-list">
-        <div *ngFor="let loan of filteredLoans" class="approval-card">
-          <div class="card-header">
-            <div class="employee-info">
-              <h3>{{ loan.employeeName }}</h3>
-              <p>{{ loan.department }} • Applied on {{ loan.applicationDate }}</p>
-            </div>
-            <div class="status-badge" [class]="loan.status">
-              {{ loan.status | titlecase }}
-            </div>
+      <div class="loans-section">
+        <div class="section-header">
+          <h2>Pending Loan Applications</h2>
+          <div class="filter-controls">
+            <select [(ngModel)]="selectedFilter" (change)="filterLoans()" class="filter-select">
+              <option value="">All Loans</option>
+              <option value="Personal Loan">Personal Loan</option>
+              <option value="Education Loan">Education Loan</option>
+              <option value="Vehicle Loan">Vehicle Loan</option>
+              <option value="Emergency Loan">Emergency Loan</option>
+            </select>
           </div>
+        </div>
 
-          <div class="loan-details">
-            <div class="detail-grid">
-              <div class="detail-item">
-                <span class="label">Loan Amount:</span>
-                <span class="value amount">${{ loan.amount | number:'1.2-2' }}</span>
+        <div class="loans-grid">
+          <div class="loan-card" *ngFor="let loan of filteredLoans">
+            <div class="loan-header">
+              <div class="loan-type">
+                <span class="material-icons">account_balance_wallet</span>
+                {{ loan.loanType }}
               </div>
-              <div class="detail-item">
-                <span class="label">Tenure:</span>
-                <span class="value">{{ loan.tenure }} months</span>
+              <div class="loan-amount">₹{{ loan.amount | number:'1.0-0' }}</div>
+            </div>
+            
+            <div class="loan-details">
+              <div class="detail-row">
+                <span class="label">Employee:</span>
+                <span class="value">{{ loan.employeeName }}</span>
               </div>
-              <div class="detail-item">
+              <div class="detail-row">
                 <span class="label">Purpose:</span>
                 <span class="value">{{ loan.purpose }}</span>
               </div>
-              <div class="detail-item">
-                <span class="label">Monthly EMI:</span>
-                <span class="value">${{ loan.emi | number:'1.2-2' }}</span>
+              <div class="detail-row">
+                <span class="label">Tenure:</span>
+                <span class="value">{{ loan.tenureMonths }} months</span>
               </div>
-            </div>
-          </div>
-
-          <div class="documents-section">
-            <h4>Uploaded Documents:</h4>
-            <div class="document-list">
-              <div *ngFor="let doc of loan.documents" class="document-item">
-                <span class="material-icons">{{ getDocumentIcon(doc.type) }}</span>
-                <span class="doc-name">{{ doc.name }}</span>
-                <button class="btn-view" (click)="viewDocument(doc)">
-                  <span class="material-icons">visibility</span>
-                  View
-                </button>
+              <div class="detail-row">
+                <span class="label">EMI:</span>
+                <span class="value">₹{{ loan.monthlyInstallment | number:'1.0-0' }}</span>
               </div>
-            </div>
-          </div>
-
-          <div *ngIf="loan.managerComments" class="manager-comments">
-            <h4>Manager Comments:</h4>
-            <p>{{ loan.managerComments }}</p>
-          </div>
-
-          <div *ngIf="loan.status === 'pending'" class="approval-actions">
-            <div class="eligibility-check">
-              <h4>Eligibility Verification:</h4>
-              <div class="check-items">
-                <label class="check-item">
-                  <input type="checkbox" [(ngModel)]="loan.salaryVerified">
-                  <span>Salary verification completed</span>
-                </label>
-                <label class="check-item">
-                  <input type="checkbox" [(ngModel)]="loan.documentsVerified">
-                  <span>All documents verified</span>
-                </label>
-                <label class="check-item">
-                  <input type="checkbox" [(ngModel)]="loan.creditCheck">
-                  <span>Credit check passed</span>
-                </label>
+              <div class="detail-row">
+                <span class="label">Applied:</span>
+                <span class="value">{{ loan.appliedDate | date:'shortDate' }}</span>
               </div>
             </div>
 
-            <div class="comments-section">
-              <label>Finance Notes:</label>
-              <textarea 
-                [(ngModel)]="loan.financeNotes" 
-                placeholder="Add verification notes and comments..."
-                class="notes-input"
-              ></textarea>
-            </div>
-
-            <div *ngIf="loan.status === 'approved'" class="payout-section">
-              <label>Payout Date:</label>
-              <input 
-                type="date" 
-                [(ngModel)]="loan.payoutDate" 
-                class="date-input"
-              >
-            </div>
-
-            <div class="action-buttons">
-              <button 
-                class="btn btn-approve" 
-                (click)="approveLoan(loan)"
-                [disabled]="!canApprove(loan)"
-              >
+            <div class="loan-actions">
+              <button class="btn btn-success" (click)="approveLoan(loan)">
                 <span class="material-icons">check</span>
                 Approve
               </button>
-              <button 
-                class="btn btn-reject" 
-                (click)="rejectLoan(loan)"
-              >
+              <button class="btn btn-danger" (click)="rejectLoan(loan)">
                 <span class="material-icons">close</span>
                 Reject
               </button>
+              <button class="btn btn-outline" (click)="viewDetails(loan)">
+                <span class="material-icons">visibility</span>
+                Details
+              </button>
             </div>
           </div>
+        </div>
 
-          <div *ngIf="loan.status !== 'pending'" class="approval-history">
-            <div class="history-item">
-              <span class="material-icons">{{ loan.status === 'approved' ? 'check_circle' : 'cancel' }}</span>
-              <span>{{ loan.status === 'approved' ? 'Approved' : 'Rejected' }} by Finance on {{ loan.financeDate }}</span>
-            </div>
-            <div *ngIf="loan.payoutDate && loan.status === 'approved'" class="payout-info">
-              <strong>Payout Date:</strong> {{ loan.payoutDate }}
-            </div>
-            <div *ngIf="loan.financeNotes" class="finance-notes">
-              <strong>Finance Notes:</strong> {{ loan.financeNotes }}
-            </div>
+        <div class="empty-state" *ngIf="filteredLoans.length === 0">
+          <div class="empty-icon">
+            <span class="material-icons">check_circle</span>
           </div>
+          <h3>No Pending Loans</h3>
+          <p>All loan applications have been reviewed.</p>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .approvals-container {
-      padding: var(--spacing-lg);
+    .page-container {
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .page-header {
+      margin-bottom: 32px;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0 0 8px 0;
+    }
+
+    .page-header p {
+      color: #64748b;
+      margin: 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .stat-icon.pending { background: #f59e0b; }
+    .stat-icon.approved { background: #10b981; }
+    .stat-icon.rejected { background: #ef4444; }
+
+    .stat-content h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      color: #1e293b;
+    }
+
+    .stat-content p {
+      color: #64748b;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .loans-section {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: var(--spacing-xl);
+      margin-bottom: 24px;
     }
 
-    .page-header h2 {
-      font-size: var(--font-size-2xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--on-surface);
+    .section-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1e293b;
       margin: 0;
     }
 
     .filter-select {
-      padding: var(--spacing-sm) var(--spacing-md);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      color: var(--on-surface);
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      color: #1e293b;
     }
 
-    .approval-card {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-lg);
-      box-shadow: var(--shadow-2);
-      border: 1px solid var(--outline);
-      margin-bottom: var(--spacing-lg);
+    .loans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 24px;
     }
 
-    .card-header {
+    .loan-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+
+    .loan-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .loan-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: var(--spacing-md);
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f1f5f9;
     }
 
-    .employee-info h3 {
-      font-size: var(--font-size-lg);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-      margin: 0 0 var(--spacing-xs) 0;
+    .loan-type {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #1e293b;
     }
 
-    .employee-info p {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-      margin: 0;
-    }
-
-    .status-badge {
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-    }
-
-    .status-badge.pending {
-      background: var(--warning-100);
-      color: var(--warning-700);
-    }
-
-    .status-badge.approved {
-      background: var(--success-100);
-      color: var(--success-700);
-    }
-
-    .status-badge.rejected {
-      background: var(--error-100);
-      color: var(--error-700);
+    .loan-amount {
+      font-size: 20px;
+      font-weight: 700;
+      color: #059669;
     }
 
     .loan-details {
-      background: var(--surface-variant);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
+      margin-bottom: 20px;
     }
 
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: var(--spacing-md);
-    }
-
-    .detail-item {
+    .detail-row {
       display: flex;
-      flex-direction: column;
-      gap: var(--spacing-xs);
+      justify-content: space-between;
+      margin-bottom: 8px;
     }
 
-    .label {
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
+    .detail-row .label {
+      color: #64748b;
+      font-size: 14px;
     }
 
-    .value {
-      font-weight: var(--font-weight-medium);
-      color: var(--on-surface);
+    .detail-row .value {
+      color: #1e293b;
+      font-weight: 500;
+      font-size: 14px;
     }
 
-    .value.amount {
-      font-size: var(--font-size-lg);
-      color: var(--primary-600);
-    }
-
-    .documents-section {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .documents-section h4 {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-      margin: 0 0 var(--spacing-sm) 0;
-    }
-
-    .document-list {
+    .loan-actions {
       display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-
-    .document-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-sm);
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--outline);
-    }
-
-    .doc-name {
-      flex: 1;
-      font-size: var(--font-size-sm);
-      color: var(--on-surface);
-    }
-
-    .btn-view {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border: none;
-      background: var(--primary-100);
-      color: var(--primary-700);
-      border-radius: var(--radius-sm);
-      font-size: var(--font-size-xs);
-      cursor: pointer;
-    }
-
-    .eligibility-check {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .eligibility-check h4 {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--on-surface);
-      margin: 0 0 var(--spacing-sm) 0;
-    }
-
-    .check-items {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      font-size: var(--font-size-sm);
-      color: var(--on-surface);
-      cursor: pointer;
-    }
-
-    .comments-section {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .comments-section label {
-      display: block;
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      color: var(--on-surface);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .notes-input {
-      width: 100%;
-      min-height: 80px;
-      padding: var(--spacing-sm);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-      resize: vertical;
-    }
-
-    .payout-section {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .payout-section label {
-      display: block;
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      color: var(--on-surface);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .date-input {
-      padding: var(--spacing-sm);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: var(--spacing-md);
+      gap: 8px;
     }
 
     .btn {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-sm) var(--spacing-md);
+      gap: 4px;
+      padding: 8px 12px;
       border: none;
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
+      flex: 1;
+      justify-content: center;
     }
 
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .btn-approve {
-      background: var(--success-500);
+    .btn-success {
+      background: #10b981;
       color: white;
     }
 
-    .btn-approve:hover:not(:disabled) {
-      background: var(--success-600);
+    .btn-success:hover {
+      background: #059669;
     }
 
-    .btn-reject {
-      background: var(--error-500);
+    .btn-danger {
+      background: #ef4444;
       color: white;
     }
 
-    .btn-reject:hover {
-      background: var(--error-600);
+    .btn-danger:hover {
+      background: #dc2626;
     }
 
-    .manager-comments {
-      background: var(--primary-50);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
+    .btn-outline {
+      background: transparent;
+      color: #4f46e5;
+      border: 1px solid #4f46e5;
     }
 
-    .manager-comments h4 {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--primary-700);
-      margin: 0 0 var(--spacing-xs) 0;
+    .btn-outline:hover {
+      background: #4f46e5;
+      color: white;
     }
 
-    .approval-actions {
-      border-top: 1px solid var(--outline);
-      padding-top: var(--spacing-md);
+    .empty-state {
+      text-align: center;
+      padding: 48px;
     }
 
-    .approval-history {
-      border-top: 1px solid var(--outline);
-      padding-top: var(--spacing-md);
+    .empty-icon .material-icons {
+      font-size: 64px;
+      color: #10b981;
+      margin-bottom: 16px;
     }
 
-    .history-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      font-size: var(--font-size-sm);
-      color: var(--on-surface-variant);
-      margin-bottom: var(--spacing-sm);
+    .empty-state h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0 0 8px 0;
+    }
+
+    .empty-state p {
+      color: #64748b;
+      margin: 0;
     }
 
     @media (max-width: 768px) {
-      .detail-grid {
+      .loans-grid {
         grid-template-columns: 1fr;
       }
       
-      .action-buttons {
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      
+      .loan-actions {
         flex-direction: column;
       }
     }
   `]
 })
 export class LoanApprovalsComponent implements OnInit {
-  selectedFilter = 'all';
-  
-  loans = [
+  pendingCount = 5;
+  approvedCount = 12;
+  rejectedCount = 3;
+  selectedFilter = '';
+
+  allLoans = [
     {
-      id: 1,
+      loanId: 1,
       employeeName: 'John Doe',
-      department: 'Engineering',
-      applicationDate: '2024-12-10',
-      amount: 15000,
-      tenure: 24,
-      purpose: 'Home Renovation',
-      emi: 687.50,
-      status: 'pending',
-      documents: [
-        { type: 'salary', name: 'Salary_Slip_Nov2024.pdf' },
-        { type: 'id', name: 'Aadhaar_Card.pdf' },
-        { type: 'bank', name: 'Bank_Statement_6months.pdf' }
-      ],
-      managerComments: 'Employee has good track record. Recommend approval.',
-      salaryVerified: false,
-      documentsVerified: false,
-      creditCheck: false,
-      financeNotes: '',
-      payoutDate: '',
-      financeDate: null
+      loanType: 'Personal Loan',
+      amount: 50000,
+      tenureMonths: 24,
+      purpose: 'Home renovation',
+      appliedDate: new Date('2024-12-15'),
+      monthlyInstallment: 2291
     },
     {
-      id: 2,
+      loanId: 2,
       employeeName: 'Jane Smith',
-      department: 'Marketing',
-      applicationDate: '2024-12-05',
-      amount: 10000,
-      tenure: 18,
-      purpose: 'Personal',
-      emi: 611.11,
-      status: 'approved',
-      documents: [
-        { type: 'salary', name: 'Salary_Slip_Nov2024.pdf' },
-        { type: 'id', name: 'PAN_Card.pdf' },
-        { type: 'bank', name: 'Bank_Statement_6months.pdf' }
-      ],
-      managerComments: 'Approved by manager.',
-      salaryVerified: true,
-      documentsVerified: true,
-      creditCheck: true,
-      financeNotes: 'All verifications completed. Loan approved.',
-      payoutDate: '2024-12-20',
-      financeDate: '2024-12-12'
+      loanType: 'Education Loan',
+      amount: 75000,
+      tenureMonths: 36,
+      purpose: 'MBA Course',
+      appliedDate: new Date('2024-12-14'),
+      monthlyInstallment: 2437
+    },
+    {
+      loanId: 3,
+      employeeName: 'Mike Johnson',
+      loanType: 'Emergency Loan',
+      amount: 25000,
+      tenureMonths: 12,
+      purpose: 'Medical emergency',
+      appliedDate: new Date('2024-12-13'),
+      monthlyInstallment: 2229
+    },
+    {
+      loanId: 4,
+      employeeName: 'Sarah Wilson',
+      loanType: 'Vehicle Loan',
+      amount: 80000,
+      tenureMonths: 48,
+      purpose: 'Car purchase',
+      appliedDate: new Date('2024-12-12'),
+      monthlyInstallment: 2083
+    },
+    {
+      loanId: 5,
+      employeeName: 'David Brown',
+      loanType: 'Personal Loan',
+      amount: 30000,
+      tenureMonths: 18,
+      purpose: 'Debt consolidation',
+      appliedDate: new Date('2024-12-11'),
+      monthlyInstallment: 1875
     }
   ];
 
-  get filteredLoans() {
-    if (this.selectedFilter === 'all') {
-      return this.loans;
-    }
-    return this.loans.filter(l => l.status === this.selectedFilter);
+  filteredLoans = [...this.allLoans];
+
+  ngOnInit() {
+    this.filterLoans();
   }
 
-  ngOnInit() {}
-
-  getDocumentIcon(type: string): string {
-    const icons: { [key: string]: string } = {
-      'salary': 'receipt_long',
-      'id': 'badge',
-      'bank': 'account_balance'
-    };
-    return icons[type] || 'description';
-  }
-
-  viewDocument(doc: any) {
-    alert(`Viewing document: ${doc.name}`);
-  }
-
-  canApprove(loan: any): boolean {
-    return loan.salaryVerified && loan.documentsVerified && loan.creditCheck;
+  filterLoans() {
+    this.filteredLoans = this.selectedFilter 
+      ? this.allLoans.filter(loan => loan.loanType === this.selectedFilter)
+      : this.allLoans;
   }
 
   approveLoan(loan: any) {
-    if (!this.canApprove(loan)) {
-      alert('Please complete all eligibility checks before approving.');
-      return;
+    if (confirm(`Approve ${loan.loanType} for ${loan.employeeName}?`)) {
+      this.allLoans = this.allLoans.filter(l => l.loanId !== loan.loanId);
+      this.filterLoans();
+      this.pendingCount--;
+      this.approvedCount++;
+      alert('Loan approved successfully!');
     }
-    
-    if (!loan.financeNotes.trim()) {
-      alert('Please add finance notes before approving.');
-      return;
-    }
-    
-    loan.status = 'approved';
-    loan.financeDate = new Date().toLocaleDateString();
-    alert(`Loan approved for ${loan.employeeName}`);
   }
 
   rejectLoan(loan: any) {
-    if (!loan.financeNotes.trim()) {
-      alert('Please add rejection reason in finance notes.');
-      return;
+    const reason = prompt(`Reason for rejecting ${loan.loanType}:`);
+    if (reason && reason.trim()) {
+      this.allLoans = this.allLoans.filter(l => l.loanId !== loan.loanId);
+      this.filterLoans();
+      this.pendingCount--;
+      this.rejectedCount++;
+      alert('Loan rejected successfully!');
     }
-    
-    loan.status = 'rejected';
-    loan.financeDate = new Date().toLocaleDateString();
-    alert(`Loan rejected for ${loan.employeeName}`);
+  }
+
+  viewDetails(loan: any) {
+    alert(`Loan Details:\n\nEmployee: ${loan.employeeName}\nType: ${loan.loanType}\nAmount: ₹${loan.amount}\nPurpose: ${loan.purpose}\nTenure: ${loan.tenureMonths} months\nEMI: ₹${loan.monthlyInstallment}`);
   }
 }

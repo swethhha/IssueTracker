@@ -18,6 +18,21 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
         <p>Welcome back! Here's your overview</p>
       </div>
 
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Loading dashboard data...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" *ngIf="error && !loading">
+        <span class="material-icons">error</span>
+        <p>{{ error }}</p>
+        <button class="btn btn-primary" (click)="loadDashboardData()">Retry</button>
+      </div>
+
+      <!-- Dashboard Content -->
+      <div *ngIf="!loading && !error">
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon">
@@ -163,6 +178,7 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,
@@ -471,6 +487,43 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
       color: var(--success-700);
     }
 
+    .loading-state, .error-state {
+      text-align: center;
+      padding: 3rem;
+      color: #718096;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e2e8f0;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-state .material-icons {
+      font-size: 48px;
+      color: #e53e3e;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      background: #667eea;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
     @media (max-width: 768px) {
       .dashboard-container {
         padding: var(--spacing-md);
@@ -484,10 +537,12 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
   `]
 })
 export class EmployeeDashboardComponent implements OnInit {
-  totalEarnings = 1250000;
+  totalEarnings = 0;
   pendingRequests: any[] = [];
   recentPayrolls: any[] = [];
   recentNotifications: any[] = [];
+  loading = true;
+  error: string | null = null;
 
   constructor(
     private payrollService: PayrollService,
@@ -502,18 +557,69 @@ export class EmployeeDashboardComponent implements OnInit {
   }
 
   loadDashboardData() {
-    this.recentPayrolls = [
-      { period: 'December 2024', netPay: 420000, status: 'Approved' },
-      { period: 'November 2024', netPay: 420000, status: 'Approved' },
-      { period: 'October 2024', netPay: 400000, status: 'Approved' }
-    ];
+    this.loading = true;
+    this.error = null;
     
-    this.pendingRequests = [
-      { type: 'Loan Application', amount: 200000, submittedDate: new Date(2024, 11, 1) },
-      { type: 'Medical Claim', amount: 15000, submittedDate: new Date(2024, 11, 5) },
-      { type: 'Insurance Enrollment', amount: 25000, submittedDate: new Date(2024, 11, 10) }
-    ];
+    // Load real payroll data
+    this.payrollService.getEmployeePayrolls(1).subscribe({
+      next: (payrolls) => {
+        this.recentPayrolls = payrolls.slice(0, 3).map(p => ({
+          period: this.formatPayrollPeriod(p.payPeriodStart, p.payPeriodEnd),
+          netPay: p.netPay,
+          status: p.status || 'Approved'
+        }));
+        this.totalEarnings = payrolls.reduce((sum, p) => sum + p.netPay, 0);
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load payroll data:', error);
+        this.error = 'Failed to load dashboard data. Please check if the backend is running.';
+        this.loading = false;
+        this.recentPayrolls = [];
+        this.totalEarnings = 0;
+      }
+    });
+
+    // Load real loan data
+    this.loanService.getLoansByEmployee(1).subscribe({
+      next: (loans) => {
+        const pendingLoans = loans.filter(l => l.status === 'Pending').map(l => ({
+          type: l.loanType + ' Application',
+          amount: l.amount,
+          submittedDate: new Date(l.appliedDate)
+        }));
+        this.pendingRequests = [...pendingLoans];
+      },
+      error: (error) => {
+        console.error('Failed to load loan data:', error);
+      }
+    });
+
+    // Load real reimbursement data
+    this.reimbursementService.getReimbursementsByEmployee(1).subscribe({
+      next: (reimbursements) => {
+        const pendingReimb = reimbursements.filter(r => r.status === 'Pending').map(r => ({
+          type: r.category + ' Reimbursement',
+          amount: r.amount,
+          submittedDate: new Date(r.requestDate)
+        }));
+        this.pendingRequests = [...this.pendingRequests, ...pendingReimb];
+      },
+      error: (error) => {
+        console.error('Failed to load reimbursement data:', error);
+      }
+    });
     
+    // Generate notifications based on real data
+    this.generateNotifications();
+  }
+
+  formatPayrollPeriod(start: string, end: string): string {
+    const startDate = new Date(start);
+    return startDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  generateNotifications() {
     this.recentNotifications = [
       {
         type: 'success',

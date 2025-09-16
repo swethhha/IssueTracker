@@ -15,7 +15,7 @@ import { LoanService } from '../../services/loan.service';
         <p class="page-description">Apply for personal, home, or education loans</p>
       </div>
 
-      <div class="max-w-2xl mx-auto">
+      <div class="w-full">
         <form [formGroup]="loanForm" (ngSubmit)="onSubmit()" class="card">
           <div class="card-header">
             <h3 class="text-lg font-semibold text-gray-900">Loan Application Form</h3>

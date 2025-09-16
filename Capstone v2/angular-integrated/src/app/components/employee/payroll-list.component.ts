@@ -218,39 +218,15 @@ export class PayrollListComponent implements OnInit {
   }
 
   loadPayrolls() {
-    // Load from API or use demo data
-    this.payrolls = [
-      {
-        id: 1,
-        payPeriodStart: new Date(2024, 0, 1),
-        payPeriodEnd: new Date(2024, 0, 31),
-        basicSalary: 500000,
-        allowances: 50000,
-        deductions: 80000,
-        netPay: 470000,
-        status: 'Approved'
+    this.payrollService.getEmployeePayrolls(1).subscribe({
+      next: (payrolls) => {
+        this.payrolls = payrolls;
       },
-      {
-        id: 2,
-        payPeriodStart: new Date(2024, 1, 1),
-        payPeriodEnd: new Date(2024, 1, 29),
-        basicSalary: 500000,
-        allowances: 50000,
-        deductions: 80000,
-        netPay: 470000,
-        status: 'Approved'
-      },
-      {
-        id: 3,
-        payPeriodStart: new Date(2024, 2, 1),
-        payPeriodEnd: new Date(2024, 2, 31),
-        basicSalary: 500000,
-        allowances: 50000,
-        deductions: 80000,
-        netPay: 470000,
-        status: 'Pending'
+      error: (error) => {
+        console.error('Failed to load payrolls:', error);
+        this.payrolls = [];
       }
-    ];
+    });
   }
 
   getBadgeClass(status: string): string {

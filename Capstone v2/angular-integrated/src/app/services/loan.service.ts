@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoanService {
-  private readonly API_URL = 'https://localhost:7101/api/loans';
+  private readonly API_URL = 'https://localhost:7101/api/Loans';
 
   constructor(private http: HttpClient) {}
 
@@ -16,7 +16,7 @@ export class LoanService {
   }
 
   applyForLoan(loanData: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/request`, loanData);
+    return this.http.post(`${this.API_URL}/apply`, loanData);
   }
 
   getLoanById(id: number): Observable<any> {
@@ -59,11 +59,41 @@ export class LoanService {
     return this.http.get(`${this.API_URL}/document/${documentId}`, { responseType: 'blob' });
   }
 
-  approveLoan(id: number, managerId: number): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/approve-manager`, { managerId });
+  // Convenience methods for approval components
+  getPendingApprovals(): Observable<any[]> {
+    return this.getPendingManagerApprovals();
   }
 
-  rejectLoan(id: number, managerId: number, reason: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/${id}/reject-manager`, { managerId, reason });
+  approveLoan(id: number): Observable<any> {
+    return this.approveByManager(id);
+  }
+
+  rejectLoan(id: number, reason?: string): Observable<any> {
+    const rejectionReason = reason || 'No reason provided';
+    return this.rejectByManager(id, rejectionReason);
+  }
+
+  // Finance pending approvals
+  getPendingFinanceApprovals(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/pending-finance-approvals`);
+  }
+
+  getPendingFinanceCount(): Observable<number> {
+    return this.http.get<number>(`${this.API_URL}/pending-finance-count`);
+  }
+
+  getLoansByEmployee(employeeId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`);
+  }
+
+  applyLoan(loanData: any, documents: File[]): Observable<any> {
+    const formData = new FormData();
+    Object.keys(loanData).forEach(key => {
+      formData.append(key, loanData[key]);
+    });
+    documents.forEach(doc => {
+      formData.append('documents', doc);
+    });
+    return this.http.post(`${this.API_URL}/apply`, formData);
   }
 }

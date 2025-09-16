@@ -33,8 +33,5 @@ export const financeRoutes: Routes = [
     path: 'apply-loan',
     loadComponent: () => import('../loans/loan-application.component').then(m => m.LoanApplicationComponent)
   },
-  {
-    path: 'apply-reimbursement',
-    loadComponent: () => import('../reimbursements/reimbursement-application.component').then(m => m.ReimbursementApplicationComponent)
-  }
+
 ];

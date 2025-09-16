@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ToastContainerComponent } from '../components/toast-container.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ToastContainerComponent],
   template: `
     <div class="app-layout">
       <!-- Mobile Overlay -->
@@ -20,14 +21,21 @@ import { AuthService } from '../../services/auth.service';
           <button class="sidebar-toggle" (click)="toggleSidebar()" title="Toggle Menu">
             <span class="material-icons">{{ sidebarCollapsed ? 'menu' : 'close' }}</span>
           </button>
+          <div class="brand-icon">
+            <span class="material-icons">account_balance</span>
+          </div>
           <span class="brand-text">Payroll360</span>
         </div>
         <div class="nav-actions">
-          <span class="material-icons user-icon">account_circle</span>
-          <span class="user-name">{{ currentUser?.name || 'Swetha R.' }}</span>
-          <span class="user-role">Role: {{ currentUser?.role || 'Employee' }}</span>
+          <div class="user-info">
+            <span class="material-icons user-icon">account_circle</span>
+            <div class="user-details">
+              <span class="user-name">{{ currentUser?.fullName || 'User' }}</span>
+              <span class="user-role">{{ currentUser?.role || 'Employee' }}</span>
+            </div>
+          </div>
           <button class="logout-btn" (click)="logout()" title="Logout">
-            Logout
+            <span class="material-icons">logout</span>
           </button>
         </div>
       </header>
@@ -36,7 +44,7 @@ import { AuthService } from '../../services/auth.service';
         <nav class="sidebar" [class.collapsed]="sidebarCollapsed">
           <div class="nav-section">
             <div class="nav-title">Dashboard</div>
-            <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="onNavClick()" title="Overview">
               <span class="material-icons">dashboard</span>
               <span class="nav-text">Overview</span>
             </a>
@@ -44,27 +52,27 @@ import { AuthService } from '../../services/auth.service';
 
           <div class="nav-section" *ngIf="hasRole(['Employee', 'Manager'])">
             <div class="nav-title">Employee Services</div>
-            <a routerLink="/payroll" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/payroll" routerLinkActive="active" class="nav-item" (click)="onNavClick()" title="My Payrolls">
               <span class="material-icons">receipt_long</span>
               <span class="nav-text">My Payrolls</span>
             </a>
-            <a routerLink="/loans" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/loans" routerLinkActive="active" class="nav-item" (click)="onNavClick()" title="Loans">
               <span class="material-icons">account_balance_wallet</span>
               <span class="nav-text">Loans</span>
             </a>
-            <a routerLink="/reimbursements" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/reimbursements" routerLinkActive="active" class="nav-item" (click)="onNavClick()" title="Reimbursements">
               <span class="material-icons">receipt</span>
               <span class="nav-text">Reimbursements</span>
             </a>
-            <a routerLink="/insurance" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/insurance" routerLinkActive="active" class="nav-item" (click)="onNavClick()" title="Insurance">
               <span class="material-icons">health_and_safety</span>
               <span class="nav-text">Insurance</span>
             </a>
-            <a routerLink="/medical-claims" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/medical-claims" routerLinkActive="active" class="nav-item" (click)="onNavClick()" title="Medical Claims">
               <span class="material-icons">local_hospital</span>
               <span class="nav-text">Medical Claims</span>
             </a>
-            <a routerLink="/request-tracker" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/request-tracker" routerLinkActive="active" class="nav-item" (click)="onNavClick()" title="Track Requests">
               <span class="material-icons">track_changes</span>
               <span class="nav-text">Track Requests</span>
             </a>
@@ -140,6 +148,8 @@ import { AuthService } from '../../services/auth.service';
           <router-outlet></router-outlet>
         </main>
       </div>
+      
+      <app-toast-container></app-toast-container>
     </div>
   `,
   styles: [`
@@ -171,6 +181,28 @@ import { AuthService } from '../../services/auth.service';
       color: #333;
     }
 
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }
+
+    .brand-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
     .sidebar-toggle {
       background: none;
       border: none;
@@ -193,34 +225,56 @@ import { AuthService } from '../../services/auth.service';
       color: #333;
     }
 
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .user-icon {
       color: #666;
-      font-size: 24px;
+      font-size: 28px;
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     .user-name {
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 0.9rem;
+      line-height: 1.2;
     }
 
     .user-role {
       color: #666;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
+      line-height: 1.2;
     }
 
     .logout-btn {
       background: none;
       border: 1px solid #ddd;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+      padding: 0.5rem;
+      border-radius: 8px;
       cursor: pointer;
       color: #333;
-      font-size: 0.9rem;
       transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .logout-btn:hover {
-      background-color: #f5f5f5;
-      border-color: #ccc;
+      background-color: #fee2e2;
+      border-color: #fca5a5;
+      color: #dc2626;
+    }
+
+    .logout-btn .material-icons {
+      font-size: 20px;
     }
 
     .app-body {
@@ -228,6 +282,7 @@ import { AuthService } from '../../services/auth.service';
       flex: 1;
       overflow: hidden;
       position: relative;
+      width: 100%;
     }
 
     .sidebar {
@@ -243,10 +298,8 @@ import { AuthService } from '../../services/auth.service';
     }
 
     .sidebar.collapsed {
-      width: 0;
-      padding: 0;
-      overflow: hidden;
-      border-right: none;
+      width: 60px;
+      padding: 1rem 0;
     }
 
     .nav-section {
@@ -268,33 +321,37 @@ import { AuthService } from '../../services/auth.service';
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1rem;
+      margin: 0.25rem 0.75rem;
       color: #374151;
       text-decoration: none;
       transition: all 0.2s ease;
       position: relative;
       white-space: nowrap;
+      border-radius: 12px;
+    }
+
+    .sidebar.collapsed .nav-item {
+      justify-content: center;
+      padding: 0.75rem;
+      margin: 0.25rem 0.5rem;
+      border-radius: 12px;
     }
 
     .nav-item:hover {
-      background-color: #eff6ff;
-      color: #1d4ed8;
+      background-color: #e0f2fe;
+      color: #0277bd;
+      transform: translateX(4px);
     }
 
     .nav-item.active {
-      background-color: #dbeafe;
-      color: #1d4ed8;
-      font-weight: 500;
+      background-color: #81d4fa;
+      color: #01579b;
+      font-weight: 600;
     }
 
     .nav-item.active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background-color: #3b82f6;
+      display: none;
     }
 
     .nav-item .material-icons {
@@ -316,10 +373,13 @@ import { AuthService } from '../../services/auth.service';
     .main-content {
       flex: 1;
       overflow-y: auto;
-      padding: 1rem;
+      overflow-x: hidden;
+      padding: 0.5rem;
       background: #f9fafb;
       position: relative;
       z-index: 1;
+      min-width: 0;
+      width: 100%;
     }
 
     /* Mobile Overlay */
@@ -349,8 +409,27 @@ import { AuthService } from '../../services/auth.service';
     .sidebar.collapsed .nav-text,
     .sidebar.collapsed .nav-title,
     .sidebar.collapsed .nav-badge {
-      opacity: 0;
-      pointer-events: none;
+      display: none;
+    }
+
+    .sidebar.collapsed .nav-item {
+      position: relative;
+    }
+
+    .sidebar.collapsed .nav-item:hover::after {
+      content: attr(title);
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #1f2937;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      white-space: nowrap;
+      z-index: 1000;
+      margin-left: 0.5rem;
     }
 
     .logout-text {
@@ -401,7 +480,7 @@ import { AuthService } from '../../services/auth.service';
       }
 
       .main-content.sidebar-open {
-        margin-left: 280px;
+        margin-left: 0;
       }
       
       .user-name,
@@ -422,6 +501,20 @@ import { AuthService } from '../../services/auth.service';
     .sidebar-toggle .material-icons {
       font-size: 24px;
     }
+
+    /* Global content fix */
+    :host ::ng-deep * {
+      box-sizing: border-box;
+    }
+
+    :host ::ng-deep .main-content {
+      contain: layout;
+    }
+
+    :host ::ng-deep .main-content > * {
+      max-width: 100%;
+      width: 100%;
+    }
   `]
 })
 export class LayoutComponent implements OnInit {
@@ -439,7 +532,9 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
     this.loadNotificationCounts();
     this.initializeSidebar();
     

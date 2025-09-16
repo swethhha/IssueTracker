@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PayrollService {
-  private readonly API_URL = 'https://localhost:7101/api/payroll';
+  private readonly API_URL = 'https://localhost:7101/api/Payroll';
 
   constructor(private http: HttpClient) {}
 
@@ -63,6 +63,10 @@ export class PayrollService {
   }
 
   getPayrollsByEmployee(employeeId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`);
+  }
+
+  getEmployeePayrolls(employeeId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`);
   }
 

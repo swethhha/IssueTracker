@@ -2,24 +2,27 @@ export interface LoanRequest {
   employeeId?: number;
   loanType: string;
   amount: number;
-  duration: number;
-  reason: string;
+  tenureMonths: number;
+  purpose: string;
+  acceptTerms: boolean;
   documents?: LoanDocument[];
 }
 
 export interface LoanResponse {
-  id: number;
+  loanId: number;
   employeeId: number;
   employeeName: string;
   loanType: string;
   amount: number;
-  duration: number;
-  reason: string;
+  tenureMonths: number;
+  purpose: string;
   status: string;
-  applicationDate: Date;
+  appliedDate: Date;
   approvedDate?: Date;
-  rejectedReason?: string;
-  documents: LoanDocument[];
+  monthlyInstallment: number;
+  managerApproved?: boolean;
+  financeApproved?: boolean;
+  documents?: LoanDocument[];
 }
 
 export interface LoanDocument {
@@ -27,7 +30,13 @@ export interface LoanDocument {
   documentType: string;
   fileName: string;
   filePath: string;
-  uploadDate: Date;
+  uploadDate?: Date;
+}
+
+export interface LoanDocumentDTO {
+  id: number;
+  fileName: string;
+  filePath?: string;
 }
 
 export enum LoanType {

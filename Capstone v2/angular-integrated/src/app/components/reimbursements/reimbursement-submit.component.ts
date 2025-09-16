@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="container">
+    <div style="width: 100%; padding: 20px;">
       <h1 class="mb-4">Submit Expense Claim</h1>
       <div class="card">
         <h3>Reimbursement Request</h3>

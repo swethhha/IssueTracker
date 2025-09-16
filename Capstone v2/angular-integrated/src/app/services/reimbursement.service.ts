@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ReimbursementService {
-  private readonly API_URL = 'https://localhost:7101/api/reimbursements';
+  private readonly API_URL = 'https://localhost:7101/api/Reimbursements';
 
   constructor(private http: HttpClient) {}
 
@@ -64,5 +64,9 @@ export class ReimbursementService {
 
   rejectReimbursement(id: number, managerId: number, reason: string): Observable<any> {
     return this.http.post(`${this.API_URL}/${id}/reject-manager`, { managerId, reason });
+  }
+
+  getReimbursementsByEmployee(employeeId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`);
   }
 }

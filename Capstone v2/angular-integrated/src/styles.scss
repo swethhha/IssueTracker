@@ -542,12 +542,7 @@ app-layout {
   z-index: 1;
 }
 
-/* Override any conflicting pcoded styles */
-.pcoded-navbar,
-.pcoded-main-container,
-app-collapsible-sidebar {
-  display: none !important;
-}
+
 
 /* Ensure table responsiveness */
 .table-responsive {
@@ -633,4 +628,58 @@ app-spinner {
   .btn-group .btn {
     margin-bottom: 0.25rem;
   }
+}
+/* Force all Feather icons to be outline only */
+.feather,
+i.feather,
+[class*="feather"],
+[class*="icon-"] {
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  color: inherit !important;
+}
+
+/* Target all possible icon containers */
+.pcoded-micon,
+.nav-icon,
+.sidebar .material-icons,
+.nav-item .material-icons {
+  font-variation-settings: 'FILL' 0 !important;
+  font-weight: 400 !important;
+}
+/* Professional Outline Icons */
+.material-icons-outlined {
+  font-family: 'Material Icons Outlined' !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+  direction: ltr !important;
+  -webkit-font-feature-settings: 'liga' !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+/* Force all icons to be outline */
+.pcoded-micon i,
+.nav-icon i,
+.material-icons {
+  font-family: 'Material Icons Outlined' !important;
+  font-variation-settings: 'FILL' 0 !important;
+}
+
+/* Clean icon styling */
+.pcoded-micon {
+  width: 20px !important;
+  height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }

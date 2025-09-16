@@ -138,8 +138,7 @@ import { ReimbursementService } from '../../services/reimbursement.service';
   styles: [`
     .page-container {
       padding: var(--spacing-lg);
-      max-width: 800px;
-      margin: 0 auto;
+      width: 100%;
     }
 
     .page-header {
@@ -430,10 +429,13 @@ export class ReimbursementFormComponent {
       this.isLoading = true;
       
       const requestData = {
+        employeeId: 1,
         category: this.reimbursementForm.value.category,
         amount: this.reimbursementForm.value.amount,
+        expenseDate: this.reimbursementForm.value.expenseDate,
         description: this.reimbursementForm.value.description,
         requestDate: new Date().toISOString(),
+        acceptTerms: true,
         documentPaths: []
       };
 
@@ -441,7 +443,7 @@ export class ReimbursementFormComponent {
         next: (response) => {
           this.isLoading = false;
           alert('Reimbursement request submitted successfully!');
-          this.router.navigate(['/employee/requests']);
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading = false;

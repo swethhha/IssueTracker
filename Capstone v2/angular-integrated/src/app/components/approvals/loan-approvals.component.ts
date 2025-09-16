@@ -45,25 +45,41 @@ export class LoanApprovalsComponent implements OnInit {
   }
 
   approveLoan(id: number) {
-    this.loanService.approveLoan(id).subscribe({
-      next: () => {
-        this.loadPendingLoans();
-      },
-      error: (error: any) => {
-        console.error('Approval error:', error);
-      }
-    });
+    const loan = this.pendingLoans.find(l => l.loanId === id);
+    if (confirm(`Approve loan application for ${loan?.employeeName}?`)) {
+      const comments = prompt('Add comments (optional):');
+      
+      this.loanService.approveByManager(id, comments || '').subscribe({
+        next: () => {
+          alert('Loan approved successfully!');
+          this.loadPendingLoans();
+        },
+        error: (error: any) => {
+          console.error('Approval error:', error);
+          alert('Failed to approve loan. Please try again.');
+        }
+      });
+    }
   }
 
   rejectLoan(id: number) {
-    this.loanService.rejectLoan(id).subscribe({
-      next: () => {
-        this.loadPendingLoans();
-      },
-      error: (error: any) => {
-        console.error('Rejection error:', error);
-      }
-    });
+    const loan = this.pendingLoans.find(l => l.loanId === id);
+    const reason = prompt(`Reason for rejecting ${loan?.employeeName}'s loan application:`);
+    
+    if (reason && reason.trim()) {
+      this.loanService.rejectByManager(id, reason).subscribe({
+        next: () => {
+          alert('Loan rejected successfully!');
+          this.loadPendingLoans();
+        },
+        error: (error: any) => {
+          console.error('Rejection error:', error);
+          alert('Failed to reject loan. Please try again.');
+        }
+      });
+    } else if (reason !== null) {
+      alert('Please provide a reason for rejection.');
+    }
   }
 
   canApprove(): boolean {
