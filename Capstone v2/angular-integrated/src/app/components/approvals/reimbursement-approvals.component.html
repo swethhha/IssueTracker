@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-card cardTitle="Reimbursement Approvals" [options]="false">
+      <!-- Loading State -->
+      <div class="text-center" *ngIf="loading">
+        <app-spinner></app-spinner>
+        <p>Loading pending reimbursements...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="alert alert-danger" *ngIf="error">
+        <i class="feather icon-alert-circle"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-danger ml-2" (click)="loadPendingReimbursements()">
+          Retry
+        </button>
+      </div>
+
+      <!-- Pending Reimbursements Table -->
+      <div class="table-responsive" *ngIf="!loading && !error">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Description</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reimbursement of pendingReimbursements">
+              <td>
+                <div class="d-inline-block align-middle">
+                  <div class="d-inline-block">
+                    <h6 class="m-b-0">{{ reimbursement.employeeName }}</h6>
+                    <p class="m-b-0 text-muted">ID: {{ reimbursement.employeeId }}</p>
+                  </div>
+                </div>
+              </td>
+              <td>{{ reimbursement.category }}</td>
+              <td>{{ reimbursement.amount | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ reimbursement.description }}</td>
+              <td>{{ reimbursement.requestDate | date:'MMM dd, yyyy' }}</td>
+              <td>
+                <span class="badge badge-warning">{{ reimbursement.status }}</span>
+              </td>
+              <td>
+                <div class="btn-group" *ngIf="canApprove()">
+                  <button 
+                    class="btn btn-sm btn-success"
+                    (click)="approveReimbursement(reimbursement.id)"
+                    title="Approve">
+                    <i class="feather icon-check"></i> Approve
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-danger"
+                    (click)="rejectReimbursement(reimbursement.id)"
+                    title="Reject">
+                    <i class="feather icon-x"></i> Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div class="text-center py-4" *ngIf="pendingReimbursements.length === 0">
+          <i class="feather icon-check-circle" style="font-size: 48px; color: #28a745;"></i>
+          <h5 class="mt-3">No pending approvals</h5>
+          <p class="text-muted">All reimbursement requests have been processed.</p>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>

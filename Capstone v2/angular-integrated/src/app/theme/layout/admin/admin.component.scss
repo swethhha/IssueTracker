@@ -1,0 +1,59 @@
+/* Admin Layout Styles */
+.pcoded-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.pcoded-navbar {
+  width: 260px;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.pcoded-main-container {
+  flex: 1;
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+.pcoded-content {
+  padding: 2rem;
+  background-color: #f9fafb;
+  min-height: calc(100vh - 60px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 991px) {
+  .pcoded-navbar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .pcoded-navbar.mob-open {
+    transform: translateX(0);
+  }
+  
+  .pcoded-main-container {
+    margin-left: 0;
+  }
+}
+
+/* Navigation Toggle */
+.navbar-wrapper {
+  height: 100%;
+}
+
+/* Content Area */
+.page-wrapper {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}

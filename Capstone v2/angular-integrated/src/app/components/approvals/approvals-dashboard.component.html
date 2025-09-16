@@ -1,0 +1,187 @@
+<div class="approvals-dashboard">
+  <div class="dashboard-header">
+    <h1>Approvals Dashboard</h1>
+    <p>Manage all pending approvals from one place</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="approval-tabs">
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'payroll'"
+      (click)="setActiveTab('payroll')">
+      <i class="feather icon-dollar-sign"></i>
+      Payroll ({{ stats.PendingPayroll || 0 }})
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'loans'"
+      (click)="setActiveTab('loans')">
+      <i class="feather icon-credit-card"></i>
+      Loans ({{ stats.PendingLoans || 0 }})
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'reimbursements'"
+      (click)="setActiveTab('reimbursements')">
+      <i class="feather icon-file-text"></i>
+      Reimbursements ({{ stats.PendingReimbursements || 0 }})
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'insurance'"
+      (click)="setActiveTab('insurance')">
+      <i class="feather icon-shield"></i>
+      Insurance ({{ stats.PendingInsurance || 0 }})
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'medical'"
+      (click)="setActiveTab('medical')">
+      <i class="feather icon-heart"></i>
+      Medical Claims ({{ stats.PendingMedicalClaims || 0 }})
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Payroll Tab -->
+    <div *ngIf="activeTab === 'payroll'" class="approval-section">
+      <div class="section-header">
+        <h2>Payroll Approvals</h2>
+        <button class="btn btn-secondary" (click)="refreshData()">
+          <i class="feather icon-refresh-cw"></i>
+          Refresh
+        </button>
+      </div>
+      
+      <div class="approval-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Period</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of approvals.Payroll">
+              <td>{{ item.employeeName }}</td>
+              <td>{{ item.period }}</td>
+              <td>{{ item.amount | currency }}</td>
+              <td>
+                <span class="badge badge-pending">{{ item.status }}</span>
+              </td>
+              <td>
+                <button class="btn btn-success btn-sm" (click)="approve('payroll', item.id)">
+                  <i class="feather icon-check"></i>
+                  Approve
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="reject('payroll', item.id)">
+                  <i class="feather icon-x"></i>
+                  Reject
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Loans Tab -->
+    <div *ngIf="activeTab === 'loans'" class="approval-section">
+      <div class="section-header">
+        <h2>Loan Approvals</h2>
+        <button class="btn btn-secondary" (click)="refreshData()">
+          <i class="feather icon-refresh-cw"></i>
+          Refresh
+        </button>
+      </div>
+      
+      <div class="approval-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Loan Type</th>
+              <th>Amount</th>
+              <th>Tenure</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of approvals.Loans">
+              <td>{{ item.employeeName }}</td>
+              <td>{{ item.loanType }}</td>
+              <td>{{ item.amount | currency }}</td>
+              <td>{{ item.tenureMonths }} months</td>
+              <td>
+                <span class="badge badge-pending">{{ item.status }}</span>
+              </td>
+              <td>
+                <button class="btn btn-success btn-sm" (click)="approve('loans', item.loanId)">
+                  <i class="feather icon-check"></i>
+                  Approve
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="reject('loans', item.loanId)">
+                  <i class="feather icon-x"></i>
+                  Reject
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Reimbursements Tab -->
+    <div *ngIf="activeTab === 'reimbursements'" class="approval-section">
+      <div class="section-header">
+        <h2>Reimbursement Approvals</h2>
+        <button class="btn btn-secondary" (click)="refreshData()">
+          <i class="feather icon-refresh-cw"></i>
+          Refresh
+        </button>
+      </div>
+      
+      <div class="approval-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of approvals.Reimbursements">
+              <td>{{ item.employeeName }}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.amount | currency }}</td>
+              <td>{{ item.requestedDate | date:'short' }}</td>
+              <td>
+                <span class="badge badge-pending">{{ item.status }}</span>
+              </td>
+              <td>
+                <button class="btn btn-success btn-sm" (click)="approve('reimbursements', item.id)">
+                  <i class="feather icon-check"></i>
+                  Approve
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="reject('reimbursements', item.id)">
+                  <i class="feather icon-x"></i>
+                  Reject
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

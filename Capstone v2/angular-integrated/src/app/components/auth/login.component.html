@@ -1,0 +1,68 @@
+<div class="auth-wrapper">
+  <div class="auth-content">
+    <div class="card">
+      <div class="row align-items-center text-center">
+        <div class="col-md-12">
+          <div class="card-body">
+            <img src="assets/images/logo-dark.png" alt="Payroll360" class="img-fluid mb-4">
+            <h4 class="mb-3 f-w-400">Sign in to Payroll360</h4>
+            
+
+
+            <!-- Login Form -->
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="form-group mb-3">
+                <label class="floating-label fw-bold" for="Email">Email address</label>
+                <input 
+                  type="email" 
+                  class="form-control form-control-lg" 
+                  id="Email" 
+                  placeholder="Email address"
+                  formControlName="email"
+                  [class.is-invalid]="email?.invalid && email?.touched">
+                <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+                  <div *ngIf="email?.errors?.['required']">Email is required</div>
+                  <div *ngIf="email?.errors?.['email']">Please enter a valid email</div>
+                </div>
+              </div>
+              
+              <div class="form-group mb-4">
+                <label class="floating-label fw-bold" for="Password">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control form-control-lg" 
+                  id="Password" 
+                  placeholder="Password"
+                  formControlName="password"
+                  [class.is-invalid]="password?.invalid && password?.touched">
+                <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+                  <div *ngIf="password?.errors?.['required']">Password is required</div>
+                  <div *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</div>
+                </div>
+              </div>
+
+              <!-- Error Message -->
+              <div class="alert alert-danger" *ngIf="error">
+                <i class="feather icon-alert-circle"></i>
+                {{ error }}
+              </div>
+
+              <button 
+                class="btn btn-block btn-primary mb-4" 
+                type="submit"
+                [disabled]="loginForm.invalid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                {{ loading ? 'Signing in...' : 'Sign In' }}
+              </button>
+            </form>
+
+            <p class="mb-2 text-muted">
+              Don't have an account? 
+              <a [routerLink]="['/register']" class="f-w-400">Register</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

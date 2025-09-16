@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-card cardTitle="Loan Approvals" [options]="false">
+      <!-- Loading State -->
+      <div class="text-center" *ngIf="loading">
+        <app-spinner></app-spinner>
+        <p>Loading pending loans...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="alert alert-danger" *ngIf="error">
+        <i class="feather icon-alert-circle"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-danger ml-2" (click)="loadPendingLoans()">
+          Retry
+        </button>
+      </div>
+
+      <!-- Pending Loans Table -->
+      <div class="table-responsive" *ngIf="!loading && !error">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Loan Type</th>
+              <th>Amount</th>
+              <th>Duration</th>
+              <th>Reason</th>
+              <th>Applied Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let loan of pendingLoans">
+              <td>
+                <div class="d-inline-block align-middle">
+                  <div class="d-inline-block">
+                    <h6 class="m-b-0">{{ loan.employeeName }}</h6>
+                    <p class="m-b-0 text-muted">ID: {{ loan.employeeId }}</p>
+                  </div>
+                </div>
+              </td>
+              <td>{{ loan.loanType }}</td>
+              <td>{{ loan.amount | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ loan.duration }} months</td>
+              <td>{{ loan.reason }}</td>
+              <td>{{ loan.applicationDate | date:'MMM dd, yyyy' }}</td>
+              <td>
+                <div class="btn-group" *ngIf="canApprove()">
+                  <button 
+                    class="btn btn-sm btn-success"
+                    (click)="approveLoan(loan.id)"
+                    title="Approve">
+                    <i class="feather icon-check"></i> Approve
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-danger"
+                    (click)="rejectLoan(loan.id)"
+                    title="Reject">
+                    <i class="feather icon-x"></i> Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div class="text-center py-4" *ngIf="pendingLoans.length === 0">
+          <i class="feather icon-check-circle" style="font-size: 48px; color: #28a745;"></i>
+          <h5 class="mt-3">No pending approvals</h5>
+          <p class="text-muted">All loan applications have been processed.</p>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>

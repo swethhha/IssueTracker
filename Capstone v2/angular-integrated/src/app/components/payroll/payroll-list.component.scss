@@ -1,0 +1,30 @@
+.badge-success {
+  background-color: #28a745;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge-secondary {
+  background-color: #6c757d;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  color: #495057;
+}
+
+.btn-group .btn {
+  margin-right: 5px;
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0;
+}

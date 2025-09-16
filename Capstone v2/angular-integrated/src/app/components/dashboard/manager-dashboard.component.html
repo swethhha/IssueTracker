@@ -1,0 +1,98 @@
+<div class="manager-dashboard">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>Manager Dashboard</h1>
+    <p>Manage approvals and monitor team activities</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card pending">
+      <div class="stat-icon">
+        <i class="feather icon-dollar-sign"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.PendingPayroll || 0 }}</h3>
+        <p>Pending Payroll</p>
+      </div>
+    </div>
+
+    <div class="stat-card pending">
+      <div class="stat-icon">
+        <i class="feather icon-credit-card"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.PendingLoans || 0 }}</h3>
+        <p>Pending Loans</p>
+      </div>
+    </div>
+
+    <div class="stat-card pending">
+      <div class="stat-icon">
+        <i class="feather icon-file-text"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.PendingReimbursements || 0 }}</h3>
+        <p>Pending Reimbursements</p>
+      </div>
+    </div>
+
+    <div class="stat-card pending">
+      <div class="stat-icon">
+        <i class="feather icon-shield"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.PendingInsurance || 0 }}</h3>
+        <p>Pending Insurance</p>
+      </div>
+    </div>
+
+    <div class="stat-card pending">
+      <div class="stat-icon">
+        <i class="feather icon-heart"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.PendingMedicalClaims || 0 }}</h3>
+        <p>Pending Medical Claims</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="action-buttons">
+      <button class="btn btn-primary" (click)="navigateTo('/approvals/payroll')">
+        <i class="feather icon-dollar-sign"></i>
+        Review Payroll
+      </button>
+      <button class="btn btn-primary" (click)="navigateTo('/approvals/loans')">
+        <i class="feather icon-credit-card"></i>
+        Review Loans
+      </button>
+      <button class="btn btn-primary" (click)="navigateTo('/approvals/reimbursements')">
+        <i class="feather icon-file-text"></i>
+        Review Reimbursements
+      </button>
+    </div>
+  </div>
+
+  <!-- Recent Approvals -->
+  <div class="recent-approvals">
+    <h2>Recent Activity</h2>
+    <div class="approval-list">
+      <div class="approval-item" *ngFor="let item of recentActivity">
+        <div class="approval-info">
+          <h4>{{ item.type }}</h4>
+          <p>{{ item.employee }} - {{ item.amount | currency }}</p>
+          <span class="date">{{ item.date | date:'short' }}</span>
+        </div>
+        <div class="approval-status">
+          <span class="badge" [ngClass]="'badge-' + item.status.toLowerCase()">
+            {{ item.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

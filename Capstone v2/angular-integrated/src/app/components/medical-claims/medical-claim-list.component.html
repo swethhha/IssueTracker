@@ -1,0 +1,180 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-card cardTitle="Medical Claims" [options]="false">
+      <!-- Submit Claim Button -->
+      <div class="mb-3" *ngIf="canSubmit()">
+        <button class="btn btn-primary btn-lg" (click)="toggleForm()">
+          <i class="feather icon-plus"></i>
+          {{ showForm ? 'Cancel' : 'Submit Medical Claim' }}
+        </button>
+      </div>
+
+      <!-- Medical Claim Form -->
+      <div class="card mb-4" *ngIf="showForm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"><i class="feather icon-heart me-2"></i>Submit Medical Claim</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="claimAmount" class="form-label fw-bold">Claim Amount</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input 
+                      type="number" 
+                      class="form-control form-control-lg" 
+                      id="claimAmount" 
+                      formControlName="claimAmount" 
+                      placeholder="1000">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="treatmentDate" class="form-label fw-bold">Treatment Date</label>
+                  <input 
+                    type="date" 
+                    class="form-control form-control-lg" 
+                    id="treatmentDate" 
+                    formControlName="treatmentDate">
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="hospitalName" class="form-label fw-bold">Hospital/Clinic Name</label>
+                  <input 
+                    type="text" 
+                    class="form-control form-control-lg" 
+                    id="hospitalName" 
+                    formControlName="hospitalName" 
+                    placeholder="PSG Hospitals">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="treatmentType" class="form-label fw-bold">Treatment Type</label>
+                  <select class="form-control form-control-lg" id="treatmentType" formControlName="treatmentType">
+                    <option value="">Select Treatment Type</option>
+                    <option *ngFor="let type of treatmentTypes" [value]="type">{{ type }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="description" class="form-label fw-bold">Description & Details</label>
+              <textarea 
+                class="form-control form-control-lg" 
+                id="description" 
+                formControlName="description" 
+                rows="4"
+                placeholder="Please provide description"></textarea>
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="form-label fw-bold">Upload Documents (Bills, Prescriptions, Reports)</label>
+              <div class="border rounded p-3 bg-light">
+                <input 
+                  type="file" 
+                  class="form-control form-control-lg" 
+                  multiple 
+                  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                  (change)="onFileSelect($event)">
+                <small class="text-muted mt-2 d-block">
+                  Supported formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB each)
+                </small>
+                
+                <!-- Selected Files Display -->
+                <div class="mt-3" *ngIf="selectedFiles.length > 0">
+                  <h6>Selected Files:</h6>
+                  <div class="d-flex flex-wrap gap-2">
+                    <div *ngFor="let file of selectedFiles; let i = index" 
+                         class="badge bg-secondary d-flex align-items-center gap-1 p-2">
+                      <i class="feather icon-file"></i>
+                      <span>{{ file.name }}</span>
+                      <button type="button" class="btn-close btn-close-white btn-sm" 
+                              (click)="removeFile(i)"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-success btn-lg" [disabled]="claimForm.invalid || submitting">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!submitting" class="feather icon-check me-2"></i>
+                {{ submitting ? 'Submitting...' : 'Submit Claim' }}
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" (click)="toggleForm()">
+                <i class="feather icon-x me-2"></i>Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="text-center" *ngIf="loading">
+        <app-spinner></app-spinner>
+        <p>Loading medical claims...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="alert alert-danger" *ngIf="error">
+        <i class="feather icon-alert-circle"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-danger ml-2" (click)="loadClaims()">
+          Retry
+        </button>
+      </div>
+
+      <!-- Claims Table -->
+      <div class="table-responsive" *ngIf="!loading && !error">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Claim ID</th>
+              <th>Amount</th>
+              <th>Treatment Date</th>
+              <th>Hospital</th>
+              <th>Treatment Type</th>
+              <th>Status</th>
+              <th>Submitted Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let claim of claims">
+              <td><strong>#{{ claim.id }}</strong></td>
+              <td>{{ claim.claimAmount | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ claim.treatmentDate | date:'MMM dd, yyyy' }}</td>
+              <td>{{ claim.hospitalName }}</td>
+              <td>{{ claim.treatmentType }}</td>
+              <td>
+                <span class="badge" [ngClass]="getStatusClass(claim.status)">
+                  {{ claim.status }}
+                </span>
+              </td>
+              <td>{{ claim.submittedDate | date:'MMM dd, yyyy' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div class="text-center py-4" *ngIf="claims.length === 0">
+          <i class="feather icon-heart" style="font-size: 48px; color: #ccc;"></i>
+          <h5 class="mt-3">No medical claims found</h5>
+          <p class="text-muted">You haven't submitted any medical claims yet.</p>
+          <button class="btn btn-primary btn-lg" (click)="toggleForm()" *ngIf="canSubmit()">
+            <i class="feather icon-plus me-2"></i>Submit Medical Claim
+          </button>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>

@@ -1,0 +1,207 @@
+<!-- Manager Dashboard -->
+<div class="dashboard-container" *ngIf="userRole === 'Manager' && !loading && !error">
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">Manager Dashboard</h1>
+      <p class="dashboard-description">Manage approvals and monitor team activities</p>
+    </div>
+  </div>
+
+  <section class="metrics-grid">
+    <div class="metric-card primary clickable" (click)="navigateTo('/approvals/payroll')">
+      <div class="metric-icon">💰</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ managerPendingCounts.payroll }}</div>
+        <div class="metric-label">Payroll Approvals</div>
+        <div class="metric-trend">Awaiting review</div>
+      </div>
+    </div>
+    <div class="metric-card success clickable" (click)="navigateTo('/approvals/loans')">
+      <div class="metric-icon">🏦</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ managerPendingCounts.loans }}</div>
+        <div class="metric-label">Loan Applications</div>
+        <div class="metric-trend">Pending approval</div>
+      </div>
+    </div>
+    <div class="metric-card warning clickable" (click)="navigateTo('/approvals/reimbursements')">
+      <div class="metric-icon">📄</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ managerPendingCounts.reimbursements }}</div>
+        <div class="metric-label">Reimbursements</div>
+        <div class="metric-trend">Expense claims</div>
+      </div>
+    </div>
+    <div class="metric-card info clickable" (click)="navigateTo('/insurance')">
+      <div class="metric-icon">🛡️</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ managerPendingCounts.insurance }}</div>
+        <div class="metric-label">Insurance</div>
+        <div class="metric-trend">Policy applications</div>
+      </div>
+    </div>
+    <div class="metric-card danger clickable" (click)="navigateTo('/medical-claims')">
+      <div class="metric-icon">🏥</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ managerPendingCounts.medicalClaims }}</div>
+        <div class="metric-label">Medical Claims</div>
+        <div class="metric-trend">Health expenses</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="dashboard-grid">
+    <section class="card">
+      <h3 class="card-title">Approval Distribution</h3>
+      <div class="chart-container">
+        <div class="chart-item">
+          <span class="chart-label">Payroll</span>
+          <div class="chart-bar">
+            <div class="bar-fill" [style.width.%]="getPercentage(managerPendingCounts.payroll, getTotalPendingApprovals())"></div>
+          </div>
+          <span class="chart-value">{{ managerPendingCounts.payroll }}</span>
+        </div>
+        <div class="chart-item">
+          <span class="chart-label">Loans</span>
+          <div class="chart-bar">
+            <div class="bar-fill" [style.width.%]="getPercentage(managerPendingCounts.loans, getTotalPendingApprovals())"></div>
+          </div>
+          <span class="chart-value">{{ managerPendingCounts.loans }}</span>
+        </div>
+        <div class="chart-item">
+          <span class="chart-label">Expenses</span>
+          <div class="chart-bar">
+            <div class="bar-fill" [style.width.%]="getPercentage(managerPendingCounts.reimbursements, getTotalPendingApprovals())"></div>
+          </div>
+          <span class="chart-value">{{ managerPendingCounts.reimbursements }}</span>
+        </div>
+        <div class="chart-item">
+          <span class="chart-label">Insurance</span>
+          <div class="chart-bar">
+            <div class="bar-fill" [style.width.%]="getPercentage(managerPendingCounts.insurance, getTotalPendingApprovals())"></div>
+          </div>
+          <span class="chart-value">{{ managerPendingCounts.insurance }}</span>
+        </div>
+        <div class="chart-item">
+          <span class="chart-label">Medical</span>
+          <div class="chart-bar">
+            <div class="bar-fill" [style.width.%]="getPercentage(managerPendingCounts.medicalClaims, getTotalPendingApprovals())"></div>
+          </div>
+          <span class="chart-value">{{ managerPendingCounts.medicalClaims }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 class="card-title">Quick Actions</h3>
+      <div class="actions-grid">
+        <a routerLink="/approvals/payroll" class="action-btn primary">💰 Payroll</a>
+        <a routerLink="/approvals/loans" class="action-btn success">🏦 Loans</a>
+        <a routerLink="/approvals/reimbursements" class="action-btn warning">📄 Expenses</a>
+        <a routerLink="/insurance" class="action-btn info">🛡️ Insurance</a>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-md-12">
+    <app-card cardTitle="Dashboard Overview" [options]="false">
+      <div class="row" *ngIf="!loading && !error && userRole !== 'Manager'">
+        <!-- Total Employees Card -->
+        <div class="col-xl-3 col-md-6">
+          <div class="card bg-c-blue order-card">
+            <div class="card-body">
+              <h6 class="text-white">Total Employees</h6>
+              <h2 class="text-white">{{ dashboardData.totalEmployees || 0 }}</h2>
+              <p class="m-b-0">Active workforce</p>
+              <i class="feather icon-users card-icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Payrolls Card -->
+        <div class="col-xl-3 col-md-6">
+          <div class="card bg-c-green order-card">
+            <div class="card-body">
+              <h6 class="text-white">Total Payrolls</h6>
+              <h2 class="text-white">{{ dashboardData.totalPayrolls || 0 }}</h2>
+              <p class="m-b-0">Processed this month</p>
+              <i class="feather icon-dollar-sign card-icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending Approvals Card -->
+        <div class="col-xl-3 col-md-6">
+          <div class="card bg-c-yellow order-card">
+            <div class="card-body">
+              <h6 class="text-white">Pending Approvals</h6>
+              <h2 class="text-white">{{ dashboardData.pendingApprovals || 0 }}</h2>
+              <p class="m-b-0">Awaiting review</p>
+              <i class="feather icon-clock card-icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Loans Card -->
+        <div class="col-xl-3 col-md-6">
+          <div class="card bg-c-red order-card">
+            <div class="card-body">
+              <h6 class="text-white">Active Loans</h6>
+              <h2 class="text-white">{{ dashboardData.activeLoans || 0 }}</h2>
+              <p class="m-b-0">Currently active</p>
+              <i class="feather icon-credit-card card-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="row mt-4" *ngIf="!loading && !error">
+        <div class="col-md-12">
+          <h5>Quick Actions</h5>
+          <div class="row">
+            <div class="col-md-3" *ngIf="userRole === 'Employee' || userRole === 'Manager'">
+              <a [routerLink]="['/reimbursements']" class="btn btn-primary btn-block">
+                <i class="feather icon-file-text"></i> Request Reimbursement
+              </a>
+            </div>
+            <div class="col-md-3" *ngIf="userRole === 'Employee' || userRole === 'Manager'">
+              <a [routerLink]="['/loans']" class="btn btn-success btn-block">
+                <i class="feather icon-credit-card"></i> Apply for Loan
+              </a>
+            </div>
+            <div class="col-md-3" *ngIf="userRole === 'Manager' || userRole === 'FinanceAdmin'">
+              <a [routerLink]="['/approvals/payroll']" class="btn btn-warning btn-block">
+                <i class="feather icon-check-circle"></i> Payroll Approvals
+              </a>
+            </div>
+            <div class="col-md-3" *ngIf="userRole === 'Admin'">
+              <a [routerLink]="['/payroll']" class="btn btn-info btn-block">
+                <i class="feather icon-users"></i> Manage Payroll
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="text-center" *ngIf="loading">
+        <app-spinner></app-spinner>
+        <p>Loading dashboard data...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="alert alert-danger" *ngIf="error">
+        <i class="feather icon-alert-circle"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-danger ml-2" (click)="loadDashboardData()">
+          Retry
+        </button>
+      </div>
+    </app-card>
+  </div>
+</div>

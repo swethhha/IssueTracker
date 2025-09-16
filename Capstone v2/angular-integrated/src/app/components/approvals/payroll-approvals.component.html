@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-card cardTitle="Payroll Approvals" [options]="false">
+      <!-- Loading State -->
+      <div class="text-center" *ngIf="loading">
+        <app-spinner></app-spinner>
+        <p>Loading pending payrolls...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="alert alert-danger" *ngIf="error">
+        <i class="feather icon-alert-circle"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-danger ml-2" (click)="loadPendingPayrolls()">
+          Retry
+        </button>
+      </div>
+
+      <!-- Pending Payrolls Table -->
+      <div class="table-responsive" *ngIf="!loading && !error">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Department</th>
+              <th>Basic Salary</th>
+              <th>Allowances</th>
+              <th>Deductions</th>
+              <th>Net Salary</th>
+              <th>Pay Period</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let payroll of pendingPayrolls">
+              <td>
+                <div class="d-inline-block align-middle">
+                  <div class="d-inline-block">
+                    <h6 class="m-b-0">{{ payroll.employeeName }}</h6>
+                    <p class="m-b-0 text-muted">ID: {{ payroll.employeeId }}</p>
+                  </div>
+                </div>
+              </td>
+              <td>{{ payroll.employeeName }}</td>
+              <td>{{ payroll.baseSalary | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ payroll.allowances | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ payroll.deductions | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>
+                <strong>{{ payroll.netPay | currency:'USD':'symbol':'1.2-2' }}</strong>
+              </td>
+              <td>
+                {{ payroll.payPeriodStart | date:'MMM dd' }} - 
+                {{ payroll.payPeriodEnd | date:'MMM dd, yyyy' }}
+              </td>
+              <td>
+                <div class="btn-group" *ngIf="canApprove()">
+                  <button 
+                    class="btn btn-sm btn-success"
+                    (click)="approvePayroll(payroll.id)"
+                    title="Approve">
+                    <i class="feather icon-check"></i> Approve
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-danger"
+                    (click)="rejectPayroll(payroll.id)"
+                    title="Reject">
+                    <i class="feather icon-x"></i> Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div class="text-center py-4" *ngIf="pendingPayrolls.length === 0">
+          <i class="feather icon-check-circle" style="font-size: 48px; color: #28a745;"></i>
+          <h5 class="mt-3">No pending approvals</h5>
+          <p class="text-muted">All payrolls have been processed.</p>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
