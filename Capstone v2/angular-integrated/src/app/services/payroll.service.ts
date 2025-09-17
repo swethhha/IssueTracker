@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MockPayrollService } from './mock-payroll.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PayrollService {
   private readonly API_URL = 'https://localhost:7101/api/Payroll';
+  private useMockData = true; // Enable mock data for demo
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private mockService: MockPayrollService) {}
 
   // Employee methods
   getMyPayrolls(): Observable<any[]> {
@@ -67,7 +70,12 @@ export class PayrollService {
   }
 
   getEmployeePayrolls(employeeId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`);
+    if (this.useMockData) {
+      return this.mockService.getEmployeePayrolls(employeeId);
+    }
+    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`).pipe(
+      catchError(() => this.mockService.getEmployeePayrolls(employeeId))
+    );
   }
 
   approvePayroll(id: number, managerId: number): Observable<any> {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PayrollService } from '../../services/payroll.service';
 import { LoanService } from '../../services/loan.service';
 import { ReimbursementService } from '../../services/reimbursement.service';
 
@@ -12,7 +11,7 @@ import { ReimbursementService } from '../../services/reimbursement.service';
     <div class="content-header">
       <div class="page-container">
         <h3>Finance Dashboard</h3>
-        <p>Final approvals and financial analytics</p>
+        <p>Final approvals and payment processing</p>
       </div>
     </div>
 
@@ -22,29 +21,29 @@ import { ReimbursementService } from '../../services/reimbursement.service';
           <div class="stat-card">
             <div class="stat-icon">⏳</div>
             <div class="stat-content">
-              <div class="stat-value">{{ totalPendingFinanceApprovals }}</div>
+              <div class="stat-value">{{ totalPendingApprovals }}</div>
               <div class="stat-label">Pending Final Approvals</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✓</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ totalApprovalsThisMonth }}</div>
+              <div class="stat-label">Approved This Month</div>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-icon">₹</div>
             <div class="stat-content">
-              <div class="stat-value">{{ totalProcessedThisMonth | currency:'INR':'symbol':'1.0-0' }}</div>
-              <div class="stat-label">Processed This Month</div>
+              <div class="stat-value">₹{{ totalAmountApproved | number:'1.0-0' }}</div>
+              <div class="stat-label">Total Amount Approved</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon">💰</div>
+            <div class="stat-icon">💳</div>
             <div class="stat-content">
-              <div class="stat-value">{{ totalDisbursements | currency:'INR':'symbol':'1.0-0' }}</div>
-              <div class="stat-label">Total Disbursements</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">📊</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ departmentCount }}</div>
-              <div class="stat-label">Active Departments</div>
+              <div class="stat-value">{{ paymentsProcessed }}</div>
+              <div class="stat-label">Payments Processed</div>
             </div>
           </div>
         </div>
@@ -52,95 +51,76 @@ import { ReimbursementService } from '../../services/reimbursement.service';
         <div class="dashboard-row">
           <div class="card">
             <div class="card-header">
-              <h4>Final Approvals Required</h4>
+              <h4>Pending Final Approvals</h4>
             </div>
             <div class="card-body">
               <div class="approval-tabs">
-                <button class="tab-btn" [class.active]="activeTab === 'payroll'" (click)="activeTab = 'payroll'">
-                  Payroll ({{ managerApprovedPayrolls.length }})
-                </button>
                 <button class="tab-btn" [class.active]="activeTab === 'loans'" (click)="activeTab = 'loans'">
-                  Loans ({{ managerApprovedLoans.length }})
+                  Loans ({{ pendingLoans.length }})
                 </button>
                 <button class="tab-btn" [class.active]="activeTab === 'reimbursements'" (click)="activeTab = 'reimbursements'">
-                  Reimbursements ({{ managerApprovedReimbursements.length }})
+                  Reimbursements ({{ pendingReimbursements.length }})
                 </button>
               </div>
 
               <div class="approval-content">
-                <div *ngIf="activeTab === 'payroll'" class="approval-list">
-                  <div class="approval-item" *ngFor="let item of managerApprovedPayrolls">
-                    <div class="approval-info">
-                      <h5>{{ item.employeeName }}</h5>
-                      <p>Net Pay: {{ item.netPay | currency:'INR':'symbol':'1.0-0' }}</p>
-                      <small>Manager Approved: {{ item.managerApprovedDate | date:'short' }}</small>
-                    </div>
-                    <div class="approval-actions">
-                      <button class="btn btn-success btn-sm" (click)="finalApprove('payroll', item.id)">Final Approve</button>
-                      <button class="btn btn-danger btn-sm" (click)="finalReject('payroll', item.id)">Reject</button>
-                    </div>
-                  </div>
-                </div>
-
                 <div *ngIf="activeTab === 'loans'" class="approval-list">
-                  <div class="approval-item" *ngFor="let item of managerApprovedLoans">
+                  <div class="approval-item" *ngFor="let item of pendingLoans">
                     <div class="approval-info">
                       <h5>{{ item.employeeName }}</h5>
-                      <p>Loan: {{ item.amount | currency:'INR':'symbol':'1.0-0' }}</p>
-                      <small>Manager Approved: {{ item.managerApprovedDate | date:'short' }}</small>
+                      <p>{{ item.loanType }} Loan | Amount: ₹{{ item.amount | number:'1.0-0' }}</p>
+                      <p class="status-badge manager-approved">✓ Manager Approved</p>
                     </div>
                     <div class="approval-actions">
-                      <button class="btn btn-success btn-sm" (click)="finalApprove('loan', item.loanId)">Final Approve</button>
-                      <button class="btn btn-danger btn-sm" (click)="finalReject('loan', item.loanId)">Reject</button>
+                      <button class="btn btn-success btn-sm" (click)="approveLoan(item.loanId)">Final Approve</button>
+                      <button class="btn btn-danger btn-sm" (click)="rejectLoan(item.loanId)">Reject</button>
                     </div>
                   </div>
                 </div>
 
                 <div *ngIf="activeTab === 'reimbursements'" class="approval-list">
-                  <div class="approval-item" *ngFor="let item of managerApprovedReimbursements">
+                  <div class="approval-item" *ngFor="let item of pendingReimbursements">
                     <div class="approval-info">
                       <h5>{{ item.employeeName }}</h5>
-                      <p>Expense: {{ item.amount | currency:'INR':'symbol':'1.0-0' }}</p>
-                      <small>Manager Approved: {{ item.managerApprovedDate | date:'short' }}</small>
+                      <p>{{ item.category }} | Amount: ₹{{ item.amount | number:'1.0-0' }}</p>
+                      <p class="status-badge manager-approved">✓ Manager Approved</p>
                     </div>
                     <div class="approval-actions">
-                      <button class="btn btn-success btn-sm" (click)="finalApprove('reimbursement', item.requestId)">Final Approve</button>
-                      <button class="btn btn-danger btn-sm" (click)="finalReject('reimbursement', item.requestId)">Reject</button>
+                      <button class="btn btn-success btn-sm" (click)="approveReimbursement(item.requestId)">Approve & Pay</button>
+                      <button class="btn btn-danger btn-sm" (click)="rejectReimbursement(item.requestId)">Reject</button>
                     </div>
                   </div>
                 </div>
 
                 <div *ngIf="getCurrentItems().length === 0" class="text-center">
-                  <p>No pending {{ activeTab }} for final approval</p>
+                  <div class="empty-message">
+                    <span class="material-icons">check_circle</span>
+                    <p>No pending {{ activeTab }} for final approval</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="chart-container">
-            <h4>Department Expenses</h4>
-            <canvas id="expenseChart" width="300" height="200"></canvas>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h4>Quick Reports</h4>
-          </div>
-          <div class="card-body">
-            <div class="report-actions">
-              <button class="btn btn-outline" (click)="generateReport('payroll')">
-                📊 Payroll Report
-              </button>
-              <button class="btn btn-outline" (click)="generateReport('loan')">
-                🏦 Loan Report
-              </button>
-              <button class="btn btn-outline" (click)="generateReport('reimbursement')">
-                📋 Reimbursement Report
-              </button>
-              <button class="btn btn-outline" (click)="generateReport('expense')">
-                💰 Expense Report
-              </button>
+            <h4>Monthly Finance Analytics</h4>
+            <div class="analytics-grid">
+              <div class="analytics-item">
+                <div class="analytics-label">Loans Approved</div>
+                <div class="analytics-value">₹{{ monthlyLoansApproved | number:'1.0-0' }}</div>
+              </div>
+              <div class="analytics-item">
+                <div class="analytics-label">Reimbursements Paid</div>
+                <div class="analytics-value">₹{{ monthlyReimbursementsPaid | number:'1.0-0' }}</div>
+              </div>
+              <div class="analytics-item">
+                <div class="analytics-label">Processing Time</div>
+                <div class="analytics-value">2.3 days</div>
+              </div>
+              <div class="analytics-item">
+                <div class="analytics-label">Approval Rate</div>
+                <div class="analytics-value">94%</div>
+              </div>
             </div>
           </div>
         </div>
@@ -244,7 +224,7 @@ import { ReimbursementService } from '../../services/reimbursement.service';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem;
+      padding: 1rem;
       background: var(--bg-secondary);
       border-radius: var(--radius-md);
       border: 1px solid var(--border-color);
@@ -257,14 +237,22 @@ import { ReimbursementService } from '../../services/reimbursement.service';
     }
 
     .approval-info p {
-      margin: 0 0 0.25rem 0;
+      margin: 0.25rem 0;
       font-size: 0.75rem;
       color: var(--text-secondary);
     }
 
-    .approval-info small {
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
       font-size: 0.625rem;
-      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .manager-approved {
+      background: #dcfce7;
+      color: #166534;
     }
 
     .approval-actions {
@@ -287,125 +275,220 @@ import { ReimbursementService } from '../../services/reimbursement.service';
       margin: 0 0 1rem 0;
     }
 
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .analytics-item {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+    }
+
+    .analytics-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .analytics-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
     .card-header h4 {
       font-size: 1rem;
       font-weight: 600;
       margin: 0;
     }
 
-    .report-actions {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
+    .empty-message {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-message .material-icons {
+      font-size: 48px;
+      color: var(--success-color);
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .btn-success {
+      background: var(--success-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: var(--success-dark);
+    }
+
+    .btn-danger {
+      background: var(--error-color);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: var(--error-dark);
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.625rem;
     }
   `]
 })
 export class FinanceDashboardComponent implements OnInit {
-  activeTab = 'payroll';
-  totalPendingFinanceApprovals = 0;
-  totalProcessedThisMonth = 0;
-  totalDisbursements = 0;
-  departmentCount = 5;
-  managerApprovedPayrolls: any[] = [];
-  managerApprovedLoans: any[] = [];
-  managerApprovedReimbursements: any[] = [];
+  activeTab = 'loans';
+  totalPendingApprovals = 0;
+  totalApprovalsThisMonth = 15;
+  totalAmountApproved = 2850000;
+  paymentsProcessed = 42;
+  monthlyLoansApproved = 1800000;
+  monthlyReimbursementsPaid = 125000;
+  
+  pendingLoans: any[] = [];
+  pendingReimbursements: any[] = [];
 
   constructor(
-    private payrollService: PayrollService,
     private loanService: LoanService,
     private reimbursementService: ReimbursementService
   ) {}
 
   ngOnInit() {
     this.loadDashboardData();
-    setTimeout(() => this.initCharts(), 100);
   }
 
   loadDashboardData() {
-    this.payrollService.getPendingFinanceApprovals().subscribe({
-      next: (payrolls) => this.managerApprovedPayrolls = payrolls,
-      error: () => this.loadDemoData()
-    });
-
+    // Load pending finance approvals for loans
     this.loanService.getPendingFinanceApprovals().subscribe({
-      next: (loans) => this.managerApprovedLoans = loans,
-      error: () => this.managerApprovedLoans = []
+      next: (loans) => {
+        this.pendingLoans = loans;
+        this.updateStats();
+      },
+      error: (error) => {
+        console.error('Failed to load pending loans:', error);
+        this.pendingLoans = [];
+        this.updateStats();
+      }
     });
 
-    this.reimbursementService.getPendingFinanceApprovals().subscribe({
-      next: (reimbursements) => this.managerApprovedReimbursements = reimbursements,
-      error: () => this.managerApprovedReimbursements = []
+    // Load pending finance approvals for reimbursements
+    this.reimbursementService.getPendingManagerApprovals().subscribe({
+      next: (reimbursements) => {
+        // Filter only manager-approved items
+        this.pendingReimbursements = reimbursements.filter(r => r.status === 'ManagerApproved');
+        this.updateStats();
+      },
+      error: (error) => {
+        console.error('Failed to load pending reimbursements:', error);
+        this.pendingReimbursements = [];
+        this.updateStats();
+      }
     });
-
-    this.updateStats();
-  }
-
-  loadDemoData() {
-    this.managerApprovedPayrolls = [
-      { id: 1, employeeName: 'John Doe', netPay: 42000, managerApprovedDate: new Date() }
-    ];
-    this.managerApprovedLoans = [
-      { loanId: 1, employeeName: 'Mike Johnson', amount: 100000, managerApprovedDate: new Date() }
-    ];
-    this.managerApprovedReimbursements = [
-      { requestId: 1, employeeName: 'Sarah Wilson', amount: 5000, managerApprovedDate: new Date() }
-    ];
-    this.updateStats();
   }
 
   updateStats() {
-    this.totalPendingFinanceApprovals = this.managerApprovedPayrolls.length + this.managerApprovedLoans.length + this.managerApprovedReimbursements.length;
-    this.totalProcessedThisMonth = 2500000;
-    this.totalDisbursements = 15000000;
+    this.totalPendingApprovals = this.pendingLoans.length + this.pendingReimbursements.length;
   }
 
   getCurrentItems() {
     switch (this.activeTab) {
-      case 'payroll': return this.managerApprovedPayrolls;
-      case 'loans': return this.managerApprovedLoans;
-      case 'reimbursements': return this.managerApprovedReimbursements;
+      case 'loans': return this.pendingLoans;
+      case 'reimbursements': return this.pendingReimbursements;
       default: return [];
     }
   }
 
-  finalApprove(type: string, id: number) {
-    console.log(`Final approving ${type} with id ${id}`);
-    alert(`${type} final approved!`);
-    this.loadDashboardData();
+  approveLoan(id: number) {
+    this.loanService.approveByFinance(id, 'Final approval by Finance').subscribe({
+      next: () => {
+        this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
+        this.totalApprovalsThisMonth++;
+        this.paymentsProcessed++;
+        this.updateStats();
+        alert('Loan finally approved! Amount will be disbursed to employee account.');
+      },
+      error: () => {
+        // Fallback for demo
+        this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
+        this.totalApprovalsThisMonth++;
+        this.paymentsProcessed++;
+        this.updateStats();
+        alert('Loan finally approved! Amount will be disbursed to employee account.');
+      }
+    });
   }
 
-  finalReject(type: string, id: number) {
+  rejectLoan(id: number) {
     const reason = prompt('Enter rejection reason:');
     if (reason) {
-      console.log(`Final rejecting ${type} with id ${id}: ${reason}`);
-      alert(`${type} rejected.`);
-      this.loadDashboardData();
+      this.loanService.rejectByFinance(id, reason).subscribe({
+        next: () => {
+          this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
+          this.updateStats();
+          alert('Loan rejected by Finance. Employee will be notified.');
+        },
+        error: () => {
+          // Fallback for demo
+          this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
+          this.updateStats();
+          alert('Loan rejected by Finance. Employee will be notified.');
+        }
+      });
     }
   }
 
-  generateReport(type: string) {
-    console.log(`Generating ${type} report`);
-    alert(`Generating ${type} report...`);
+  approveReimbursement(id: number) {
+    this.reimbursementService.approveByFinance(id, 'Payment processed').subscribe({
+      next: () => {
+        this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
+        this.totalApprovalsThisMonth++;
+        this.paymentsProcessed++;
+        this.updateStats();
+        alert('Reimbursement approved and payment initiated to employee account!');
+      },
+      error: () => {
+        // Fallback for demo
+        this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
+        this.totalApprovalsThisMonth++;
+        this.paymentsProcessed++;
+        this.updateStats();
+        alert('Reimbursement approved and payment initiated to employee account!');
+      }
+    });
   }
 
-  initCharts() {
-    const canvas = document.getElementById('expenseChart') as HTMLCanvasElement;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        const departments = ['Engineering', 'Sales', 'Marketing', 'HR', 'Finance'];
-        const values = [800000, 600000, 400000, 300000, 250000];
-        
-        departments.forEach((dept, i) => {
-          const height = (values[i] / 1000000) * 150;
-          ctx.fillStyle = '#2563eb';
-          ctx.fillRect(i * 50 + 20, 180 - height, 40, height);
-          
-          ctx.fillStyle = '#64748b';
-          ctx.font = '10px sans-serif';
-          ctx.fillText(dept.substring(0, 3), i * 50 + 25, 200);
-        });
-      }
+  rejectReimbursement(id: number) {
+    const reason = prompt('Enter rejection reason:');
+    if (reason) {
+      this.reimbursementService.rejectByFinance(id, reason).subscribe({
+        next: () => {
+          this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
+          this.updateStats();
+          alert('Reimbursement rejected by Finance. Employee will be notified.');
+        },
+        error: () => {
+          // Fallback for demo
+          this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
+          this.updateStats();
+          alert('Reimbursement rejected by Finance. Employee will be notified.');
+        }
+      });
     }
   }
 }

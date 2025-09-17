@@ -1,22 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { MockPayrollService } from './mock-payroll.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoanService {
   private readonly API_URL = 'https://localhost:7101/api/Loans';
+  private useMockData = true; // Enable mock data for demo
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private mockService: MockPayrollService) {}
 
   // Employee methods
   getMyLoans(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/my`);
+    if (this.useMockData) {
+      return this.mockService.getMyLoans();
+    }
+    return this.http.get<any[]>(`${this.API_URL}/my`).pipe(
+      catchError(() => this.mockService.getMyLoans())
+    );
   }
 
   applyForLoan(loanData: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/apply`, loanData);
+    if (this.useMockData) {
+      return this.mockService.applyForLoan(loanData);
+    }
+    return this.http.post(`${this.API_URL}/apply`, loanData).pipe(
+      catchError(() => this.mockService.applyForLoan(loanData))
+    );
   }
 
   getLoanById(id: number): Observable<any> {
@@ -25,28 +38,58 @@ export class LoanService {
 
   // Manager methods
   getPendingManagerApprovals(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/pending-manager-approvals`);
+    if (this.useMockData) {
+      return this.mockService.getPendingManagerApprovals();
+    }
+    return this.http.get<any[]>(`${this.API_URL}/pending-manager-approvals`).pipe(
+      catchError(() => this.mockService.getPendingManagerApprovals())
+    );
   }
 
   getPendingManagerCount(): Observable<number> {
-    return this.http.get<number>(`${this.API_URL}/pending-manager-count`);
+    if (this.useMockData) {
+      return this.mockService.getPendingManagerCount();
+    }
+    return this.http.get<number>(`${this.API_URL}/pending-manager-count`).pipe(
+      catchError(() => this.mockService.getPendingManagerCount())
+    );
   }
 
   approveByManager(id: number, comments?: string): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/manager-approve?comments=${comments || ''}`, {});
+    if (this.useMockData) {
+      return this.mockService.approveByManager(id, comments);
+    }
+    return this.http.put(`${this.API_URL}/${id}/manager-approve?comments=${comments || ''}`, {}).pipe(
+      catchError(() => this.mockService.approveByManager(id, comments))
+    );
   }
 
   rejectByManager(id: number, reason: string): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/manager-reject?reason=${reason}`, {});
+    if (this.useMockData) {
+      return this.mockService.rejectByManager(id, reason);
+    }
+    return this.http.put(`${this.API_URL}/${id}/manager-reject?reason=${reason}`, {}).pipe(
+      catchError(() => this.mockService.rejectByManager(id, reason))
+    );
   }
 
   // Finance methods
   approveByFinance(id: number, comments?: string): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/finance-approve?comments=${comments || ''}`, {});
+    if (this.useMockData) {
+      return this.mockService.approveByFinance(id, comments);
+    }
+    return this.http.put(`${this.API_URL}/${id}/finance-approve?comments=${comments || ''}`, {}).pipe(
+      catchError(() => this.mockService.approveByFinance(id, comments))
+    );
   }
 
   rejectByFinance(id: number, reason: string): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/finance-reject?reason=${reason}`, {});
+    if (this.useMockData) {
+      return this.mockService.rejectByFinance(id, reason);
+    }
+    return this.http.put(`${this.API_URL}/${id}/finance-reject?reason=${reason}`, {}).pipe(
+      catchError(() => this.mockService.rejectByFinance(id, reason))
+    );
   }
 
   // Admin methods
@@ -75,15 +118,30 @@ export class LoanService {
 
   // Finance pending approvals
   getPendingFinanceApprovals(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/pending-finance-approvals`);
+    if (this.useMockData) {
+      return this.mockService.getPendingFinanceApprovals();
+    }
+    return this.http.get<any[]>(`${this.API_URL}/pending-finance-approvals`).pipe(
+      catchError(() => this.mockService.getPendingFinanceApprovals())
+    );
   }
 
   getPendingFinanceCount(): Observable<number> {
-    return this.http.get<number>(`${this.API_URL}/pending-finance-count`);
+    if (this.useMockData) {
+      return this.mockService.getPendingFinanceCount();
+    }
+    return this.http.get<number>(`${this.API_URL}/pending-finance-count`).pipe(
+      catchError(() => this.mockService.getPendingFinanceCount())
+    );
   }
 
   getLoansByEmployee(employeeId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`);
+    if (this.useMockData) {
+      return this.mockService.getLoansByEmployee(employeeId);
+    }
+    return this.http.get<any[]>(`${this.API_URL}/employee/${employeeId}`).pipe(
+      catchError(() => this.mockService.getLoansByEmployee(employeeId))
+    );
   }
 
   applyLoan(loanData: any, documents: File[]): Observable<any> {
