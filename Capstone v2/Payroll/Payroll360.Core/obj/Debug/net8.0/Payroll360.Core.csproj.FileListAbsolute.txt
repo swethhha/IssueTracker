@@ -1,0 +1,24 @@
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.AssemblyInfoInputs.cache
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.AssemblyInfo.cs
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.csproj.CoreCompileInputs.cache
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.sourcelink.json
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\bin\Debug\net8.0\Payroll360.Core.deps.json
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\bin\Debug\net8.0\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\bin\Debug\net8.0\Payroll360.Core.pdb
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\refint\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.pdb
+C:\Users\Swetht\source\repos\Payroll\Payroll360.Core\obj\Debug\net8.0\ref\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\bin\Debug\net8.0\Payroll360.Core.deps.json
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\bin\Debug\net8.0\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\bin\Debug\net8.0\Payroll360.Core.pdb
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.AssemblyInfoInputs.cache
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.AssemblyInfo.cs
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.csproj.CoreCompileInputs.cache
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.sourcelink.json
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\refint\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\Payroll360.Core.pdb
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll360.Core\obj\Debug\net8.0\ref\Payroll360.Core.dll

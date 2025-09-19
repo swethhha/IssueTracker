@@ -1,0 +1,36 @@
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.deps.json
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.runtimeconfig.json
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.dll
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.pdb
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Core.pdb
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.AssemblyInfo.cs
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.sourcelink.json
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll3.40C401AE.Up2Date
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.dll
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\refint\Payroll360.Infrastructure.dll
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.pdb
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.genruntimeconfig.cache
+C:\Users\Swetht\source\repos\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\ref\Payroll360.Infrastructure.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.deps.json
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.runtimeconfig.json
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Infrastructure.pdb
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Core.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\bin\Debug\net8.0\Payroll360.Core.pdb
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.AssemblyInfo.cs
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.sourcelink.json
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll3.40C401AE.Up2Date
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\refint\Payroll360.Infrastructure.dll
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.pdb
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\Payroll360.Infrastructure.genruntimeconfig.cache
+C:\Users\Swetht\source\repos\Capstone v2\Payroll\Payroll.Infrastructure\obj\Debug\net8.0\ref\Payroll360.Infrastructure.dll

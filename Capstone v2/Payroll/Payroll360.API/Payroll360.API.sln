@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll360.API", "Payroll360.API.csproj", "{2186BB88-0DD5-453B-9629-E21728A13AC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll360.Core", "..\Payroll360.Core\Payroll360.Core.csproj", "{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll360.Application", "..\Payroll360.Application\Payroll360.Application.csproj", "{C0A5236C-5174-4864-AA22-C30966C2DA01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll360.Infrastructure", "..\Payroll.Infrastructure\Payroll360.Infrastructure.csproj", "{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2186BB88-0DD5-453B-9629-E21728A13AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2186BB88-0DD5-453B-9629-E21728A13AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2186BB88-0DD5-453B-9629-E21728A13AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2186BB88-0DD5-453B-9629-E21728A13AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0A5236C-5174-4864-AA22-C30966C2DA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0A5236C-5174-4864-AA22-C30966C2DA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0A5236C-5174-4864-AA22-C30966C2DA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0A5236C-5174-4864-AA22-C30966C2DA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DDCD74F-B72C-46A9-B9C5-C52860456A9F}
+	EndGlobalSection
+EndGlobal

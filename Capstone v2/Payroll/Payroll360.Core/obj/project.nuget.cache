@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "n4ptzWpS05g=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\Payroll360.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Swetht\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,1554 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}|..\\Payroll.Infrastructure\\Payroll360.Infrastructure.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll.infrastructure\\repositories\\insurancerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}|..\\Payroll.Infrastructure\\Payroll360.Infrastructure.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll.infrastructure\\repositories\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4B505C32-4AC6-47FF-AF9C-B2C1132BCADA}|..\\Payroll.Infrastructure\\Payroll360.Infrastructure.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll.infrastructure\\data\\payroll360context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0A5236C-5174-4864-AA22-C30966C2DA01}|..\\Payroll360.Application\\Payroll360.Application.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.application\\services\\medicalclaimservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0A5236C-5174-4864-AA22-C30966C2DA01}|..\\Payroll360.Application\\Payroll360.Application.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.application\\services\\seeddataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}|..\\Payroll360.Core\\Payroll360.Core.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.core\\dtos\\medicalclaimrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\loanscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\loanscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\medicalclaimscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\medicalclaimscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}|..\\Payroll360.Core\\Payroll360.Core.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.core\\dtos\\insurancepolicyresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\reimbursementscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\reimbursementscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0A5236C-5174-4864-AA22-C30966C2DA01}|..\\Payroll360.Application\\Payroll360.Application.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.application\\services\\insuranceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0A5236C-5174-4864-AA22-C30966C2DA01}|..\\Payroll360.Application\\Payroll360.Application.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.application\\services\\reimbursementservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}|..\\Payroll360.Core\\Payroll360.Core.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.core\\interfaces\\iloanservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DDE11AC-216F-44F7-86E2-1EEDEB1382A1}|..\\Payroll360.Core\\Payroll360.Core.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.core\\dtos\\loanrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0A5236C-5174-4864-AA22-C30966C2DA01}|..\\Payroll360.Application\\Payroll360.Application.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.application\\services\\loanservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\insurancecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\insurancecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0A5236C-5174-4864-AA22-C30966C2DA01}|..\\Payroll360.Application\\Payroll360.Application.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.application\\services\\payrollservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\payroll360.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:payroll360.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|c:\\users\\swetht\\source\\repos\\capstone v2\\payroll\\payroll360.api\\middleware\\globalexceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2186BB88-0DD5-453B-9629-E21728A13AC0}|Payroll360.API.csproj|solutionrelative:middleware\\globalexceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Mapping\\MappingProfile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\MedicalClaimService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\ReimbursementService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\InsuranceService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913183148_FixedDecimalPrecision.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsurancePolicy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsuranceEnrollment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913182828_UpdatedEntites.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoanResponseDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\ILoanService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\LoanService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\DashboardService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\NotificationService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimResponseDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\NotificationDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\PayrollService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ErrorResponseDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\RegisterRequestDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Payroll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\PayrollStatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\NotificationRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\NotificationType.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\INotificationRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\INotificationService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\DashboardDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IApprovalService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\ClaimStatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\ApprovalHistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\DocumentAttachmentDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IDashboardService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsuranceDependent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\InsuranceStatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyRequestDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentResponseDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentRequestDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Loan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\MedicalClaim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\LoanStatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\PayrollSummaryDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Reimbursement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\ReimbursementStatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementRequestDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementResponseDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IEmployeeRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\ILoanRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\PayrollResponseDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\ReimbursementRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\PayrollRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\LoanRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\EmployeeDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoginRequestDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\DocumentAttachment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\EmployeeRole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\PolicyType.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\DashboardRole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913135325_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ConflictException.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ForbiddenException.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ValidationException.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\UnauthorizedException.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\NotFoundException.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 257,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Payroll360Context.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll.Infrastructure\\Data\\Payroll360Context.cs",
+              "RelativeDocumentMoniker": "..\\Payroll.Infrastructure\\Data\\Payroll360Context.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll.Infrastructure\\Data\\Payroll360Context.cs",
+              "RelativeToolTip": "..\\Payroll.Infrastructure\\Data\\Payroll360Context.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAkwF4AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T14:15:23.498Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "RelativeDocumentMoniker": "..\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "RelativeToolTip": "..\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAkwFkAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T14:15:22.274Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SeedDataService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\SeedDataService.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Application\\Services\\SeedDataService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\SeedDataService.cs",
+              "RelativeToolTip": "..\\Payroll360.Application\\Services\\SeedDataService.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAkwHEAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T14:07:26.469Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "InsurancePolicyResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "RelativeToolTip": "..\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T14:07:20.911Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PayrollController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\PayrollController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PayrollController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\PayrollController.cs",
+              "RelativeToolTip": "Controllers\\PayrollController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwCIAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:37:41.762Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAUwB0AAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T18:00:42.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "InsuranceRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "RelativeDocumentMoniker": "..\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "RelativeToolTip": "..\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAkwBYAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T14:15:26.457Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MedicalClaimRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "RelativeToolTip": "..\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAmwDoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T14:07:08.207Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MedicalClaimsController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\MedicalClaimsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MedicalClaimsController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\MedicalClaimsController.cs",
+              "RelativeToolTip": "Controllers\\MedicalClaimsController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAYwCAAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:47:37.076Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MedicalClaimService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "RelativeToolTip": "..\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAkwCAAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T13:33:52.297Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ReimbursementsController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\ReimbursementsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReimbursementsController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\ReimbursementsController.cs",
+              "RelativeToolTip": "Controllers\\ReimbursementsController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA3wBQAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:40:53.866Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LoansController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\LoansController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LoansController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\LoansController.cs",
+              "RelativeToolTip": "Controllers\\LoansController.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAkwE4AAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T13:23:38.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "Controllers\\DashboardController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAkwCwAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:58:55.61Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "InsuranceService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "RelativeToolTip": "..\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T17:01:54.653Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "InsuranceController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\InsuranceController.cs",
+              "RelativeDocumentMoniker": "Controllers\\InsuranceController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\InsuranceController.cs",
+              "RelativeToolTip": "Controllers\\InsuranceController.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAkwH0AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:56:34.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "LoanRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "RelativeToolTip": "..\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T13:23:45.957Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ILoanService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "RelativeToolTip": "..\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T13:25:19.362Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ReimbursementService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "RelativeToolTip": "..\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAkwCYAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T16:56:45.224Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "NotificationsController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\NotificationsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NotificationsController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\NotificationsController.cs",
+              "RelativeToolTip": "Controllers\\NotificationsController.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAkwDkAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:45:53.179Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "LoanService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\LoanService.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Application\\Services\\LoanService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\LoanService.cs",
+              "RelativeToolTip": "..\\Payroll360.Application\\Services\\LoanService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAI8AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T16:53:31.104Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "PayrollService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\PayrollService.cs",
+              "RelativeDocumentMoniker": "..\\Payroll360.Application\\Services\\PayrollService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.Application\\Services\\PayrollService.cs",
+              "RelativeToolTip": "..\\Payroll360.Application\\Services\\PayrollService.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAkwE8AAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T16:56:47.153Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAAA3wGEAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:32:45.38Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "ReimbursementService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\ReimbursementService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:56:47.918Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "MedicalClaimService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\MedicalClaimService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:56:10.455Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Mapping\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Mapping\\MappingProfile.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Mapping\\MappingProfile.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Mapping\\MappingProfile.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAowBsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T18:03:15.072Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "InsuranceService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\InsuranceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:55:32.295Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "20250913183148_FixedDecimalPrecision.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913183148_FixedDecimalPrecision.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913183148_FixedDecimalPrecision.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913183148_FixedDecimalPrecision.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913183148_FixedDecimalPrecision.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T18:31:48.268Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "InsurancePolicy.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsurancePolicy.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\InsurancePolicy.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsurancePolicy.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\InsurancePolicy.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAowBsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:16:11.123Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "InsuranceEnrollment.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsuranceEnrollment.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\InsuranceEnrollment.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsuranceEnrollment.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\InsuranceEnrollment.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAA1wBIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T16:44:04.112Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Employee.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Employee.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Employee.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Employee.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Employee.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA9wBcAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:11:23.461Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "20250913182828_UpdatedEntites.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913182828_UpdatedEntites.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913182828_UpdatedEntites.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913182828_UpdatedEntites.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913182828_UpdatedEntites.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T18:28:29.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Payroll360.API.csproj",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Payroll360.API.csproj",
+              "RelativeDocumentMoniker": "Payroll360.API.csproj",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Payroll360.API.csproj",
+              "RelativeToolTip": "Payroll360.API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-13T18:01:36.267Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "LoanResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoanResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\LoanResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoanResponseDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\LoanResponseDTO.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAowA4AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:31:55.95Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "ILoanService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\ILoanService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:49:36.921Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "LoanService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\LoanService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\LoanService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\LoanService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\LoanService.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAqwI4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:55:53.279Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "DashboardService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\DashboardService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\DashboardService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\DashboardService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\DashboardService.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAADwv1AAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:55:16.499Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "NotificationService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\NotificationService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\NotificationService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\NotificationService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\NotificationService.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAkwDEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:56:22.364Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "IMedicalClaimService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABIAAABNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:50:25.144Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "IPayrollService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:51:32.432Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "MedicalClaimResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimResponseDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimResponseDTO.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAQwBkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:33:14.717Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "NotificationDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\NotificationDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\NotificationDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\NotificationDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\NotificationDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:33:31.974Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "PayrollService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\PayrollService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\PayrollService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Application\\Services\\PayrollService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Application\\Services\\PayrollService.cs",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAzwIoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:56:33.953Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "GlobalExceptionMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Middleware\\GlobalExceptionMiddleware.cs",
+              "RelativeDocumentMoniker": "Middleware\\GlobalExceptionMiddleware.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Capstone v2\\Payroll\\Payroll360.API\\Middleware\\GlobalExceptionMiddleware.cs",
+              "RelativeToolTip": "Middleware\\GlobalExceptionMiddleware.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFsAAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:25:27.602Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "ErrorResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ErrorResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\ErrorResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ErrorResponseDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\ErrorResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:30:10.582Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "RegisterRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\RegisterRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\RegisterRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\RegisterRequestDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\RegisterRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:35:31.807Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "Payroll.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Payroll.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Payroll.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Payroll.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Payroll.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAywB0AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:21:38.273Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "PayrollStatus.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\PayrollStatus.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\PayrollStatus.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\PayrollStatus.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\PayrollStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T14:29:53.009Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "Notification.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Notification.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Notification.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Notification.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Notification.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:19:17.648Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "NotificationRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\NotificationRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\NotificationRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\NotificationRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\NotificationRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:13:03.165Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "NotificationType.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\NotificationType.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\NotificationType.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\NotificationType.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\NotificationType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T14:32:04.159Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "INotificationRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\INotificationRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\INotificationRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\INotificationRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\INotificationRepository.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAwwBEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T17:08:55.54Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "INotificationService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\INotificationService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\INotificationService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\INotificationService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\INotificationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:50:46.215Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "IPayrollRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IPayrollRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:51:11.503Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "IMedicalClaimRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IMedicalClaimRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:50:00.371Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "InsuranceRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\InsuranceRepository.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAqwFIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:08:45.43Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "IInsuranceRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceRepository.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA7wBYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:48:24.04Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "IInsuranceService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IInsuranceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAkwBAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:48:54.377Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "IReimbursementService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:52:19.893Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "DashboardDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\DashboardDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\DashboardDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\DashboardDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\DashboardDTO.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAswCcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:28:48.276Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "InsurancePolicyResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T16:09:42.371Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "IApprovalService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IApprovalService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IApprovalService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IApprovalService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IApprovalService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T14:18:26.828Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "ClaimStatus.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\ClaimStatus.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\ClaimStatus.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\ClaimStatus.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\ClaimStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:23:55.034Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "ApprovalHistory.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\ApprovalHistory.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\ApprovalHistory.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\ApprovalHistory.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\ApprovalHistory.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA6wBsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:22:45.937Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "DocumentAttachmentDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\DocumentAttachmentDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\DocumentAttachmentDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\DocumentAttachmentDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\DocumentAttachmentDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T14:37:34.956Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "IDashboardService.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IDashboardService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IDashboardService.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IDashboardService.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IDashboardService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:47:18.232Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "InsuranceDependent.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsuranceDependent.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\InsuranceDependent.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\InsuranceDependent.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\InsuranceDependent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:17:57.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "InsuranceStatus.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\InsuranceStatus.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\InsuranceStatus.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\InsuranceStatus.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\InsuranceStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T14:31:44.465Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "InsurancePolicyRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyRequestDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsurancePolicyRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T16:09:16.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "InsuranceEnrollmentResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentResponseDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T16:10:41.635Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "InsuranceEnrollmentRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentRequestDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\InsuranceEnrollmentRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T16:10:18.174Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "LoanRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\LoanRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:31:31.539Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "Loan.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Loan.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Loan.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Loan.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Loan.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:18:39.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "MedicalClaim.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\MedicalClaim.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\MedicalClaim.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\MedicalClaim.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\MedicalClaim.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T16:30:58.924Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "LoanStatus.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\LoanStatus.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\LoanStatus.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\LoanStatus.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\LoanStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:26:50.941Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "MedicalClaimRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\MedicalClaimRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:32:43.189Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "PayrollSummaryDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\PayrollSummaryDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\PayrollSummaryDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\PayrollSummaryDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\PayrollSummaryDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:34:53.033Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "Reimbursement.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Reimbursement.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Reimbursement.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\Reimbursement.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\Reimbursement.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA1wB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:22:00.031Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "ReimbursementStatus.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\ReimbursementStatus.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\ReimbursementStatus.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\ReimbursementStatus.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\ReimbursementStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:27:40.09Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "ReimbursementRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementRequestDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:35:55.387Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "ReimbursementResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementResponseDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\ReimbursementResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:37:48.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "IEmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IEmployeeRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IEmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IEmployeeRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IEmployeeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:47:50.775Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "ILoanRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\ILoanRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\ILoanRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\ILoanRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\ILoanRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:49:16.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "IReimbursementRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Interfaces\\IReimbursementRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:51:55.648Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "PayrollResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\PayrollResponseDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\PayrollResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\PayrollResponseDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\PayrollResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T16:06:40.328Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "ReimbursementRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\ReimbursementRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\ReimbursementRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\ReimbursementRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\ReimbursementRepository.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAzwEQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:10:49.672Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 85,
+              "Title": "PayrollRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\PayrollRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\PayrollRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\PayrollRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\PayrollRepository.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAADwv0QAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:10:22.014Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 86,
+              "Title": "LoanRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\LoanRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\LoanRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\LoanRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\LoanRepository.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAADwv0EAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:09:04.376Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 87,
+              "Title": "EmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Repositories\\EmployeeRepository.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAADwv3MAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:55:00.41Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 88,
+              "Title": "EmployeeDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\EmployeeDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\EmployeeDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\EmployeeDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\EmployeeDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:29:50.187Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 89,
+              "Title": "LoginRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoginRequestDTO.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\LoginRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\DTOs\\LoginRequestDTO.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\DTOs\\LoginRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:32:22.781Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 90,
+              "Title": "DocumentAttachment.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\DocumentAttachment.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\DocumentAttachment.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Entities\\DocumentAttachment.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Entities\\DocumentAttachment.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAIwBMAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:17:06.84Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 91,
+              "Title": "EmployeeRole.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\EmployeeRole.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\EmployeeRole.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\EmployeeRole.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\EmployeeRole.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:26:27.538Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 92,
+              "Title": "PolicyType.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\PolicyType.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\PolicyType.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\PolicyType.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\PolicyType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:27:16.88Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 93,
+              "Title": "DashboardRole.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\DashboardRole.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\DashboardRole.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Enums\\DashboardRole.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Enums\\DashboardRole.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:24:55.616Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 94,
+              "Title": "20250913135325_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913135325_InitialCreate.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913135325_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913135325_InitialCreate.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll.Infrastructure\\Migrations\\20250913135325_InitialCreate.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwBkAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T13:53:25.527Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 95,
+              "Title": "ConflictException.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ConflictException.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\ConflictException.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ConflictException.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\ConflictException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:44:37.138Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 96,
+              "Title": "ForbiddenException.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ForbiddenException.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\ForbiddenException.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ForbiddenException.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\ForbiddenException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:44:01.29Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 97,
+              "Title": "ValidationException.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ValidationException.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\ValidationException.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\ValidationException.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\ValidationException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:41:50.717Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 98,
+              "Title": "UnauthorizedException.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\UnauthorizedException.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\UnauthorizedException.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\UnauthorizedException.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\UnauthorizedException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:41:19.742Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 99,
+              "Title": "NotFoundException.cs",
+              "DocumentMoniker": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\NotFoundException.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\NotFoundException.cs",
+              "ToolTip": "C:\\Users\\Swetht\\source\\repos\\Payroll\\Payroll360.Core\\Exceptions\\NotFoundException.cs",
+              "RelativeToolTip": "..\\..\\..\\Payroll\\Payroll360.Core\\Exceptions\\NotFoundException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T12:40:22.965Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 143,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{a80febb4-e7e0-4147-b476-21aaf2453969}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
