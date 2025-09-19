@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { MockPayrollService } from '../../services/mock-payroll.service';
+import { ToastService } from '../../services/toast.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-insurance-enrollment',
@@ -7,14 +11,80 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div style="padding: 20px; background: #f8fafc; min-height: 100vh;">
-      <h1 style="text-align: center; margin-bottom: 30px; color: #1e293b;">Insurance Policies</h1>
+      <h1 style="text-align: center; margin-bottom: 30px; color: #1e293b;" *ngIf="!isFinanceUser">Insurance Policies</h1>
+      <h1 style="text-align: center; margin-bottom: 30px; color: #1e293b;" *ngIf="isFinanceUser">Insurance Enrollment Approvals</h1>
+      
+      <!-- Finance Approval View -->
+      <div *ngIf="isFinanceUser" class="finance-view">
+        <div class="page-header">
+          <h1>Insurance Enrollment Approvals</h1>
+          <p>Review and approve employee insurance enrollments</p>
+        </div>
+
+        <div class="approval-container">
+          <div class="approval-stats">
+            <div class="stat-card">
+              <div class="stat-value">{{ pendingEnrollments.length }}</div>
+              <div class="stat-label">Pending Approvals</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">₹{{ getTotalMonthlyCost() | number:'1.0-0' }}</div>
+              <div class="stat-label">Monthly Cost</div>
+            </div>
+          </div>
+
+          <div class="approval-list">
+            <div class="approval-item" *ngFor="let enrollment of pendingEnrollments">
+              <div class="enrollment-header">
+                <h3>{{ enrollment.employeeName }}</h3>
+                <span class="status-badge pending">Pending Review</span>
+              </div>
+              
+              <div class="enrollment-details">
+                <div class="detail-row">
+                  <span class="label">Policy Type:</span>
+                  <span class="value">{{ enrollment.policyType }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Coverage Amount:</span>
+                  <span class="value amount">₹{{ enrollment.coverageAmount | number:'1.0-0' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Monthly Premium:</span>
+                  <span class="value">₹{{ enrollment.monthlyPremium | number:'1.0-0' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Company Contribution:</span>
+                  <span class="value">{{ enrollment.companyContribution }}%</span>
+                </div>
+              </div>
+
+              <div class="approval-actions">
+                <button class="btn btn-info" (click)="verifyDocuments(enrollment)">Verify Documents</button>
+                <button class="btn btn-success" (click)="approveEnrollment(enrollment)">Approve Enrollment</button>
+                <button class="btn btn-danger" (click)="rejectEnrollment(enrollment)">Reject</button>
+              </div>
+            </div>
+
+            <div *ngIf="pendingEnrollments.length === 0" class="empty-state">
+              <span class="material-icons">check_circle</span>
+              <h3>No Pending Enrollments</h3>
+              <p>All insurance enrollments have been processed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="!isFinanceUser">
       
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; margin: 0;">
         
         <!-- Group Mediclaim -->
         <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
           <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <div style="font-size: 50px;">🏥</div>
+            <div class="policy-icon health">
+              <span class="material-icons">local_hospital</span>
+            </div>
             <div>
               <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Group Mediclaim</h2>
               <span style="background: #dbeafe; color: #1d4ed8; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">MOST POPULAR</span>
@@ -61,7 +131,9 @@ import { CommonModule } from '@angular/common';
         <!-- Term Life Insurance -->
         <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
           <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <div style="font-size: 50px;">🛡️</div>
+            <div class="policy-icon life">
+              <span class="material-icons">security</span>
+            </div>
             <div>
               <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Term Life Insurance</h2>
               <span style="background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">NEW</span>
@@ -108,7 +180,9 @@ import { CommonModule } from '@angular/common';
         <!-- Personal Accident -->
         <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
           <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <div style="font-size: 50px;">🚑</div>
+            <div class="policy-icon accident">
+              <span class="material-icons">emergency</span>
+            </div>
             <div>
               <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Personal Accident</h2>
               <span style="background: #fef3c7; color: #92400e; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">ESSENTIAL</span>
@@ -155,7 +229,9 @@ import { CommonModule } from '@angular/common';
         <!-- Critical Illness -->
         <div class="policy-card" style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s ease;">
           <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <div style="font-size: 50px;">💊</div>
+            <div class="policy-icon critical">
+              <span class="material-icons">healing</span>
+            </div>
             <div>
               <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Critical Illness</h2>
               <span style="background: #e0e7ff; color: #3730a3; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">COMPREHENSIVE</span>
@@ -200,9 +276,8 @@ import { CommonModule } from '@angular/common';
         </div>
 
       </div>
-
-      <!-- My Insurance Policies Section -->
-      <div *ngIf="enrolledPolicies.length > 0" style="width: 100%; margin: 3rem 0 0 0; padding: 0 20px;">
+      
+      <div *ngIf="!isFinanceUser && enrolledPolicies.length > 0" style="width: 100%; margin: 3rem 0 0 0; padding: 0 20px;">
         <h2 style="color: #1e293b; margin-bottom: 20px;">My Insurance Policies</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
           <div *ngFor="let policy of enrolledPolicies" [style.border]="'2px solid ' + getStatusColor(policy.status)" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
@@ -278,8 +353,8 @@ import { CommonModule } from '@angular/common';
     </div>
 
     <!-- Document Upload Modal -->
-    <div *ngIf="showUploadModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;" (click)="closeUploadModal()">
-      <div style="background: white; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%;" (click)="$event.stopPropagation()">
+    <div *ngIf="showUploadModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;" (click)="closeUploadModal()">
+      <div style="background: white; border-radius: 12px; padding: 30px; max-width: 500px; width: 100%; max-height: 70vh; overflow-y: auto; margin: auto;" (click)="$event.stopPropagation()">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <h2 style="margin: 0; color: #1e293b;">Upload Documents - {{ selectedEnrollmentPolicy?.name }}</h2>
           <button style="background: none; border: none; font-size: 24px; cursor: pointer;" (click)="closeUploadModal()">×</button>
@@ -335,10 +410,216 @@ import { CommonModule } from '@angular/common';
         background: #2563eb;
         border-radius: 12px 12px 0 0;
       }
+
+      /* Finance Approval Styles */
+      .finance-view {
+        width: 100%;
+        padding: var(--spacing-lg);
+      }
+
+      .page-header {
+        margin-bottom: var(--spacing-2xl);
+        text-align: center;
+      }
+
+      .page-header h1 {
+        font-size: var(--font-size-3xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface);
+        margin: 0;
+      }
+
+      .page-header p {
+        color: var(--on-surface-variant);
+        font-size: var(--font-size-lg);
+        margin: var(--spacing-sm) 0 0 0;
+      }
+
+      .approval-container {
+        background: var(--surface);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-2xl);
+        box-shadow: var(--shadow-1);
+      }
+
+      .approval-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-2xl);
+      }
+
+      .stat-card {
+        background: var(--primary-50);
+        border: 1px solid var(--primary-200);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--primary-600);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .stat-label {
+        font-size: var(--font-size-sm);
+        color: var(--on-surface-variant);
+      }
+
+      .approval-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+      }
+
+      .approval-item {
+        background: var(--surface-variant);
+        border: 1px solid var(--outline-variant);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+      }
+
+      .enrollment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .enrollment-header h3 {
+        margin: 0;
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .status-badge {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+      }
+
+      .status-badge.pending {
+        background: var(--warning-100);
+        color: var(--warning-700);
+      }
+
+      .enrollment-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-xs) 0;
+      }
+
+      .detail-row .label {
+        font-weight: var(--font-weight-medium);
+        color: var(--on-surface-variant);
+      }
+
+      .detail-row .value {
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .detail-row .amount {
+        color: var(--primary-600);
+        font-size: var(--font-size-lg);
+      }
+
+      .approval-actions {
+        display: flex;
+        gap: var(--spacing-md);
+        justify-content: flex-end;
+      }
+
+      .btn {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border: none;
+        border-radius: var(--radius-md);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .btn-info {
+        background: var(--info-100);
+        color: var(--info-700);
+      }
+
+      .btn-success {
+        background: var(--success-500);
+        color: white;
+      }
+
+      .btn-danger {
+        background: var(--error-500);
+        color: white;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-2);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: var(--spacing-2xl);
+        color: var(--on-surface-variant);
+      }
+
+      .empty-state .material-icons {
+        font-size: 48px;
+        color: var(--success-500);
+        margin-bottom: var(--spacing-md);
+      }
+
+      .policy-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      .policy-icon.health {
+        background: linear-gradient(135deg, #10b981, #059669);
+      }
+
+      .policy-icon.life {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      }
+
+      .policy-icon.accident {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+      }
+
+      .policy-icon.critical {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      }
+
+      .policy-icon .material-icons {
+        font-size: 28px;
+      }
     </style>
   `
 })
-export class InsuranceEnrollmentComponent {
+export class InsuranceEnrollmentComponent implements OnInit {
+  constructor(
+    private router: Router, 
+    private mockPayrollService: MockPayrollService, 
+    private toastService: ToastService,
+    private authService: AuthService
+  ) {}
   showDetailsModal = false;
   showUploadModal = false;
   selectedPolicy: any = null;
@@ -346,6 +627,8 @@ export class InsuranceEnrollmentComponent {
   selectedFiles: File[] = [];
   currentEnrollmentType = '';
   enrolledPolicies: any[] = [];
+  isFinanceUser = false;
+  pendingEnrollments: any[] = [];
   
   policyDetails = {
     'mediclaim': {
@@ -471,6 +754,11 @@ export class InsuranceEnrollmentComponent {
     this.currentEnrollmentType = policyType;
     this.selectedEnrollmentPolicy = (this.policyDetails as any)[policyType];
     this.showUploadModal = true;
+    
+    // Scroll to top when modal opens
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
 
   onDocumentSelect(event: any) {
@@ -484,7 +772,7 @@ export class InsuranceEnrollmentComponent {
 
   completeEnrollment() {
     if (this.selectedFiles.length === 0) {
-      alert('Please upload at least one document to complete enrollment.');
+      this.toastService.warning('Documents Required', 'Please upload at least one document to complete enrollment');
       return;
     }
 
@@ -529,13 +817,19 @@ export class InsuranceEnrollmentComponent {
     // Check if already enrolled
     const alreadyEnrolled = this.enrolledPolicies.find(p => p.name === newPolicy.name);
     if (alreadyEnrolled) {
-      alert('You are already enrolled in this policy!');
+      this.toastService.warning('Already Enrolled', 'You are already enrolled in this policy!');
       return;
     }
 
     this.enrolledPolicies.push(newPolicy);
     this.saveEnrolledPolicies();
-    alert(`Successfully enrolled in ${newPolicy.name}! Your policy is now active and you can download your E-Card.`);
+    this.addInsuranceToMockData(policyType);
+    this.toastService.success('Insurance Enrolled', `Successfully enrolled in ${newPolicy.name}! Your policy is now active`);
+    
+    // Redirect to medical claims after enrollment
+    setTimeout(() => {
+      this.router.navigate(['/medical-claims/submit']);
+    }, 2000);
   }
 
   onDocumentUpload(event: any, policyId: number) {
@@ -544,7 +838,7 @@ export class InsuranceEnrollmentComponent {
       const policy = this.enrolledPolicies.find(p => p.id === policyId);
       if (policy) {
         policy.documentsUploaded = true;
-        alert(`Document "${file.name}" uploaded successfully! You can now activate your policy.`);
+        this.toastService.success('Document Uploaded', `Document "${file.name}" uploaded successfully!`);
       }
     }
   }
@@ -553,42 +847,28 @@ export class InsuranceEnrollmentComponent {
     const policy = this.enrolledPolicies.find(p => p.id === policyId);
     if (policy && policy.documentsUploaded) {
       policy.status = 'Active';
-      alert(`${policy.name} has been activated! You can now download your E-Card.`);
+      this.toastService.success('Policy Activated', `${policy.name} has been activated! You can now download your E-Card`);
     }
   }
 
   downloadECard(policyId: number) {
     const policy = this.enrolledPolicies.find(p => p.id === policyId);
     if (policy && policy.status === 'Active') {
-      // Create a mock PDF download
-      const pdfContent = `
-        INSURANCE E-CARD
-        ================
-        
-        Policy Name: ${policy.name}
-        Coverage: ${policy.coverage}
-        Premium: ${policy.premium}
-        Status: ${policy.status}
-        Enrolled Date: ${policy.enrolledDate.toDateString()}
-        
-        Policy ID: ${policy.id}
-        Employee: John Doe
-        
-        This is your digital insurance card.
-        Keep this for your records.
-      `;
+      const pdfContent = `PAYROLL360 INSURANCE E-CARD\n=====================================\n\nPolicy Name: ${policy.name}\nCoverage: ${policy.coverage}\nPremium: ${policy.premium}\nStatus: ${policy.status}\nEnrolled Date: ${new Date(policy.enrolledDate).toDateString()}\n\nPolicy ID: POL${policy.id}\nEmployee: John Doe\nEmployee ID: EMP001\n\nThis is your digital insurance card.\nKeep this for your records.\n\nFor claims, contact: claims@payroll360.com\nEmergency: 1800-123-4567`;
       
-      const blob = new Blob([pdfContent], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${policy.name.replace(/\s+/g, '_')}_ECard.txt`;
-      a.click();
-      window.URL.revokeObjectURL(url);
+      const blob = new Blob([pdfContent], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${policy.name.replace(/\s+/g, '_')}_ECard.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
       
-      alert(`E-Card for ${policy.name} downloaded successfully!`);
+      this.toastService.success('E-Card Downloaded', `E-Card for ${policy.name} downloaded successfully!`);
     } else {
-      alert('Policy must be active to download E-Card. Please upload documents first.');
+      this.toastService.error('Download Failed', 'Policy must be active to download E-Card');
     }
   }
 
@@ -621,7 +901,35 @@ export class InsuranceEnrollmentComponent {
   }
 
   ngOnInit() {
-    this.loadEnrolledPolicies();
+    this.authService.currentUser$.subscribe(user => {
+      this.isFinanceUser = user?.role === 'Finance';
+      if (this.isFinanceUser) {
+        this.loadPendingEnrollments();
+      } else {
+        this.loadEnrolledPolicies();
+      }
+    });
+  }
+
+  loadPendingEnrollments() {
+    this.pendingEnrollments = [
+      {
+        id: 1,
+        employeeName: 'John Doe',
+        policyType: 'Group Mediclaim Policy',
+        coverageAmount: 500000,
+        monthlyPremium: 0,
+        companyContribution: 100
+      },
+      {
+        id: 2,
+        employeeName: 'Alice Smith',
+        policyType: 'Family Health Coverage',
+        coverageAmount: 800000,
+        monthlyPremium: 1500,
+        companyContribution: 70
+      }
+    ];
   }
 
   loadEnrolledPolicies() {
@@ -633,9 +941,40 @@ export class InsuranceEnrollmentComponent {
     localStorage.setItem('enrolledPolicies', JSON.stringify(this.enrolledPolicies));
   }
 
+  addInsuranceToMockData(policyType: string) {
+    const currentUser = this.mockPayrollService.getCurrentUser();
+    if (currentUser) {
+      const data = JSON.parse(localStorage.getItem('payroll-demo-data') || '{}');
+      if (!data.insurances) data.insurances = [];
+      
+      const insuranceTypeMap: any = {
+        'mediclaim': { type: 'Health', provider: 'Star Health', coverage: 500000 },
+        'term-life': { type: 'Life', provider: 'LIC', coverage: 2500000 },
+        'accident': { type: 'Accident', provider: 'HDFC ERGO', coverage: 500000 },
+        'critical-illness': { type: 'Health', provider: 'Max Bupa', coverage: 1500000 }
+      };
+      
+      const insuranceData = insuranceTypeMap[policyType];
+      if (insuranceData) {
+        const newInsurance = {
+          id: Date.now(),
+          employeeId: currentUser.id,
+          insuranceType: insuranceData.type,
+          provider: insuranceData.provider,
+          policyNumber: 'POL' + Date.now(),
+          enrollmentDate: new Date().toISOString().split('T')[0],
+          isActive: true,
+          coverageAmount: insuranceData.coverage
+        };
+        
+        data.insurances.push(newInsurance);
+        localStorage.setItem('payroll-demo-data', JSON.stringify(data));
+      }
+    }
+  }
+
   enrollFromModal() {
     this.closeModal();
-    // Get policy type from selected policy name
     const policyTypeMap: any = {
       'Group Mediclaim': 'mediclaim',
       'Term Life Insurance': 'term-life',
@@ -645,6 +984,33 @@ export class InsuranceEnrollmentComponent {
     const policyType = policyTypeMap[this.selectedPolicy?.name];
     if (policyType) {
       this.enrollPolicy(policyType);
+    }
+  }
+
+  getTotalMonthlyCost(): number {
+    return this.pendingEnrollments.reduce((total, enrollment) => 
+      total + (enrollment.monthlyPremium * enrollment.companyContribution / 100), 0
+    );
+  }
+
+  verifyDocuments(enrollment: any) {
+    this.toastService.info('Document Verification', `Verifying enrollment documents for ${enrollment.employeeName}...`);
+    setTimeout(() => {
+      this.toastService.success('Verification Complete', 'All required documents are valid and complete.');
+    }, 2000);
+  }
+
+  approveEnrollment(enrollment: any) {
+    this.pendingEnrollments = this.pendingEnrollments.filter(e => e.id !== enrollment.id);
+    const monthlyCost = enrollment.monthlyPremium * enrollment.companyContribution / 100;
+    this.toastService.success('Enrollment Approved', `${enrollment.policyType} approved for ${enrollment.employeeName}. Monthly cost: ₹${monthlyCost.toLocaleString()}`);
+  }
+
+  rejectEnrollment(enrollment: any) {
+    const reason = prompt('Enter rejection reason:');
+    if (reason) {
+      this.pendingEnrollments = this.pendingEnrollments.filter(e => e.id !== enrollment.id);
+      this.toastService.warning('Enrollment Rejected', `${enrollment.policyType} rejected for ${enrollment.employeeName}. Reason: ${reason}`);
     }
   }
 }

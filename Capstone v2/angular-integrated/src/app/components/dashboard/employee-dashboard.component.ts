@@ -6,6 +6,8 @@ import { LoanService } from '../../services/loan.service';
 import { ReimbursementService } from '../../services/reimbursement.service';
 import { InsuranceService } from '../../services/insurance.service';
 import { MedicalClaimService } from '../../services/medical-claim.service';
+import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -14,11 +16,12 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
   template: `
     <div class="dashboard-container">
       <div class="dashboard-header">
-        <h1>Employee Dashboard</h1>
-        <p>Welcome back! Here's your overview</p>
-        <div class="demo-controls">
-          <button class="btn-demo-reset" (click)="resetDemoData()" title="Reset Demo Data">
-            🔄 Reset Demo
+        <h1>{{ getDashboardTitle() }}</h1>
+        <p>{{ getDashboardSubtitle() }}</p>
+        <!-- Hidden admin controls - Triple-click header to access -->
+        <div class="admin-controls" (click)="onHeaderClick()" [class.visible]="showAdminControls">
+          <button class="btn-admin-reset" (click)="resetDemoData()" *ngIf="showAdminControls" title="Admin: Reset Demo Data">
+            ⚙️ Reset
           </button>
         </div>
       </div>
@@ -44,8 +47,8 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
             <span class="material-icons">account_balance_wallet</span>
           </div>
           <div class="stat-content">
-            <div class="stat-value">₹{{ totalEarnings | number:'1.0-0' }}</div>
-            <div class="stat-label">Total Earnings</div>
+            <div class="stat-value">{{ getStatValue(0) }}</div>
+            <div class="stat-label">{{ getStatLabel(0) }}</div>
           </div>
         </div>
         <div class="stat-card">
@@ -53,8 +56,8 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
             <span class="material-icons">pending_actions</span>
           </div>
           <div class="stat-content">
-            <div class="stat-value">{{ pendingRequests.length }}</div>
-            <div class="stat-label">Pending Requests</div>
+            <div class="stat-value">{{ getStatValue(1) }}</div>
+            <div class="stat-label">{{ getStatLabel(1) }}</div>
           </div>
         </div>
         <div class="stat-card">
@@ -62,8 +65,8 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
             <span class="material-icons">receipt_long</span>
           </div>
           <div class="stat-content">
-            <div class="stat-value">{{ recentPayrolls.length }}</div>
-            <div class="stat-label">Recent Payrolls</div>
+            <div class="stat-value">{{ getStatValue(2) }}</div>
+            <div class="stat-label">{{ getStatLabel(2) }}</div>
           </div>
         </div>
         <div class="stat-card">
@@ -71,8 +74,8 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
             <span class="material-icons">notifications</span>
           </div>
           <div class="stat-content">
-            <div class="stat-value">{{ recentNotifications.length }}</div>
-            <div class="stat-label">Notifications</div>
+            <div class="stat-value">{{ getStatValue(3) }}</div>
+            <div class="stat-label">{{ getStatLabel(3) }}</div>
           </div>
         </div>
       </div>
@@ -144,43 +147,125 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
           </div>
           <div class="card-body">
             <div class="quick-actions">
-              <a routerLink="/loans/apply" class="action-btn">
-                <div class="action-icon primary">
-                  <span class="material-icons">account_balance</span>
-                </div>
-                <div class="action-text">
-                  <strong>Apply for Loan</strong>
-                  <small>Personal, Home, Education</small>
-                </div>
-              </a>
-              <a routerLink="/reimbursements/submit" class="action-btn">
-                <div class="action-icon secondary">
-                  <span class="material-icons">receipt</span>
-                </div>
-                <div class="action-text">
-                  <strong>Submit Reimbursement</strong>
-                  <small>Travel, Office, Others</small>
-                </div>
-              </a>
-              <a routerLink="/insurance" class="action-btn">
-                <div class="action-icon success">
-                  <span class="material-icons">health_and_safety</span>
-                </div>
-                <div class="action-text">
-                  <strong>Insurance Enrollment</strong>
-                  <small>Health, Life, Critical</small>
-                </div>
-              </a>
-              <a routerLink="/medical-claims/submit" class="action-btn" [class.disabled]="!hasInsurance">
-                <div class="action-icon warning">
-                  <span class="material-icons">local_hospital</span>
-                </div>
-                <div class="action-text">
-                  <strong>Medical Claim</strong>
-                  <small *ngIf="hasInsurance">Hospital bills, Prescriptions</small>
-                  <small *ngIf="!hasInsurance" class="insurance-required">⚠️ Insurance enrollment required</small>
-                </div>
-              </a>
+              <!-- Employee Actions -->
+              <ng-container *ngIf="userRole === 'Employee'">
+                <a routerLink="/loans" class="action-btn">
+                  <div class="action-icon primary">
+                    <span class="material-icons">account_balance</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Apply for Loan</strong>
+                    <small>Personal, Home, Education</small>
+                  </div>
+                </a>
+                <a routerLink="/reimbursements" class="action-btn">
+                  <div class="action-icon secondary">
+                    <span class="material-icons">receipt</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Submit Reimbursement</strong>
+                    <small>Travel, Office, Others</small>
+                  </div>
+                </a>
+                <a routerLink="/insurance" class="action-btn">
+                  <div class="action-icon success">
+                    <span class="material-icons">health_and_safety</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Insurance Enrollment</strong>
+                    <small>Health, Life, Critical</small>
+                  </div>
+                </a>
+                <a routerLink="/medical-claims" class="action-btn">
+                  <div class="action-icon warning">
+                    <span class="material-icons">local_hospital</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Medical Claim</strong>
+                    <small>Hospital bills, Prescriptions</small>
+                  </div>
+                </a>
+              </ng-container>
+              
+              <!-- Manager Actions -->
+              <ng-container *ngIf="userRole === 'Manager'">
+                <a routerLink="/payroll" class="action-btn">
+                  <div class="action-icon primary">
+                    <span class="material-icons">approval</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Approve Payrolls</strong>
+                    <small>Team payroll approvals</small>
+                  </div>
+                </a>
+                <a routerLink="/loans" class="action-btn">
+                  <div class="action-icon secondary">
+                    <span class="material-icons">account_balance</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Review Loan Requests</strong>
+                    <small>Team loan applications</small>
+                  </div>
+                </a>
+                <a routerLink="/reimbursements" class="action-btn">
+                  <div class="action-icon success">
+                    <span class="material-icons">receipt_long</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Process Reimbursements</strong>
+                    <small>Team expense claims</small>
+                  </div>
+                </a>
+                <a routerLink="/insurance" class="action-btn">
+                  <div class="action-icon warning">
+                    <span class="material-icons">health_and_safety</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Insurance Approvals</strong>
+                    <small>Team insurance requests</small>
+                  </div>
+                </a>
+              </ng-container>
+              
+              <!-- Finance Actions -->
+              <ng-container *ngIf="userRole === 'Finance'">
+                <a routerLink="/payroll" class="action-btn">
+                  <div class="action-icon primary">
+                    <span class="material-icons">payments</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Process Payroll</strong>
+                    <small>Final payroll approvals</small>
+                  </div>
+                </a>
+                <a routerLink="/loans" class="action-btn">
+                  <div class="action-icon secondary">
+                    <span class="material-icons">account_balance_wallet</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Loan Disbursements</strong>
+                    <small>Final loan approvals</small>
+                  </div>
+                </a>
+                <a routerLink="/reimbursements" class="action-btn">
+                  <div class="action-icon success">
+                    <span class="material-icons">monetization_on</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Expense Processing</strong>
+                    <small>Final reimbursements</small>
+                  </div>
+                </a>
+                <a routerLink="/medical-claims" class="action-btn">
+                  <div class="action-icon warning">
+                    <span class="material-icons">local_hospital</span>
+                  </div>
+                  <div class="action-text">
+                    <strong>Medical Claims</strong>
+                    <small>Healthcare reimbursements</small>
+                  </div>
+                </a>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -200,39 +285,45 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
       position: relative;
     }
     
-    .demo-controls {
+    .admin-controls {
       position: absolute;
       top: 0;
       right: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
     }
     
-    .btn-demo-reset {
-      padding: 0.5rem 1rem;
-      background: #f59e0b;
+    .admin-controls.visible {
+      opacity: 1;
+    }
+    
+    .btn-admin-reset {
+      padding: 0.25rem 0.5rem;
+      background: #6b7280;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
-      font-size: 0.875rem;
-      font-weight: 500;
+      font-size: 0.75rem;
+      font-weight: 400;
       transition: all 0.2s ease;
     }
     
-    .btn-demo-reset:hover {
-      background: #d97706;
-      transform: translateY(-1px);
+    .btn-admin-reset:hover {
+      background: #4b5563;
     }
 
     .dashboard-header h1 {
-      font-size: var(--font-size-4xl);
-      font-weight: var(--font-weight-bold);
+      font-size: 1.5rem;
+      font-weight: 600;
       color: var(--on-surface);
       margin: 0;
     }
 
     .dashboard-header p {
       color: var(--on-surface-variant);
-      font-size: var(--font-size-lg);
+      font-size: 0.875rem;
       margin: var(--spacing-sm) 0 0 0;
     }
 
@@ -290,16 +381,16 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
     }
 
     .stat-value {
-      font-size: var(--font-size-3xl);
-      font-weight: var(--font-weight-bold);
+      font-size: 1.25rem;
+      font-weight: 600;
       color: var(--on-surface);
       margin-bottom: var(--spacing-xs);
     }
 
     .stat-label {
       color: var(--on-surface-variant);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      font-size: 0.75rem;
+      font-weight: 500;
     }
 
     .dashboard-grid {
@@ -325,16 +416,16 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
 
     .card-title {
       margin: 0;
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-semibold);
+      font-size: 1rem;
+      font-weight: 600;
       color: var(--on-surface);
     }
 
     .view-all-link {
       color: var(--primary-500);
       text-decoration: none;
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      font-size: 0.75rem;
+      font-weight: 500;
     }
 
     .view-all-link:hover {
@@ -362,13 +453,15 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
 
     .payroll-info strong {
       display: block;
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
+      font-size: 0.875rem;
       margin-bottom: var(--spacing-xs);
     }
 
     .payroll-amount {
       color: var(--primary-500);
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
+      font-size: 0.875rem;
     }
 
     .pending-list {
@@ -388,17 +481,19 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
 
     .request-info strong {
       display: block;
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
+      font-size: 0.875rem;
       margin-bottom: var(--spacing-xs);
     }
 
     .request-amount {
       color: var(--warning-500);
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
+      font-size: 0.875rem;
     }
 
     .request-date {
-      font-size: var(--font-size-sm);
+      font-size: 0.75rem;
       color: var(--on-surface-variant);
     }
 
@@ -433,13 +528,14 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
     .notification-icon.error { background: var(--error-500); }
 
     .notification-title {
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
+      font-size: 0.875rem;
       margin-bottom: var(--spacing-xs);
     }
 
     .notification-time {
       color: var(--on-surface-variant);
-      font-size: var(--font-size-sm);
+      font-size: 0.75rem;
     }
 
     .empty-message {
@@ -492,16 +588,19 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
     .action-icon.secondary { background: var(--secondary-500); }
     .action-icon.success { background: var(--success-500); }
     .action-icon.warning { background: var(--warning-500); }
+    .action-icon.info { background: #06b6d4; }
+    .action-icon.purple { background: #8b5cf6; }
 
     .action-text strong {
       display: block;
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
+      font-size: 0.875rem;
       margin-bottom: var(--spacing-xs);
     }
 
     .action-text small {
       color: var(--on-surface-variant);
-      font-size: var(--font-size-sm);
+      font-size: 0.75rem;
     }
 
     .action-btn.disabled {
@@ -517,14 +616,14 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
 
     .insurance-required {
       color: var(--warning-600) !important;
-      font-weight: var(--font-weight-medium);
+      font-weight: 500;
     }
 
     .badge {
       padding: var(--spacing-xs) var(--spacing-sm);
       border-radius: var(--radius-xl);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
+      font-size: 0.625rem;
+      font-weight: 500;
       text-transform: uppercase;
     }
 
@@ -590,16 +689,26 @@ export class EmployeeDashboardComponent implements OnInit {
   loading = true;
   error: string | null = null;
   hasInsurance = false;
+  userRole: string = 'Employee';
+  showAdminControls = false;
+  private clickCount = 0;
+  private clickTimer: any;
 
   constructor(
     private payrollService: PayrollService,
     private loanService: LoanService,
     private reimbursementService: ReimbursementService,
     private insuranceService: InsuranceService,
-    private medicalClaimService: MedicalClaimService
+    private medicalClaimService: MedicalClaimService,
+    private authService: AuthService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
+    this.userRole = this.authService.getUserRole() || 'Employee';
+    this.authService.currentUser$.subscribe(user => {
+      this.userRole = user?.role || 'Employee';
+    });
     this.loadDashboardData();
     this.checkInsuranceStatus();
   }
@@ -620,61 +729,46 @@ export class EmployeeDashboardComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    // Load payroll data with mock fallback
-    this.payrollService.getEmployeePayrolls(1).subscribe({
-      next: (payrolls) => {
-        this.recentPayrolls = payrolls.slice(0, 3).map(p => ({
-          period: this.formatPayrollPeriod(p.payPeriodStart, p.payPeriodEnd),
-          netPay: p.netPay,
-          status: p.status || 'Approved'
-        }));
-        this.totalEarnings = payrolls.reduce((sum, p) => sum + p.netPay, 0);
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Failed to load payroll data:', error);
-        this.loading = false;
-        // Fallback data
+    switch(this.userRole) {
+      case 'Employee':
         this.recentPayrolls = [
-          { period: 'January 2024', netPay: 52000, status: 'Approved' },
-          { period: 'December 2023', netPay: 50000, status: 'Approved' },
-          { period: 'November 2023', netPay: 48000, status: 'Approved' }
+          { period: 'December 2024', netPay: 125000, status: 'Approved' },
+          { period: 'November 2024', netPay: 118000, status: 'Approved' },
+          { period: 'October 2024', netPay: 122000, status: 'Approved' }
         ];
-        this.totalEarnings = 150000;
-      }
-    });
-
-    // Load loan data with mock fallback
-    this.loanService.getLoansByEmployee(1).subscribe({
-      next: (loans) => {
-        const pendingLoans = loans.filter(l => l.status === 'Pending').map(l => ({
-          type: l.loanType + ' Loan',
-          amount: l.amount,
-          submittedDate: new Date(l.appliedDate)
-        }));
-        this.pendingRequests = [...pendingLoans];
-      },
-      error: (error) => {
-        console.error('Failed to load loan data:', error);
-      }
-    });
-
-    // Load reimbursement data with mock fallback
-    this.reimbursementService.getReimbursementsByEmployee(1).subscribe({
-      next: (reimbursements) => {
-        const pendingReimb = reimbursements.filter(r => r.status === 'Pending').map(r => ({
-          type: r.category + ' Reimbursement',
-          amount: r.amount,
-          submittedDate: new Date(r.requestDate)
-        }));
-        this.pendingRequests = [...this.pendingRequests, ...pendingReimb];
-      },
-      error: (error) => {
-        console.error('Failed to load reimbursement data:', error);
-      }
-    });
+        this.totalEarnings = 365000;
+        this.pendingRequests = [
+          { type: 'Home Loan', amount: 2500000, submittedDate: new Date('2024-11-28') },
+          { type: 'Conference Travel', amount: 15000, submittedDate: new Date('2024-12-01') }
+        ];
+        break;
+      case 'Manager':
+        this.recentPayrolls = [
+          { period: 'Team Budget Dec', netPay: 485000, status: 'Allocated' },
+          { period: 'Team Budget Nov', netPay: 462000, status: 'Allocated' },
+          { period: 'Team Budget Oct', netPay: 478000, status: 'Allocated' }
+        ];
+        this.totalEarnings = 485000;
+        this.pendingRequests = [
+          { type: 'John Doe - Personal Loan', amount: 50000, submittedDate: new Date('2024-12-01') },
+          { type: 'Alice Smith - Travel Reimb', amount: 3000, submittedDate: new Date('2024-12-02') }
+        ];
+        break;
+      case 'Finance':
+        this.recentPayrolls = [
+          { period: 'Payroll Disbursement', netPay: 1250000, status: 'Completed' },
+          { period: 'Loan Approvals', netPay: 850000, status: 'Processed' },
+          { period: 'Reimbursements', netPay: 125000, status: 'Completed' }
+        ];
+        this.totalEarnings = 2500000;
+        this.pendingRequests = [
+          { type: 'Manager Approved - Home Loan', amount: 2500000, submittedDate: new Date('2024-11-28') },
+          { type: 'Manager Approved - Conference', amount: 15000, submittedDate: new Date('2024-12-01') }
+        ];
+        break;
+    }
     
-    // Generate notifications
+    this.loading = false;
     this.generateNotifications();
   }
 
@@ -684,45 +778,121 @@ export class EmployeeDashboardComponent implements OnInit {
   }
 
   generateNotifications() {
-    this.recentNotifications = [
-      {
-        type: 'success',
-        icon: 'check_circle',
-        title: 'Travel Reimbursement Approved - ₹5,000',
-        time: new Date(Date.now() - 3600000)
-      },
-      {
-        type: 'info',
-        icon: 'info',
-        title: 'January 2024 Payroll Generated - ₹52,000',
-        time: new Date(Date.now() - 86400000)
-      },
-      {
-        type: 'warning',
-        icon: 'pending',
-        title: 'Personal Loan Application Under Review',
-        time: new Date(Date.now() - 172800000)
-      },
-      {
-        type: 'info',
-        icon: 'account_balance',
-        title: 'New Loan Schemes Available',
-        time: new Date(Date.now() - 259200000)
-      }
-    ];
+    switch(this.userRole) {
+      case 'Employee':
+        this.recentNotifications = [
+          { type: 'success', icon: 'check_circle', title: 'Conference Travel Approved - ₹12,000', time: new Date(Date.now() - 3600000) },
+          { type: 'info', icon: 'info', title: 'December 2024 Payroll Generated - ₹125,000', time: new Date(Date.now() - 86400000) },
+          { type: 'warning', icon: 'pending', title: 'Home Loan Application Under Review', time: new Date(Date.now() - 172800000) },
+          { type: 'info', icon: 'account_balance', title: 'Manager Bonus Scheme Available', time: new Date(Date.now() - 259200000) }
+        ];
+        break;
+      case 'Manager':
+        this.recentNotifications = [
+          { type: 'warning', icon: 'pending_actions', title: '5 Requests Awaiting Your Approval', time: new Date(Date.now() - 1800000) },
+          { type: 'success', icon: 'check_circle', title: 'Team Budget Approved - ₹485,000', time: new Date(Date.now() - 7200000) },
+          { type: 'info', icon: 'group', title: 'New Team Member Added - Sarah Wilson', time: new Date(Date.now() - 86400000) },
+          { type: 'info', icon: 'analytics', title: 'Monthly Team Report Available', time: new Date(Date.now() - 172800000) }
+        ];
+        break;
+      case 'Finance':
+        this.recentNotifications = [
+          { type: 'warning', icon: 'account_balance', title: '12 Payments Pending Final Approval', time: new Date(Date.now() - 900000) },
+          { type: 'success', icon: 'payments', title: 'Payroll Disbursement Completed - ₹1.25M', time: new Date(Date.now() - 3600000) },
+          { type: 'info', icon: 'receipt_long', title: 'Monthly Financial Report Generated', time: new Date(Date.now() - 86400000) },
+          { type: 'success', icon: 'trending_up', title: 'Budget Utilization: 68% - On Track', time: new Date(Date.now() - 172800000) }
+        ];
+        break;
+    }
+  }
+  
+  getDashboardTitle(): string {
+    switch(this.userRole) {
+      case 'Employee': return 'Employee Dashboard';
+      case 'Manager': return 'Manager Dashboard';
+      case 'Finance': return 'Finance Dashboard';
+      default: return 'Employee Dashboard';
+    }
+  }
+  
+  getDashboardSubtitle(): string {
+    switch(this.userRole) {
+      case 'Employee': return 'Access your personal benefits and services';
+      case 'Manager': return 'Manage team approvals and analytics';
+      case 'Finance': return 'Financial operations and approvals';
+      default: return 'Access your personal benefits and services';
+    }
+  }
+  
+  getStatValue(index: number): string {
+    const stats = this.getStatsForRole();
+    return stats[index]?.value || '0';
+  }
+  
+  getStatLabel(index: number): string {
+    const stats = this.getStatsForRole();
+    return stats[index]?.label || '';
+  }
+  
+  private getStatsForRole() {
+    switch(this.userRole) {
+      case 'Employee':
+        return [
+          { value: '₹365,000', label: 'Total Earnings' },
+          { value: '2', label: 'Pending Requests' },
+          { value: '3', label: 'Recent Payrolls' },
+          { value: '4', label: 'Notifications' }
+        ];
+      case 'Manager':
+        return [
+          { value: '₹485,000', label: 'Team Budget' },
+          { value: '5', label: 'Pending Approvals' },
+          { value: '15', label: 'Approved This Month' },
+          { value: '8', label: 'Team Members' }
+        ];
+      case 'Finance':
+        return [
+          { value: '₹2.5M', label: 'Total Disbursed' },
+          { value: '12', label: 'Pending Payments' },
+          { value: '45', label: 'Processed This Month' },
+          { value: '₹850K', label: 'Monthly Budget' }
+        ];
+      default:
+        return [
+          { value: '₹365,000', label: 'Total Earnings' },
+          { value: '2', label: 'Pending Requests' },
+          { value: '3', label: 'Recent Payrolls' },
+          { value: '4', label: 'Notifications' }
+        ];
+    }
+  }
+  
+  onHeaderClick() {
+    this.clickCount++;
+    
+    if (this.clickTimer) {
+      clearTimeout(this.clickTimer);
+    }
+    
+    if (this.clickCount === 3) {
+      this.showAdminControls = true;
+      this.clickCount = 0;
+      // Hide after 10 seconds
+      setTimeout(() => {
+        this.showAdminControls = false;
+      }, 10000);
+    } else {
+      this.clickTimer = setTimeout(() => {
+        this.clickCount = 0;
+      }, 1000);
+    }
   }
   
   resetDemoData() {
     if (confirm('Reset all demo data? This will clear all applications and start fresh.')) {
-      // Reset via mock service if available
-      const mockService = (this.loanService as any).mockService;
-      if (mockService && mockService.resetDemoData) {
-        mockService.resetDemoData();
-        alert('✅ Demo data reset successfully! Please refresh the page.');
-        window.location.reload();
-      } else {
-        alert('Demo reset not available in current mode.');
-      }
+      localStorage.clear();
+      this.toastService.success('Demo Reset Complete', 'All demo data has been reset successfully! Page will refresh.');
+      setTimeout(() => window.location.reload(), 2000);
     }
   }
 }

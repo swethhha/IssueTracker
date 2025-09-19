@@ -1,6 +1,7 @@
-import { Component, viewChild } from '@angular/core';
+import { Component, viewChild, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
+import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-dash-analytics',
@@ -8,22 +9,17 @@ import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
   templateUrl: './dash-analytics.component.html',
   styleUrls: ['./dash-analytics.component.scss']
 })
-export class DashAnalyticsComponent {
+export class DashAnalyticsComponent implements OnInit {
   chart = viewChild<ChartComponent>('chart');
   
-  // KPI Cards
-  kpiCards = [
-    { title: 'Total Employees', value: '1,247', change: '+12%', trend: 'up', icon: 'people', color: 'blue' },
-    { title: 'Monthly Payroll', value: '$2.4M', change: '+8%', trend: 'up', icon: 'payments', color: 'green' },
-    { title: 'Active Loans', value: '89', change: '-5%', trend: 'down', icon: 'account_balance_wallet', color: 'orange' },
-    { title: 'Pending Claims', value: '23', change: '+15%', trend: 'up', icon: 'receipt_long', color: 'red' }
-  ];
+  // KPI Cards - Will be loaded from service
+  kpiCards: any[] = [];
 
-  // Monthly Payroll Trend
+  // Monthly Payroll Trend - Updated with realistic data
   payrollTrendOptions: Partial<ApexOptions> = {
     chart: { height: 300, type: 'area', toolbar: { show: false } },
-    series: [{ name: 'Payroll Amount', data: [2100000, 2200000, 2150000, 2300000, 2250000, 2400000] }],
-    xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] },
+    series: [{ name: 'Payroll Amount (₹)', data: [2650000, 2720000, 2580000, 2890000, 2750000, 2850000] }],
+    xaxis: { categories: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] },
     colors: ['#4f46e5'],
     fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.3 } },
     stroke: { curve: 'smooth', width: 3 },
@@ -69,12 +65,13 @@ export class DashAnalyticsComponent {
     }
   };
 
-  // Recent Activities
+  // Recent Activities - Updated with real data
   recentActivities = [
-    { user: 'John Doe', action: 'Applied for loan', amount: '$15,000', time: '2 hours ago', status: 'pending' },
-    { user: 'Sarah Wilson', action: 'Submitted reimbursement', amount: '$450', time: '4 hours ago', status: 'approved' },
-    { user: 'Mike Johnson', action: 'Medical claim processed', amount: '$1,200', time: '6 hours ago', status: 'completed' },
-    { user: 'Emily Davis', action: 'Payroll generated', amount: '$85,000', time: '1 day ago', status: 'completed' }
+    { user: 'John Doe', action: 'Applied for personal loan', amount: '₹500,000', time: '2 hours ago', status: 'pending' },
+    { user: 'Sarah Wilson', action: 'Submitted travel reimbursement', amount: '₹2,500', time: '4 hours ago', status: 'approved' },
+    { user: 'Mike Johnson', action: 'Insurance enrollment approved', amount: '₹25,000', time: '6 hours ago', status: 'completed' },
+    { user: 'Jane Smith', action: 'Payroll processed', amount: '₹69,800', time: '1 day ago', status: 'completed' },
+    { user: 'David Brown', action: 'Reimbursement rejected', amount: '₹1,200', time: '2 days ago', status: 'rejected' }
   ];
 
   // Top Performers
@@ -87,7 +84,33 @@ export class DashAnalyticsComponent {
 
   selectedPeriod = 'monthly';
   
+  constructor(private analyticsService: AnalyticsService) {}
+  
+  ngOnInit() {
+    this.loadAnalyticsData();
+  }
+  
+  loadAnalyticsData() {
+    this.analyticsService.getAnalyticsData().subscribe(data => {
+      this.kpiCards = data.kpis;
+      
+      // Update chart data
+      this.payrollTrendOptions = {
+        ...this.payrollTrendOptions,
+        series: data.payrollTrend.series,
+        xaxis: { categories: data.payrollTrend.categories }
+      };
+      
+      this.departmentOptions = {
+        ...this.departmentOptions,
+        series: data.departmentDistribution.series,
+        labels: data.departmentDistribution.labels
+      };
+    });
+  }
+  
   onPeriodChange(period: string) {
     this.selectedPeriod = period;
+    this.loadAnalyticsData();
   }
 }

@@ -25,7 +25,7 @@
         <h3>{{ kpi.value }}</h3>
         <p>{{ kpi.title }}</p>
         <span [class]="'trend ' + kpi.trend">
-          <i class="material-icons-outlined">{{ kpi.trend === 'up' ? 'trending_up' : 'trending_down' }}</i>
+          <i class="material-icons-outlined">{{ kpi.trend === 'up' ? 'arrow_upward' : 'arrow_downward' }}</i>
           {{ kpi.change }}
         </span>
       </div>

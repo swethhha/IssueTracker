@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-finance-approvals',
@@ -73,6 +74,8 @@ export class FinanceApprovalsComponent implements OnInit {
   managerApprovedLoans: any[] = [];
   managerApprovedReimbursements: any[] = [];
 
+  constructor(private toastService: ToastService) {}
+
   ngOnInit() {
     this.loadManagerApprovedItems();
   }
@@ -101,7 +104,7 @@ export class FinanceApprovalsComponent implements OnInit {
 
   finalApprove(item: any) {
     console.log(`Final approving ${this.activeTab} for ${item.employeeName}`);
-    alert(`${this.activeTab} final approved for ${item.employeeName}!`);
+    this.toastService.success('Final Approval Complete', `${this.activeTab} final approved for ${item.employeeName}!`);
     this.loadManagerApprovedItems();
   }
 
@@ -109,7 +112,7 @@ export class FinanceApprovalsComponent implements OnInit {
     const reason = prompt('Enter rejection reason:');
     if (reason) {
       console.log(`Final rejecting ${this.activeTab} for ${item.employeeName}: ${reason}`);
-      alert(`${this.activeTab} rejected for ${item.employeeName}.`);
+      this.toastService.warning('Request Rejected', `${this.activeTab} rejected for ${item.employeeName}.`);
       this.loadManagerApprovedItems();
     }
   }

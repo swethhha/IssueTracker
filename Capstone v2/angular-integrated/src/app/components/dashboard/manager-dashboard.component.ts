@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PayrollService } from '../../services/payroll.service';
 import { LoanService } from '../../services/loan.service';
 import { ReimbursementService } from '../../services/reimbursement.service';
+import { ToastService } from '../../services/toast.service';
+import { MockPayrollService } from '../../services/mock-payroll.service';
 
 @Component({
   selector: 'app-manager-dashboard',
@@ -11,7 +13,7 @@ import { ReimbursementService } from '../../services/reimbursement.service';
   template: `
     <div class="content-header">
       <div class="page-container">
-        <h3>Manager Dashboard</h3>
+        <h1>Manager Dashboard</h1>
         <p>Manage approvals and view team analytics</p>
       </div>
     </div>
@@ -65,6 +67,9 @@ import { ReimbursementService } from '../../services/reimbursement.service';
                 <button class="tab-btn" [class.active]="activeTab === 'reimbursements'" (click)="activeTab = 'reimbursements'">
                   Reimbursements ({{ pendingReimbursements.length }})
                 </button>
+                <button class="tab-btn" [class.active]="activeTab === 'medicalClaims'" (click)="activeTab = 'medicalClaims'">
+                  Medical Claims ({{ pendingMedicalClaims.length }})
+                </button>
               </div>
 
               <div class="approval-content">
@@ -107,6 +112,19 @@ import { ReimbursementService } from '../../services/reimbursement.service';
                   </div>
                 </div>
 
+                <div *ngIf="activeTab === 'medicalClaims'" class="approval-list">
+                  <div class="approval-item" *ngFor="let item of pendingMedicalClaims">
+                    <div class="approval-info">
+                      <h5>{{ item.employeeName }}</h5>
+                      <p>{{ item.treatmentType }} | Amount: {{ item.claimAmount | currency:'INR':'symbol':'1.0-0' }}</p>
+                    </div>
+                    <div class="approval-actions">
+                      <button class="btn btn-success btn-sm" (click)="approveMedicalClaim(item.claimId)">Approve</button>
+                      <button class="btn btn-danger btn-sm" (click)="rejectMedicalClaim(item.claimId)">Reject</button>
+                    </div>
+                  </div>
+                </div>
+
                 <div *ngIf="getCurrentItems().length === 0" class="text-center">
                   <p>No pending {{ activeTab }} approvals</p>
                 </div>
@@ -123,14 +141,14 @@ import { ReimbursementService } from '../../services/reimbursement.service';
     </div>
   `,
   styles: [`
-    .content-header h3 {
-      font-size: 1.5rem;
+    .content-header h1 {
+      font-size: 1.25rem;
       font-weight: 600;
       margin: 0;
     }
 
     .content-header p {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       color: var(--text-secondary);
       margin: 0.25rem 0 0 0;
     }
@@ -169,14 +187,14 @@ import { ReimbursementService } from '../../services/reimbursement.service';
     }
 
     .stat-value {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--text-primary);
       margin: 0;
     }
 
     .stat-label {
-      font-size: 0.75rem;
+      font-size: 0.625rem;
       color: var(--text-secondary);
       margin: 0.25rem 0 0 0;
     }
@@ -195,7 +213,7 @@ import { ReimbursementService } from '../../services/reimbursement.service';
       background: var(--bg-secondary);
       border-radius: var(--radius-md);
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.625rem;
       transition: all 0.2s ease;
     }
 
@@ -227,13 +245,13 @@ import { ReimbursementService } from '../../services/reimbursement.service';
 
     .approval-info h5 {
       margin: 0 0 0.25rem 0;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       font-weight: 600;
     }
 
     .approval-info p {
       margin: 0;
-      font-size: 0.75rem;
+      font-size: 0.625rem;
       color: var(--text-secondary);
     }
 
@@ -251,14 +269,14 @@ import { ReimbursementService } from '../../services/reimbursement.service';
     }
 
     .chart-container h4 {
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 600;
       color: var(--text-primary);
       margin: 0 0 1rem 0;
     }
 
     .card-header h4 {
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 600;
       margin: 0;
     }
@@ -273,11 +291,14 @@ export class ManagerDashboardComponent implements OnInit {
   pendingPayrolls: any[] = [];
   pendingLoans: any[] = [];
   pendingReimbursements: any[] = [];
+  pendingMedicalClaims: any[] = [];
 
   constructor(
     private payrollService: PayrollService,
     private loanService: LoanService,
-    private reimbursementService: ReimbursementService
+    private reimbursementService: ReimbursementService,
+    private toastService: ToastService,
+    private mockService: MockPayrollService
   ) {}
 
   ngOnInit() {
@@ -312,10 +333,24 @@ export class ManagerDashboardComponent implements OnInit {
       }
     });
 
-    // Mock payroll data for demo
+    // Load pending medical claims
+    this.mockService.getPendingMedicalClaimApprovals().subscribe({
+      next: (claims) => {
+        this.pendingMedicalClaims = claims;
+        this.updateStats();
+      },
+      error: (error) => {
+        console.error('Failed to load pending medical claims:', error);
+        this.pendingMedicalClaims = [];
+        this.updateStats();
+      }
+    });
+
+    // Mock payroll data for demo - Manager view
     this.pendingPayrolls = [
       { id: 1, employeeName: 'John Doe', payPeriodStart: new Date(), netPay: 52000 },
-      { id: 2, employeeName: 'Alice Smith', payPeriodStart: new Date(), netPay: 62000 }
+      { id: 2, employeeName: 'Mike Johnson', payPeriodStart: new Date(), netPay: 47000 },
+      { id: 3, employeeName: 'Sarah Wilson', payPeriodStart: new Date(), netPay: 58000 }
     ];
     
     this.updateStats();
@@ -324,10 +359,10 @@ export class ManagerDashboardComponent implements OnInit {
 
 
   updateStats() {
-    this.totalPendingApprovals = this.pendingPayrolls.length + this.pendingLoans.length + this.pendingReimbursements.length;
-    this.totalApprovalsThisMonth = 28;
-    this.teamSize = 12;
-    this.rejectedCount = 2;
+    this.totalPendingApprovals = this.pendingPayrolls.length + this.pendingLoans.length + this.pendingReimbursements.length + this.pendingMedicalClaims.length;
+    this.totalApprovalsThisMonth = 15;
+    this.teamSize = 8;
+    this.rejectedCount = 1;
   }
 
   getCurrentItems() {
@@ -335,6 +370,7 @@ export class ManagerDashboardComponent implements OnInit {
       case 'payroll': return this.pendingPayrolls;
       case 'loans': return this.pendingLoans;
       case 'reimbursements': return this.pendingReimbursements;
+      case 'medicalClaims': return this.pendingMedicalClaims;
       default: return [];
     }
   }
@@ -344,7 +380,7 @@ export class ManagerDashboardComponent implements OnInit {
     this.pendingPayrolls = this.pendingPayrolls.filter(p => p.id !== id);
     this.totalApprovalsThisMonth++;
     this.updateStats();
-    alert('Payroll approved successfully!');
+    this.toastService.success('Payroll Approved', 'Payroll has been approved successfully');
   }
 
   rejectPayroll(id: number) {
@@ -353,7 +389,7 @@ export class ManagerDashboardComponent implements OnInit {
       this.pendingPayrolls = this.pendingPayrolls.filter(p => p.id !== id);
       this.rejectedCount++;
       this.updateStats();
-      alert('Payroll rejected successfully!');
+      this.toastService.success('Payroll Rejected', 'Payroll has been rejected successfully');
     }
   }
 
@@ -363,14 +399,14 @@ export class ManagerDashboardComponent implements OnInit {
         this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
         this.totalApprovalsThisMonth++;
         this.updateStats();
-        alert('Loan approved and sent to Finance for final approval!');
+        this.toastService.success('Loan Approved', 'Loan has been approved and sent to Finance for final approval');
       },
       error: () => {
         // Fallback for demo
         this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
         this.totalApprovalsThisMonth++;
         this.updateStats();
-        alert('Loan approved and sent to Finance for final approval!');
+        this.toastService.success('Loan Approved', 'Loan has been approved and sent to Finance for final approval (Demo Mode)');
       }
     });
   }
@@ -383,14 +419,14 @@ export class ManagerDashboardComponent implements OnInit {
           this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
           this.rejectedCount++;
           this.updateStats();
-          alert('Loan rejected successfully!');
+          this.toastService.success('Loan Rejected', 'Loan has been rejected successfully');
         },
         error: () => {
           // Fallback for demo
           this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
           this.rejectedCount++;
           this.updateStats();
-          alert('Loan rejected successfully!');
+          this.toastService.success('Loan Rejected', 'Loan has been rejected successfully (Demo Mode)');
         }
       });
     }
@@ -402,14 +438,14 @@ export class ManagerDashboardComponent implements OnInit {
         this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
         this.totalApprovalsThisMonth++;
         this.updateStats();
-        alert('Reimbursement approved and sent to Finance for payment!');
+        this.toastService.success('Reimbursement Approved', 'Reimbursement has been approved and sent to Finance for payment');
       },
       error: () => {
         // Fallback for demo
         this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
         this.totalApprovalsThisMonth++;
         this.updateStats();
-        alert('Reimbursement approved and sent to Finance for payment!');
+        this.toastService.success('Reimbursement Approved', 'Reimbursement has been approved and sent to Finance for payment (Demo Mode)');
       }
     });
   }
@@ -422,14 +458,55 @@ export class ManagerDashboardComponent implements OnInit {
           this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
           this.rejectedCount++;
           this.updateStats();
-          alert('Reimbursement rejected successfully!');
+          this.toastService.success('Reimbursement Rejected', 'Reimbursement has been rejected successfully');
         },
         error: () => {
           // Fallback for demo
           this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
           this.rejectedCount++;
           this.updateStats();
-          alert('Reimbursement rejected successfully!');
+          this.toastService.success('Reimbursement Rejected', 'Reimbursement has been rejected successfully (Demo Mode)');
+        }
+      });
+    }
+  }
+
+  approveMedicalClaim(id: number) {
+    this.mockService.approveMedicalClaimByManager(id, 'Approved by Manager - Sent to Finance for final approval').subscribe({
+      next: () => {
+        const claim = this.pendingMedicalClaims.find(c => c.claimId === id);
+        this.pendingMedicalClaims = this.pendingMedicalClaims.filter(c => c.claimId !== id);
+        this.totalApprovalsThisMonth++;
+        this.updateStats();
+        this.toastService.success('Medical Claim Approved', `₹${claim?.claimAmount || 0} medical claim approved and sent to Finance for final approval`);
+      },
+      error: () => {
+        // Fallback for demo
+        const claim = this.pendingMedicalClaims.find(c => c.claimId === id);
+        this.pendingMedicalClaims = this.pendingMedicalClaims.filter(c => c.claimId !== id);
+        this.totalApprovalsThisMonth++;
+        this.updateStats();
+        this.toastService.success('Medical Claim Approved', `₹${claim?.claimAmount || 0} medical claim approved and sent to Finance for final approval (Demo Mode)`);
+      }
+    });
+  }
+
+  rejectMedicalClaim(id: number) {
+    const reason = prompt('Enter rejection reason:');
+    if (reason) {
+      this.mockService.rejectMedicalClaimByManager(id, reason).subscribe({
+        next: () => {
+          this.pendingMedicalClaims = this.pendingMedicalClaims.filter(c => c.claimId !== id);
+          this.rejectedCount++;
+          this.updateStats();
+          this.toastService.warning('Medical Claim Rejected', 'Medical claim has been rejected and employee has been notified');
+        },
+        error: () => {
+          // Fallback for demo
+          this.pendingMedicalClaims = this.pendingMedicalClaims.filter(c => c.claimId !== id);
+          this.rejectedCount++;
+          this.updateStats();
+          this.toastService.warning('Medical Claim Rejected', 'Medical claim has been rejected and employee has been notified (Demo Mode)');
         }
       });
     }

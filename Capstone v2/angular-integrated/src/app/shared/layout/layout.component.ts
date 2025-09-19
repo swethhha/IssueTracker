@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastContainerComponent } from '../components/toast-container.component';
+import { ToastService } from '../../services/toast.service';
+import { MockPayrollService } from '../../services/mock-payroll.service';
 
 @Component({
   selector: 'app-layout',
@@ -34,6 +36,9 @@ import { ToastContainerComponent } from '../components/toast-container.component
               <span class="user-role">{{ currentUser?.role || 'Employee' }}</span>
             </div>
           </div>
+          <button class="refresh-btn" (click)="onRefreshClick()" title="Refresh">
+            <span class="material-icons">refresh</span>
+          </button>
           <button class="logout-btn" (click)="logout()" title="Logout">
             <span class="material-icons">logout</span>
           </button>
@@ -76,6 +81,7 @@ import { ToastContainerComponent } from '../components/toast-container.component
               <span class="material-icons">track_changes</span>
               <span class="nav-text">Track Requests</span>
             </a>
+
           </div>
 
           <div class="nav-section" *ngIf="hasRole(['Manager'])">
@@ -91,55 +97,44 @@ import { ToastContainerComponent } from '../components/toast-container.component
             </a>
           </div>
 
-          <div class="nav-section" *ngIf="hasRole(['FinanceAdmin'])">
+          <div class="nav-section" *ngIf="hasRole(['Finance'])">
             <div class="nav-title">Finance Dashboard</div>
-            <a routerLink="/finance" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-              <span class="material-icons">analytics</span>
-              <span class="nav-text">Dashboard</span>
+            <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+              <span class="material-icons">dashboard</span>
+              <span class="nav-text">Finance Dashboard</span>
             </a>
           </div>
 
-          <div class="nav-section" *ngIf="hasRole(['FinanceAdmin'])">
-            <div class="nav-title">Approvals</div>
-            <a routerLink="/finance/payroll-approvals" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-              <span class="material-icons">payments</span>
-              <span class="nav-text">Payroll Approvals</span>
-            </a>
-            <a routerLink="/finance/loan-approvals" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-              <span class="material-icons">account_balance</span>
+          <div class="nav-section" *ngIf="hasRole(['Finance'])">
+            <div class="nav-title">Final Approvals</div>
+            <a routerLink="/loans" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+              <span class="material-icons">account_balance_wallet</span>
               <span class="nav-text">Loan Approvals</span>
+              <span class="nav-badge" *ngIf="financeApprovals > 0">{{ financeApprovals }}</span>
             </a>
-            <a routerLink="/finance/reimbursement-approvals" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/reimbursements" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
               <span class="material-icons">receipt</span>
               <span class="nav-text">Reimbursement Approvals</span>
             </a>
-            <a routerLink="/finance/insurance-approvals" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-              <span class="material-icons">health_and_safety</span>
-              <span class="nav-text">Insurance Approvals</span>
-            </a>
-            <a routerLink="/finance/medical-approvals" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/medical-claims" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
               <span class="material-icons">local_hospital</span>
-              <span class="nav-text">Medical Approvals</span>
+              <span class="nav-text">Medical Claims</span>
+            </a>
+            <a routerLink="/payroll" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+              <span class="material-icons">payments</span>
+              <span class="nav-text">Payroll Validation</span>
+            </a>
+            <a routerLink="/insurance" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+              <span class="material-icons">health_and_safety</span>
+              <span class="nav-text">Insurance Enrollment</span>
             </a>
           </div>
 
-          <div class="nav-section" *ngIf="hasRole(['FinanceAdmin'])">
+          <div class="nav-section" *ngIf="hasRole(['Finance'])">
             <div class="nav-title">Reports & Analytics</div>
-            <a routerLink="/finance/reports" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+            <a routerLink="/request-tracker" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
               <span class="material-icons">assessment</span>
               <span class="nav-text">Financial Reports</span>
-            </a>
-          </div>
-
-          <div class="nav-section" *ngIf="hasRole(['FinanceAdmin'])">
-            <div class="nav-title">Employee Services</div>
-            <a routerLink="/finance/apply-loan" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-              <span class="material-icons">account_balance_wallet</span>
-              <span class="nav-text">Apply Loan</span>
-            </a>
-            <a routerLink="/finance/apply-reimbursement" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-              <span class="material-icons">receipt</span>
-              <span class="nav-text">Apply Reimbursement</span>
             </a>
           </div>
         </nav>
@@ -254,7 +249,7 @@ import { ToastContainerComponent } from '../components/toast-container.component
       line-height: 1.2;
     }
 
-    .logout-btn {
+    .refresh-btn, .logout-btn {
       background: none;
       border: 1px solid #ddd;
       padding: 0.5rem;
@@ -267,13 +262,19 @@ import { ToastContainerComponent } from '../components/toast-container.component
       justify-content: center;
     }
 
+    .refresh-btn:hover {
+      background-color: #e0f2fe;
+      border-color: #81d4fa;
+      color: #0277bd;
+    }
+
     .logout-btn:hover {
       background-color: #fee2e2;
       border-color: #fca5a5;
       color: #dc2626;
     }
 
-    .logout-btn .material-icons {
+    .refresh-btn .material-icons, .logout-btn .material-icons {
       font-size: 20px;
     }
 
@@ -523,10 +524,14 @@ export class LayoutComponent implements OnInit {
   financeApprovals = 0;
   sidebarCollapsed = true;
   isMobile = false;
+  private refreshClickCount = 0;
+  private refreshClickTimer: any;
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService,
+    private mockService: MockPayrollService
   ) {
     this.checkMobile();
   }
@@ -543,6 +548,14 @@ export class LayoutComponent implements OnInit {
       this.checkMobile();
       this.initializeSidebar();
     });
+    
+    // Listen for keyboard shortcut Ctrl+Shift+R
+    window.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && event.shiftKey && event.key === 'R') {
+        event.preventDefault();
+        this.resetDemoData();
+      }
+    });
   }
 
   private checkMobile() {
@@ -555,7 +568,10 @@ export class LayoutComponent implements OnInit {
   }
 
   hasRole(roles: string[]): boolean {
-    return roles.includes(this.currentUser?.role);
+    const userRole = this.currentUser?.role;
+    // Map FinanceAdmin to Finance for UI compatibility
+    const mappedRole = userRole === 'FinanceAdmin' ? 'Finance' : userRole;
+    return roles.includes(mappedRole);
   }
 
   loadNotificationCounts() {
@@ -564,7 +580,11 @@ export class LayoutComponent implements OnInit {
     }
     
     if (this.hasRole(['Finance'])) {
-      this.financeApprovals = 3;
+      const data = this.mockService.getData();
+      const pendingLoans = data.loans?.filter((l: any) => 
+        l.managerApproved === true && l.financeApproved !== true && l.financeApproved !== false
+      ) || [];
+      this.financeApprovals = pendingLoans.length;
     }
   }
 
@@ -585,8 +605,32 @@ export class LayoutComponent implements OnInit {
     }
   }
 
+  onRefreshClick() {
+    this.refreshClickCount++;
+    
+    if (this.refreshClickTimer) {
+      clearTimeout(this.refreshClickTimer);
+    }
+    
+    if (this.refreshClickCount === 4) {
+      this.resetDemoData();
+    } else {
+      this.refreshClickTimer = setTimeout(() => {
+        this.refreshClickCount = 0;
+      }, 2000);
+    }
+  }
+  
+  resetDemoData() {
+    this.mockService.resetDemoData();
+    this.toastService.success('Demo Reset', 'All demo data has been reset successfully!');
+    this.refreshClickCount = 0;
+    // No page reload - just refresh the current view
+  }
+
   logout() {
     this.authService.logout();
+    this.toastService.info('Logged Out', 'You have been successfully logged out');
     this.router.navigate(['/login']);
   }
 }

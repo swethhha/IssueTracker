@@ -137,7 +137,7 @@ export class ToastContainerComponent implements OnInit {
   }
 
   removeToast(id: string) {
-    this.toastService.removeToast(id);
+    this.toastService.remove(id);
   }
 
   getIcon(type: string): string {

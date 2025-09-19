@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-manager-approvals',
@@ -87,7 +88,8 @@ export class ManagerApprovalsComponent implements OnInit {
   insuranceApprovals: any[] = [];
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -145,11 +147,11 @@ export class ManagerApprovalsComponent implements OnInit {
     const apiUrl = 'https://localhost:7101/api';
     this.http.post(`${apiUrl}/${type}s/${id}/approve`, {}).subscribe({
       next: () => {
-        alert(`${type} approved successfully!`);
+        this.toastService.success('Approved', `${type} approved successfully!`);
         this.removeFromList(type, id);
       },
       error: () => {
-        alert(`${type} approved (demo mode)`);
+        this.toastService.success('Approved (Demo)', `${type} approved and forwarded to Finance team`);
         this.removeFromList(type, id);
       }
     });
@@ -159,11 +161,11 @@ export class ManagerApprovalsComponent implements OnInit {
     const apiUrl = 'https://localhost:7101/api';
     this.http.post(`${apiUrl}/${type}s/${id}/reject`, {}).subscribe({
       next: () => {
-        alert(`${type} rejected successfully!`);
+        this.toastService.warning('Rejected', `${type} rejected successfully!`);
         this.removeFromList(type, id);
       },
       error: () => {
-        alert(`${type} rejected (demo mode)`);
+        this.toastService.warning('Rejected (Demo)', `${type} rejected and employee notified`);
         this.removeFromList(type, id);
       }
     });

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReimbursementService } from '../../services/reimbursement.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-reimbursement-request',
@@ -234,7 +235,8 @@ export class ReimbursementRequestComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private reimbursementService: ReimbursementService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.reimbursementForm = this.fb.group({
       category: ['', Validators.required],
@@ -261,13 +263,13 @@ export class ReimbursementRequestComponent implements OnInit {
     for (const file of files) {
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+        this.toastService.error('File Too Large', `File ${file.name} is too large. Maximum size is 5MB.`);
         continue;
       }
       
       // Check if we already have 5 files
       if (this.selectedFiles.length >= 5) {
-        alert('Maximum 5 files allowed');
+        this.toastService.warning('File Limit Reached', 'Maximum 5 files allowed');
         break;
       }
       
@@ -314,19 +316,19 @@ export class ReimbursementRequestComponent implements OnInit {
 
         await this.reimbursementService.requestReimbursement(formData as any).toPromise();
         
-        alert('Reimbursement request submitted successfully!');
+        this.toastService.success('Request Submitted', 'Reimbursement request submitted successfully! You will be notified once reviewed.');
         this.router.navigate(['/reimbursements']);
         
       } catch (error) {
         console.error('Error submitting reimbursement request:', error);
-        alert('Error submitting request. Please try again.');
+        this.toastService.error('Submission Failed', 'Error submitting request. Please try again.');
       } finally {
         this.isSubmitting = false;
       }
     } else {
       this.markFormGroupTouched();
       if (this.selectedFiles.length === 0) {
-        alert('Please upload at least one receipt');
+        this.toastService.warning('Receipts Required', 'Please upload at least one receipt before submitting.');
       }
     }
   }

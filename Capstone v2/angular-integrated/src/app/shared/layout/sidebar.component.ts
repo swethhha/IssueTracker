@@ -147,9 +147,8 @@ export class SidebarComponent implements OnInit {
       ],
       financeadmin: [
         { label: 'Dashboard', route: '/finance/dashboard', icon: '📊' },
-        { label: 'Approvals', route: '/finance/approvals', icon: '✅' },
-        { label: 'Reports', route: '/finance/reports', icon: '📈' },
-        { label: 'All Requests', route: '/finance/requests', icon: '📋' }
+        { label: 'Final Approvals', route: '/finance/approvals', icon: '✅' },
+        { label: 'Reports & Analytics', route: '/finance/reports', icon: '📈' }
       ],
       admin: [
         { label: 'Dashboard', route: '/admin/dashboard', icon: '📊' },

@@ -24,6 +24,7 @@ export const routes: Routes = [
       { path: 'request-tracker', loadComponent: () => import('./components/employee/request-tracker.component').then(m => m.RequestTrackerComponent) },
       { path: 'approvals', loadComponent: () => import('./components/manager/approval-center.component').then(m => m.ApprovalCenterComponent) },
       { path: 'analytics', loadComponent: () => import('./components/analytics/analytics-dashboard.component').then(m => m.AnalyticsDashboardComponent) },
+      { path: 'workflow', loadComponent: () => import('./components/workflow/request-workflow.component').then(m => m.RequestWorkflowComponent) },
       {
         path: 'finance',
         loadChildren: () => import('./components/finance/finance-routing').then(m => m.financeRoutes)

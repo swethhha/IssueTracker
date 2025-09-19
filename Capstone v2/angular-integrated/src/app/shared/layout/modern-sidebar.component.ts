@@ -188,9 +188,8 @@ export class ModernSidebarComponent implements OnInit {
       ],
       financeadmin: [
         { label: 'Dashboard', route: '/finance/dashboard', icon: '📊' },
-        { label: 'Payrolls', route: '/finance/payrolls', icon: '💰' },
-        { label: 'Requests', route: '/finance/requests', icon: '📋' },
-        { label: 'Notifications', route: '/finance/notifications', icon: '🔔' },
+        { label: 'Final Approvals', route: '/finance/approvals', icon: '✅' },
+        { label: 'Reports', route: '/finance/reports', icon: '📈' },
         { label: 'Settings', route: '/finance/settings', icon: '⚙️' }
       ],
       admin: [

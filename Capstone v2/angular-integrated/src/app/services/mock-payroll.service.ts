@@ -29,6 +29,10 @@ export interface MockLoan {
   financeComments?: string;
   managerId?: number;
   financeId?: number;
+  submittedAt?: string;
+  managerApprovedAt?: string;
+  financeApprovedAt?: string;
+  documents?: string[];
 }
 
 export interface MockReimbursement {
@@ -46,6 +50,10 @@ export interface MockReimbursement {
   financeComments?: string;
   managerId?: number;
   financeId?: number;
+  submittedAt?: string;
+  managerApprovedAt?: string;
+  financeApprovedAt?: string;
+  documents?: string[];
 }
 
 export interface MockInsurance {
@@ -72,6 +80,14 @@ export interface MockMedicalClaim {
   managerApproved?: boolean | null;
   financeApproved?: boolean | null;
   createdAt: string;
+  managerComments?: string;
+  financeComments?: string;
+  managerId?: number;
+  financeId?: number;
+  submittedAt?: string;
+  managerApprovedAt?: string;
+  financeApprovedAt?: string;
+  documents?: string[];
 }
 
 export interface MockPayroll {
@@ -104,13 +120,19 @@ export class MockPayrollService {
 
   private initializeData() {
     if (!localStorage.getItem(this.STORAGE_KEY)) {
+      const today = new Date();
+      const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+      const twoDaysAgo = new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000);
+      const threeDaysAgo = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
+      const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+      
       const initialData = {
         users: [
-          { id: 1, username: 'john.doe', password: 'password', fullName: 'John Doe', email: 'john.doe@company.com', role: 'Employee', department: 'IT' },
-          { id: 2, username: 'jane.manager', password: 'password', fullName: 'Jane Manager', email: 'jane.manager@company.com', role: 'Manager', department: 'IT' },
-          { id: 3, username: 'bob.finance', password: 'password', fullName: 'Bob Finance', email: 'bob.finance@company.com', role: 'Finance', department: 'Finance' },
-          { id: 4, username: 'alice.emp', password: 'password', fullName: 'Alice Smith', email: 'alice.smith@company.com', role: 'Employee', department: 'HR' },
-          { id: 5, username: 'mike.emp', password: 'password', fullName: 'Mike Johnson', email: 'mike.johnson@company.com', role: 'Employee', department: 'IT' }
+          { id: 1, username: 'gayathri', password: 'password', fullName: 'Gayathri Krishnan', email: 'gayathri.employee@payroll360.com', role: 'Employee', department: 'IT' },
+          { id: 2, username: 'jeff', password: 'password', fullName: 'Jeff Anderson', email: 'jeff.manager@payroll360.com', role: 'Manager', department: 'IT' },
+          { id: 3, username: 'swetha', password: 'password', fullName: 'Swetha Ramesh', email: 'swetha.finance@payroll360.com', role: 'Finance', department: 'Finance' },
+          { id: 4, username: 'priya', password: 'password', fullName: 'Priya Sharma', email: 'priya.employee@payroll360.com', role: 'Employee', department: 'HR' },
+          { id: 5, username: 'arjun', password: 'password', fullName: 'Arjun Patel', email: 'arjun.employee@payroll360.com', role: 'Employee', department: 'IT' }
         ],
         insurances: [
           { id: 1, employeeId: 1, insuranceType: 'Health', provider: 'Star Health', policyNumber: 'SH001234', enrollmentDate: '2024-01-01', isActive: true, coverageAmount: 500000 },
@@ -118,66 +140,186 @@ export class MockPayrollService {
           { id: 3, employeeId: 4, insuranceType: 'Health', provider: 'HDFC ERGO', policyNumber: 'HE005678', enrollmentDate: '2024-01-01', isActive: true, coverageAmount: 300000 }
         ],
         loans: [
+          // Fresh employee submissions (Manager needs to review)
           {
-            loanId: 1, employeeId: 1, employeeName: 'John Doe', loanType: 'Personal', amount: 50000, tenureMonths: 24,
-            purpose: 'Home renovation', appliedDate: '2024-01-15', status: 'Pending', monthlyInstallment: 2273,
-            managerApproved: null, financeApproved: null
+            loanId: 1, employeeId: 1, employeeName: 'Gayathri Krishnan', loanType: 'Personal', amount: 50000, tenureMonths: 24,
+            purpose: 'Home renovation', appliedDate: today.toISOString().split('T')[0], status: 'Pending', monthlyInstallment: 2273,
+            managerApproved: null, financeApproved: null, submittedAt: today.toISOString(),
+            documents: ['salary_slip.pdf', 'id_proof.jpg', 'bank_statement.pdf']
           },
           {
-            loanId: 2, employeeId: 4, employeeName: 'Alice Smith', loanType: 'Education', amount: 75000, tenureMonths: 36,
-            purpose: 'MBA Course', appliedDate: '2024-01-10', status: 'ManagerApproved', monthlyInstallment: 2386,
-            managerApproved: true, financeApproved: null, managerId: 2, managerComments: 'Approved for education'
+            loanId: 6, employeeId: 5, employeeName: 'Arjun Patel', loanType: 'Education', amount: 80000, tenureMonths: 36,
+            purpose: 'Professional certification course', appliedDate: '2024-01-29', status: 'Pending', monthlyInstallment: 2500,
+            managerApproved: null, financeApproved: null, submittedAt: '2024-01-29 14:30:00',
+            documents: ['course_details.pdf', 'fee_structure.pdf']
+          },
+          // Manager approved (Finance needs to review)
+          {
+            loanId: 2, employeeId: 4, employeeName: 'Priya Sharma', loanType: 'Education', amount: 75000, tenureMonths: 36,
+            purpose: 'MBA Course', appliedDate: twoDaysAgo.toISOString().split('T')[0], status: 'ManagerApproved', monthlyInstallment: 2386,
+            managerApproved: true, financeApproved: null, managerId: 2, 
+            managerComments: 'Excellent academic record. Approved for MBA funding.',
+            managerApprovedAt: yesterday.toISOString(), submittedAt: twoDaysAgo.toISOString(),
+            documents: ['admission_letter.pdf', 'fee_receipt.pdf', 'academic_transcript.pdf']
           },
           {
-            loanId: 3, employeeId: 5, employeeName: 'Mike Johnson', loanType: 'Medical', amount: 25000, tenureMonths: 12,
-            purpose: 'Surgery expenses', appliedDate: '2024-01-05', status: 'Approved', monthlyInstallment: 2273,
-            managerApproved: true, financeApproved: true, managerId: 2, financeId: 3
+            loanId: 4, employeeId: 1, employeeName: 'Gayathri Krishnan', loanType: 'Vehicle', amount: 150000, tenureMonths: 48,
+            purpose: 'Two-wheeler purchase for commute', appliedDate: '2024-01-24', status: 'ManagerApproved', monthlyInstallment: 3500,
+            managerApproved: true, financeApproved: null, managerId: 2,
+            managerComments: 'Employee needs vehicle for field work. Approved.',
+            managerApprovedAt: '2024-01-25 10:15:00', submittedAt: '2024-01-24 13:20:00',
+            documents: ['vehicle_quotation.pdf', 'dealer_invoice.pdf']
+          },
+          // Completed workflow (Finance approved)
+          {
+            loanId: 3, employeeId: 5, employeeName: 'Arjun Patel', loanType: 'Medical', amount: 25000, tenureMonths: 12,
+            purpose: 'Emergency surgery expenses', appliedDate: '2024-01-20', status: 'Approved', monthlyInstallment: 2273,
+            managerApproved: true, financeApproved: true, managerId: 2, financeId: 3,
+            managerComments: 'Medical emergency. Immediate approval required.',
+            financeComments: 'Emergency case approved. Disbursement processed.',
+            submittedAt: '2024-01-20 08:30:00', managerApprovedAt: '2024-01-20 10:45:00',
+            financeApprovedAt: '2024-01-21 09:15:00', documents: ['medical_bills.pdf', 'doctor_prescription.pdf']
           }
         ],
         reimbursements: [
+          // Fresh employee submissions (Manager needs to review)
           {
-            requestId: 1, employeeId: 1, employeeName: 'John Doe', category: 'Travel', amount: 5000,
-            description: 'Client meeting travel', requestDate: '2024-01-20', status: 'Pending',
-            managerApproved: null, financeApproved: null
+            requestId: 1, employeeId: 1, employeeName: 'Gayathri Krishnan', category: 'Travel', amount: 5000,
+            description: 'Client meeting in Bangalore - flight and accommodation', requestDate: today.toISOString().split('T')[0], status: 'Pending',
+            managerApproved: null, financeApproved: null, submittedAt: today.toISOString(),
+            documents: ['flight_tickets.pdf', 'hotel_bill.pdf', 'taxi_receipts.jpg']
           },
           {
-            requestId: 2, employeeId: 4, employeeName: 'Alice Smith', category: 'Training', amount: 3000,
-            description: 'AWS certification course', requestDate: '2024-01-18', status: 'ManagerApproved',
-            managerApproved: true, financeApproved: null, managerId: 2
+            requestId: 6, employeeId: 4, employeeName: 'Priya Sharma', category: 'Office Supplies', amount: 2500,
+            description: 'Laptop accessories and stationery for remote work', requestDate: '2024-01-28', status: 'Pending',
+            managerApproved: null, financeApproved: null, submittedAt: '2024-01-28 15:45:00',
+            documents: ['purchase_receipts.pdf', 'vendor_invoice.pdf']
+          },
+          // Manager approved (Finance needs to review)
+          {
+            requestId: 2, employeeId: 4, employeeName: 'Priya Sharma', category: 'Training', amount: 3000,
+            description: 'AWS certification course and exam fees', requestDate: '2024-01-26', status: 'ManagerApproved',
+            managerApproved: true, financeApproved: null, managerId: 2,
+            managerComments: 'Training aligns with project requirements. Approved.',
+            managerApprovedAt: '2024-01-27 09:30:00', submittedAt: '2024-01-26 14:20:00',
+            documents: ['course_certificate.pdf', 'payment_receipt.pdf']
           },
           {
-            requestId: 3, employeeId: 5, employeeName: 'Mike Johnson', category: 'Food', amount: 1500,
-            description: 'Team lunch expenses', requestDate: '2024-01-15', status: 'Approved',
-            managerApproved: true, financeApproved: true, managerId: 2, financeId: 3
+            requestId: 4, employeeId: 5, employeeName: 'Arjun Patel', category: 'Travel', amount: 8000,
+            description: 'Client visit to Mumbai - 3 days business trip', requestDate: '2024-01-25', status: 'ManagerApproved',
+            managerApproved: true, financeApproved: null, managerId: 2,
+            managerComments: 'Important client meeting. All expenses justified.',
+            managerApprovedAt: '2024-01-26 16:15:00', submittedAt: '2024-01-25 10:30:00',
+            documents: ['travel_itinerary.pdf', 'expense_summary.xlsx', 'receipts_folder.zip']
+          },
+          // Completed workflow (Finance approved)
+          {
+            requestId: 3, employeeId: 5, employeeName: 'Arjun Patel', category: 'Food', amount: 1500,
+            description: 'Team celebration dinner after project completion', requestDate: '2024-01-22', status: 'Approved',
+            managerApproved: true, financeApproved: true, managerId: 2, financeId: 3,
+            managerComments: 'Team performed exceptionally. Approved for celebration.',
+            financeComments: 'Within team budget limits. Payment processed.',
+            submittedAt: '2024-01-22 18:00:00', managerApprovedAt: '2024-01-23 09:00:00',
+            financeApprovedAt: '2024-01-24 11:30:00', documents: ['restaurant_bill.pdf']
           }
         ],
         medicalClaims: [
+          // Fresh employee submissions (Manager needs to review)
           {
-            claimId: 1, employeeId: 1, employeeName: 'John Doe', claimAmount: 15000,
-            claimDate: '2024-01-22', description: 'Emergency surgery', hospitalName: 'City Hospital',
+            claimId: 1, employeeId: 1, employeeName: 'Gayathri Krishnan', claimAmount: 15000,
+            claimDate: yesterday.toISOString().split('T')[0], description: 'Emergency appendix surgery and hospitalization', hospitalName: 'City Hospital',
             treatmentType: 'Surgery', status: 'Pending', managerApproved: null, financeApproved: null,
-            createdAt: '2024-01-22'
+            createdAt: today.toISOString().split('T')[0], submittedAt: today.toISOString(),
+            documents: ['hospital_bill.pdf', 'discharge_summary.pdf', 'doctor_prescription.pdf']
           },
           {
-            claimId: 2, employeeId: 4, employeeName: 'Alice Smith', claimAmount: 2500,
-            claimDate: '2024-01-19', description: 'Dental treatment', hospitalName: 'Dental Care',
+            claimId: 5, employeeId: 4, employeeName: 'Priya Sharma', claimAmount: 4500,
+            claimDate: '2024-01-27', description: 'Physiotherapy sessions for back pain', hospitalName: 'Wellness Clinic',
+            treatmentType: 'Physiotherapy', status: 'Pending', managerApproved: null, financeApproved: null,
+            createdAt: '2024-01-28', submittedAt: '2024-01-28 16:20:00',
+            documents: ['treatment_plan.pdf', 'session_receipts.pdf']
+          },
+          // Manager approved (Finance needs to review)
+          {
+            claimId: 2, employeeId: 4, employeeName: 'Priya Sharma', claimAmount: 2500,
+            claimDate: '2024-01-24', description: 'Root canal treatment and dental crown', hospitalName: 'Dental Care Center',
             treatmentType: 'Dental', status: 'ManagerApproved', managerApproved: true, financeApproved: null,
-            managerId: 2, createdAt: '2024-01-19'
+            managerId: 2, createdAt: '2024-01-25', managerComments: 'Dental treatment covered under policy.',
+            managerApprovedAt: '2024-01-26 10:30:00', submittedAt: '2024-01-25 12:15:00',
+            documents: ['dental_xray.jpg', 'treatment_bill.pdf', 'insurance_form.pdf']
+          },
+          {
+            claimId: 3, employeeId: 5, employeeName: 'Arjun Patel', claimAmount: 12000,
+            claimDate: '2024-01-23', description: 'Knee surgery and post-operative care', hospitalName: 'Apollo Hospital',
+            treatmentType: 'Surgery', status: 'ManagerApproved', managerApproved: true, financeApproved: null,
+            managerId: 2, createdAt: '2024-01-24', managerComments: 'Work-related injury. Approved for treatment.',
+            managerApprovedAt: '2024-01-25 14:45:00', submittedAt: '2024-01-24 09:30:00',
+            documents: ['surgery_report.pdf', 'medical_bills.pdf', 'follow_up_plan.pdf']
+          },
+          // Completed workflow (Finance approved)
+          {
+            claimId: 4, employeeId: 1, employeeName: 'Gayathri Krishnan', claimAmount: 8000,
+            claimDate: '2024-01-20', description: 'Eye examination and corrective surgery', hospitalName: 'Vision Care Hospital',
+            treatmentType: 'Eye Surgery', status: 'Approved', managerApproved: true, financeApproved: true,
+            managerId: 2, financeId: 3, createdAt: '2024-01-21',
+            managerComments: 'Vision correction needed for computer work. Approved.',
+            financeComments: 'Covered under health insurance. Reimbursement processed.',
+            submittedAt: '2024-01-21 11:00:00', managerApprovedAt: '2024-01-22 09:15:00',
+            financeApprovedAt: '2024-01-23 15:30:00', documents: ['eye_test_report.pdf', 'surgery_bill.pdf']
           }
         ],
         payrolls: [
+          // Employee payrolls
           {
             id: 1, employeeId: 1, employeeName: 'John Doe', basicSalary: 50000, allowances: 5000,
             deductions: 3000, netPay: 52000, payPeriodStart: '2024-01-01', payPeriodEnd: '2024-01-31',
             status: 'Approved', generatedDate: '2024-02-01'
           },
           {
-            id: 2, employeeId: 4, employeeName: 'Alice Smith', basicSalary: 60000, allowances: 6000,
+            id: 4, employeeId: 1, employeeName: 'John Doe', basicSalary: 50000, allowances: 5200,
+            deductions: 3100, netPay: 52100, payPeriodStart: '2024-02-01', payPeriodEnd: '2024-02-28',
+            status: 'Approved', generatedDate: '2024-03-01'
+          },
+          {
+            id: 5, employeeId: 1, employeeName: 'John Doe', basicSalary: 50000, allowances: 4800,
+            deductions: 2900, netPay: 51900, payPeriodStart: '2024-03-01', payPeriodEnd: '2024-03-31',
+            status: 'Approved', generatedDate: '2024-04-01'
+          },
+          // Manager payrolls (higher salary)
+          {
+            id: 2, employeeId: 2, employeeName: 'Jane Manager', basicSalary: 85000, allowances: 8500,
+            deductions: 5500, netPay: 88000, payPeriodStart: '2024-01-01', payPeriodEnd: '2024-01-31',
+            status: 'Approved', generatedDate: '2024-02-01'
+          },
+          {
+            id: 6, employeeId: 2, employeeName: 'Jane Manager', basicSalary: 85000, allowances: 8700,
+            deductions: 5600, netPay: 88100, payPeriodStart: '2024-02-01', payPeriodEnd: '2024-02-28',
+            status: 'Approved', generatedDate: '2024-03-01'
+          },
+          {
+            id: 7, employeeId: 2, employeeName: 'Jane Manager', basicSalary: 85000, allowances: 8300,
+            deductions: 5400, netPay: 87900, payPeriodStart: '2024-03-01', payPeriodEnd: '2024-03-31',
+            status: 'Approved', generatedDate: '2024-04-01'
+          },
+          // Finance payrolls
+          {
+            id: 8, employeeId: 3, employeeName: 'Bob Finance', basicSalary: 75000, allowances: 7500,
+            deductions: 4800, netPay: 77700, payPeriodStart: '2024-01-01', payPeriodEnd: '2024-01-31',
+            status: 'Approved', generatedDate: '2024-02-01'
+          },
+          {
+            id: 9, employeeId: 3, employeeName: 'Bob Finance', basicSalary: 75000, allowances: 7600,
+            deductions: 4900, netPay: 77700, payPeriodStart: '2024-02-01', payPeriodEnd: '2024-02-28',
+            status: 'Approved', generatedDate: '2024-03-01'
+          },
+          // Other employees
+          {
+            id: 3, employeeId: 4, employeeName: 'Alice Smith', basicSalary: 60000, allowances: 6000,
             deductions: 4000, netPay: 62000, payPeriodStart: '2024-01-01', payPeriodEnd: '2024-01-31',
             status: 'Approved', generatedDate: '2024-02-01'
           },
           {
-            id: 3, employeeId: 5, employeeName: 'Mike Johnson', basicSalary: 45000, allowances: 4500,
+            id: 10, employeeId: 5, employeeName: 'Mike Johnson', basicSalary: 45000, allowances: 4500,
             deductions: 2500, netPay: 47000, payPeriodStart: '2024-01-01', payPeriodEnd: '2024-01-31',
             status: 'Approved', generatedDate: '2024-02-01'
           }
@@ -190,6 +332,10 @@ export class MockPayrollService {
   private loadData(): any {
     const stored = localStorage.getItem(this.STORAGE_KEY);
     return stored ? JSON.parse(stored) : {};
+  }
+
+  public getData(): any {
+    return this.loadData();
   }
 
   private saveData(data: any): void {
@@ -206,14 +352,27 @@ export class MockPayrollService {
   // Authentication
   login(email: string, password: string): Observable<any> {
     const data = this.loadData();
-    const user = data.users.find((u: MockUser) => u.email === email && u.password === password);
-    
-    if (user) {
-      localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
-      return of({ 
-        token: 'mock-jwt-token-' + user.id, 
-        expiration: new Date(Date.now() + 3600000).toISOString() 
-      }).pipe(delay(500));
+    if (!data || !data.users) {
+      // Force reinitialize if data is corrupted
+      this.initializeData();
+      const freshData = this.loadData();
+      const user = freshData.users?.find((u: MockUser) => u.email === email && u.password === password);
+      if (user) {
+        localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
+        return of({ 
+          token: 'mock-jwt-token-' + user.id, 
+          expiration: new Date(Date.now() + 3600000).toISOString() 
+        }).pipe(delay(500));
+      }
+    } else {
+      const user = data.users.find((u: MockUser) => u.email === email && u.password === password);
+      if (user) {
+        localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
+        return of({ 
+          token: 'mock-jwt-token-' + user.id, 
+          expiration: new Date(Date.now() + 3600000).toISOString() 
+        }).pipe(delay(500));
+      }
     }
     return of(null).pipe(delay(500));
   }
@@ -259,13 +418,16 @@ export class MockPayrollService {
       status: 'Pending',
       monthlyInstallment: this.calculateEMI(loanData.amount, loanData.tenureMonths),
       managerApproved: null,
-      financeApproved: null
+      financeApproved: null,
+      submittedAt: new Date().toISOString(),
+      documents: ['salary_slip.pdf', 'id_proof.jpg', 'bank_statement.pdf']
     };
 
     this.updateData(data => {
       data.loans.push(newLoan);
     });
 
+    this.addAuditEntry('Loan Application Submitted', 'Loan', newLoan.loanId, currentUser.id, `${loanData.loanType} loan for ₹${loanData.amount}`);
     return of(newLoan).pipe(delay(500));
   }
 
@@ -288,9 +450,11 @@ export class MockPayrollService {
         loan.status = 'ManagerApproved';
         loan.managerId = currentUser.id;
         loan.managerComments = comments;
+        loan.managerApprovedAt = new Date().toISOString();
       }
     });
 
+    this.addAuditEntry('Manager Approved', 'Loan', id, currentUser.id, comments);
     return of({ success: true, message: 'Loan approved by manager' }).pipe(delay(500));
   }
 
@@ -334,9 +498,11 @@ export class MockPayrollService {
         loan.status = 'Approved';
         loan.financeId = currentUser.id;
         loan.financeComments = comments;
+        loan.financeApprovedAt = new Date().toISOString();
       }
     });
 
+    this.addAuditEntry('Finance Approved', 'Loan', id, currentUser.id, comments);
     return of({ success: true, message: 'Loan approved by finance' }).pipe(delay(500));
   }
 
@@ -389,13 +555,16 @@ export class MockPayrollService {
       requestDate: new Date().toISOString().split('T')[0],
       status: 'Pending',
       managerApproved: null,
-      financeApproved: null
+      financeApproved: null,
+      submittedAt: new Date().toISOString(),
+      documents: ['receipt.pdf', 'supporting_document.pdf']
     };
 
     this.updateData(data => {
       data.reimbursements.push(newReimbursement);
     });
 
+    this.addAuditEntry('Reimbursement Request Submitted', 'Reimbursement', newReimbursement.requestId, currentUser.id, `${reimbData.category} - ₹${reimbData.amount}`);
     return of(newReimbursement).pipe(delay(500));
   }
 
@@ -534,13 +703,16 @@ export class MockPayrollService {
       status: 'Pending',
       managerApproved: null,
       financeApproved: null,
-      createdAt: new Date().toISOString().split('T')[0]
+      createdAt: new Date().toISOString().split('T')[0],
+      submittedAt: new Date().toISOString(),
+      documents: ['medical_bill.pdf', 'prescription.pdf', 'medical_report.pdf']
     };
 
     this.updateData(data => {
       data.medicalClaims.push(newClaim);
     });
 
+    this.addAuditEntry('Medical Claim Submitted', 'MedicalClaim', newClaim.claimId, currentUser.id, `${claimData.treatmentType} - ₹${claimData.claimAmount}`);
     return of(newClaim).pipe(delay(500));
   }
 
@@ -630,9 +802,128 @@ export class MockPayrollService {
 
   // Reset demo data (useful for presentations)
   resetDemoData(): void {
+    const currentUser = this.getCurrentUser(); // Save current user
     localStorage.removeItem(this.STORAGE_KEY);
-    localStorage.removeItem(this.CURRENT_USER_KEY);
+    localStorage.removeItem(this.CURRENT_USER_KEY); // Clear user session too
     this.initializeData();
+    this.dataSubject.next(this.loadData());
+  }
+
+  // Add audit trail entry
+  addAuditEntry(action: string, entityType: string, entityId: number, userId: number, comments?: string): void {
+    this.updateData(data => {
+      if (!data.auditTrail) data.auditTrail = [];
+      data.auditTrail.push({
+        id: Date.now(),
+        action,
+        entityType,
+        entityId,
+        userId,
+        timestamp: new Date().toISOString(),
+        comments: comments || ''
+      });
+    });
+  }
+
+  // Get audit trail for entity
+  getAuditTrail(entityType: string, entityId: number): any[] {
+    const data = this.loadData();
+    return data.auditTrail?.filter((entry: any) => 
+      entry.entityType === entityType && entry.entityId === entityId
+    ) || [];
+  }
+
+  // Medical Claims Manager/Finance Approval Methods
+  getPendingMedicalClaimApprovals(): Observable<MockMedicalClaim[]> {
+    const data = this.loadData();
+    const pending = data.medicalClaims.filter((c: MockMedicalClaim) => c.managerApproved === null);
+    return of(pending).pipe(delay(300));
+  }
+
+  approveMedicalClaimByManager(id: number, comments?: string): Observable<any> {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || currentUser.role !== 'Manager') {
+      throw new Error('Unauthorized');
+    }
+
+    this.updateData(data => {
+      const claim = data.medicalClaims.find((c: MockMedicalClaim) => c.claimId === id);
+      if (claim) {
+        claim.managerApproved = true;
+        claim.status = 'ManagerApproved';
+        claim.managerId = currentUser.id;
+        claim.managerComments = comments;
+        claim.managerApprovedAt = new Date().toISOString();
+      }
+    });
+
+    return of({ success: true, message: 'Medical claim approved by manager' }).pipe(delay(500));
+  }
+
+  rejectMedicalClaimByManager(id: number, reason: string): Observable<any> {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || currentUser.role !== 'Manager') {
+      throw new Error('Unauthorized');
+    }
+
+    this.updateData(data => {
+      const claim = data.medicalClaims.find((c: MockMedicalClaim) => c.claimId === id);
+      if (claim) {
+        claim.managerApproved = false;
+        claim.status = 'Rejected';
+        claim.managerId = currentUser.id;
+        claim.managerComments = reason;
+      }
+    });
+
+    return of({ success: true, message: 'Medical claim rejected by manager' }).pipe(delay(500));
+  }
+
+  getPendingMedicalClaimFinanceApprovals(): Observable<MockMedicalClaim[]> {
+    const data = this.loadData();
+    const pending = data.medicalClaims.filter((c: MockMedicalClaim) => 
+      c.managerApproved === true && c.financeApproved === null
+    );
+    return of(pending).pipe(delay(300));
+  }
+
+  approveMedicalClaimByFinance(id: number, comments?: string): Observable<any> {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || currentUser.role !== 'Finance') {
+      throw new Error('Unauthorized');
+    }
+
+    this.updateData(data => {
+      const claim = data.medicalClaims.find((c: MockMedicalClaim) => c.claimId === id);
+      if (claim) {
+        claim.financeApproved = true;
+        claim.status = 'Approved';
+        claim.financeId = currentUser.id;
+        claim.financeComments = comments;
+        claim.financeApprovedAt = new Date().toISOString();
+      }
+    });
+
+    return of({ success: true, message: 'Medical claim approved by finance' }).pipe(delay(500));
+  }
+
+  rejectMedicalClaimByFinance(id: number, reason: string): Observable<any> {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || currentUser.role !== 'Finance') {
+      throw new Error('Unauthorized');
+    }
+
+    this.updateData(data => {
+      const claim = data.medicalClaims.find((c: MockMedicalClaim) => c.claimId === id);
+      if (claim) {
+        claim.financeApproved = false;
+        claim.status = 'Rejected';
+        claim.financeId = currentUser.id;
+        claim.financeComments = reason;
+      }
+    });
+
+    return of({ success: true, message: 'Medical claim rejected by finance' }).pipe(delay(500));
   }
 
   // Get all data for admin view

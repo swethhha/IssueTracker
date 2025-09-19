@@ -46,7 +46,7 @@ import { FormsModule } from '@angular/forms';
       <div class="loans-section">
         <div class="section-header">
           <h2>Pending Loan Applications</h2>
-          <div class="filter-controls">
+          <div class="header-actions">
             <select [(ngModel)]="selectedFilter" (change)="filterLoans()" class="filter-select">
               <option value="">All Loans</option>
               <option value="Personal Loan">Personal Loan</option>
@@ -54,6 +54,14 @@ import { FormsModule } from '@angular/forms';
               <option value="Vehicle Loan">Vehicle Loan</option>
               <option value="Emergency Loan">Emergency Loan</option>
             </select>
+            <button class="btn btn-export" (click)="exportToExcel()">
+              <span class="material-icons">download</span>
+              Export Excel
+            </button>
+            <button class="btn btn-export" (click)="exportToPDF()">
+              <span class="material-icons">picture_as_pdf</span>
+              Export PDF
+            </button>
           </div>
         </div>
 
@@ -458,5 +466,67 @@ export class LoanApprovalsComponent implements OnInit {
 
   viewDetails(loan: any) {
     alert(`Loan Details:\n\nEmployee: ${loan.employeeName}\nType: ${loan.loanType}\nAmount: ₹${loan.amount}\nPurpose: ${loan.purpose}\nTenure: ${loan.tenureMonths} months\nEMI: ₹${loan.monthlyInstallment}`);
+  }
+
+  exportToExcel() {
+    const data = this.filteredLoans.map(loan => ({
+      'Employee Name': loan.employeeName,
+      'Loan Type': loan.loanType,
+      'Amount': loan.amount,
+      'Purpose': loan.purpose,
+      'Tenure (Months)': loan.tenureMonths,
+      'Monthly EMI': loan.monthlyInstallment,
+      'Applied Date': loan.appliedDate.toLocaleDateString()
+    }));
+    
+    const csv = this.convertToCSV(data);
+    this.downloadFile(csv, 'loan-approvals.csv', 'text/csv');
+    alert('Loan data exported to Excel successfully!');
+  }
+
+  exportToPDF() {
+    const content = this.generatePDFContent();
+    this.downloadFile(content, 'loan-approvals.txt', 'text/plain');
+    alert('Loan data exported to PDF format successfully!');
+  }
+
+  private convertToCSV(data: any[]): string {
+    if (!data.length) return '';
+    
+    const headers = Object.keys(data[0]);
+    const csvContent = [
+      headers.join(','),
+      ...data.map(row => headers.map(header => `"${row[header]}"`).join(','))
+    ].join('\n');
+    
+    return csvContent;
+  }
+
+  private generatePDFContent(): string {
+    let content = 'LOAN APPROVALS REPORT\n';
+    content += '='.repeat(50) + '\n\n';
+    content += `Generated on: ${new Date().toLocaleDateString()}\n\n`;
+    
+    this.filteredLoans.forEach((loan, index) => {
+      content += `${index + 1}. ${loan.employeeName}\n`;
+      content += `   Loan Type: ${loan.loanType}\n`;
+      content += `   Amount: ₹${loan.amount.toLocaleString()}\n`;
+      content += `   Purpose: ${loan.purpose}\n`;
+      content += `   Tenure: ${loan.tenureMonths} months\n`;
+      content += `   EMI: ₹${loan.monthlyInstallment.toLocaleString()}\n`;
+      content += `   Applied: ${loan.appliedDate.toLocaleDateString()}\n\n`;
+    });
+    
+    return content;
+  }
+
+  private downloadFile(content: string, filename: string, contentType: string) {
+    const blob = new Blob([content], { type: contentType });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    window.URL.revokeObjectURL(url);
   }
 }

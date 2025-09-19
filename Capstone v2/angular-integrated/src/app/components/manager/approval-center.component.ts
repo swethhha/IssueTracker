@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LoanService } from '../../services/loan.service';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { LoanResponse } from '../../models/loan.models';
 
 @Component({
@@ -526,7 +527,8 @@ export class ApprovalCenterComponent implements OnInit {
 
   constructor(
     private loanService: LoanService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -669,13 +671,13 @@ export class ApprovalCenterComponent implements OnInit {
       
       this.loanService.approveByManager(approval.loanId, comments || '').subscribe({
         next: () => {
-          alert('Request approved successfully!');
+          this.toastService.success('Loan Approved', `${approval.loanType} for ${approval.employeeName} approved successfully!`);
           this.loadApprovals();
           this.loadPendingCounts();
         },
         error: (error) => {
           console.error('Error approving loan:', error);
-          alert('Failed to approve request. Please try again.');
+          this.toastService.error('Approval Failed', 'Failed to approve request. Please try again.');
         }
       });
     }
@@ -686,17 +688,17 @@ export class ApprovalCenterComponent implements OnInit {
     if (reason && reason.trim()) {
       this.loanService.rejectByManager(approval.loanId, reason).subscribe({
         next: () => {
-          alert('Request rejected successfully!');
+          this.toastService.warning('Loan Rejected', `${approval.loanType} for ${approval.employeeName} rejected successfully!`);
           this.loadApprovals();
           this.loadPendingCounts();
         },
         error: (error) => {
           console.error('Error rejecting loan:', error);
-          alert('Failed to reject request. Please try again.');
+          this.toastService.error('Rejection Failed', 'Failed to reject request. Please try again.');
         }
       });
     } else if (reason !== null) {
-      alert('Please provide a reason for rejection.');
+      this.toastService.warning('Rejection Cancelled', 'Please provide a reason for rejection.');
     }
   }
 

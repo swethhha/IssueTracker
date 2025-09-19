@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AnalyticsService, AnalyticsData } from '../../services/analytics.service';
+import { AnalyticsService } from '../../services/analytics.service';
+import { AuthService } from '../../services/auth.service';
+import { MockPayrollService } from '../../services/mock-payroll.service';
 
 @Component({
   selector: 'app-analytics-dashboard',
@@ -12,8 +14,8 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
       <div class="analytics-header">
         <div class="header-content">
           <div class="header-text">
-            <h1 class="page-title">Analytics Dashboard</h1>
-            <p class="page-subtitle">Comprehensive insights into your payroll operations</p>
+            <h1 class="page-title">{{ getDashboardTitle() }}</h1>
+            <p class="page-subtitle">{{ getDashboardSubtitle() }}</p>
           </div>
           <div class="header-actions">
             <button class="btn btn-primary" (click)="refreshData()">
@@ -45,8 +47,8 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
               <span class="material-icons">trending_up</span>
             </div>
             <div class="metric-content">
-              <div class="metric-value">{{ formatCurrency(analyticsData.totalPayroll) }}</div>
-              <div class="metric-label">Total Payroll</div>
+              <div class="metric-value">{{ getMetricValue(0) }}</div>
+              <div class="metric-label">{{ getMetricLabel(0) }}</div>
               <div class="metric-change positive">
                 <span class="material-icons">arrow_upward</span>
                 +12.5%
@@ -59,8 +61,8 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
               <span class="material-icons">group</span>
             </div>
             <div class="metric-content">
-              <div class="metric-value">{{ analyticsData.activeEmployees | number }}</div>
-              <div class="metric-label">Active Employees</div>
+              <div class="metric-value">{{ getMetricValue(1) }}</div>
+              <div class="metric-label">{{ getMetricLabel(1) }}</div>
               <div class="metric-change positive">
                 <span class="material-icons">arrow_upward</span>
                 +3.2%
@@ -73,8 +75,8 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
               <span class="material-icons">check_circle</span>
             </div>
             <div class="metric-content">
-              <div class="metric-value">{{ analyticsData.approvalRate | number:'1.1-1' }}%</div>
-              <div class="metric-label">Approval Rate</div>
+              <div class="metric-value">{{ getMetricValue(2) }}</div>
+              <div class="metric-label">{{ getMetricLabel(2) }}</div>
               <div class="metric-change positive">
                 <span class="material-icons">arrow_upward</span>
                 +1.8%
@@ -87,8 +89,8 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
               <span class="material-icons">schedule</span>
             </div>
             <div class="metric-content">
-              <div class="metric-value">{{ analyticsData.avgProcessingDays | number:'1.1-1' }}</div>
-              <div class="metric-label">Avg Processing Days</div>
+              <div class="metric-value">{{ getMetricValue(3) }}</div>
+              <div class="metric-label">{{ getMetricLabel(3) }}</div>
               <div class="metric-change negative">
                 <span class="material-icons">arrow_downward</span>
                 -0.5 days
@@ -152,17 +154,18 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
   styles: [`
     .analytics-container {
       padding: 1.5rem;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: #f8fafc;
       min-height: 100vh;
     }
 
     .analytics-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 20px;
+      background: white;
+      border-radius: 12px;
       padding: 2rem;
       margin-bottom: 2rem;
-      color: white;
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      color: #1e293b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
     }
 
     .header-content {
@@ -172,15 +175,15 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
     }
 
     .page-title {
-      font-size: 2.5rem;
-      font-weight: 800;
+      font-size: 1.25rem;
+      font-weight: 600;
       margin: 0;
     }
 
     .page-subtitle {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      margin: 0.5rem 0 0 0;
+      font-size: 0.875rem;
+      opacity: 0.7;
+      margin: 0.25rem 0 0 0;
     }
 
     .btn {
@@ -189,10 +192,10 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
       gap: 0.5rem;
       padding: 0.75rem 1.5rem;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.2);
+      background: #2563eb;
       color: white;
     }
 
@@ -225,24 +228,24 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
     }
 
     .metric-card.revenue .metric-icon {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #2563eb;
     }
 
     .metric-card.employees .metric-icon {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      background: #10b981;
     }
 
     .metric-card.approvals .metric-icon {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      background: #f59e0b;
     }
 
     .metric-card.processing .metric-icon {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      background: #8b5cf6;
     }
 
     .metric-value {
-      font-size: 2.5rem;
-      font-weight: 800;
+      font-size: 1.25rem;
+      font-weight: 600;
       color: #1a202c;
     }
 
@@ -278,10 +281,10 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
     }
 
     .chart-header h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1rem;
+      font-weight: 600;
       color: #1a202c;
-      margin: 0 0 1.5rem 0;
+      margin: 0 0 1rem 0;
     }
 
     .chart-bars {
@@ -294,7 +297,7 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
 
     .bar {
       flex: 1;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #2563eb;
       border-radius: 4px 4px 0 0;
       min-height: 20px;
     }
@@ -311,9 +314,9 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
       height: 150px;
       border-radius: 50%;
       background: conic-gradient(
-        #667eea 0deg 162deg,
-        #f093fb 162deg 252deg,
-        #4facfe 252deg 306deg
+        #2563eb 0deg 162deg,
+        #10b981 162deg 252deg,
+        #f59e0b 252deg 306deg
       );
       display: flex;
       align-items: center;
@@ -338,8 +341,8 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
     }
 
     .donut-value {
-      font-size: 1.5rem;
-      font-weight: 800;
+      font-size: 1rem;
+      font-weight: 600;
       color: #1a202c;
     }
 
@@ -367,11 +370,11 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
       border-radius: 50%;
     }
 
-    .legend-color.engineering { background: #667eea; }
-    .legend-color.sales { background: #f093fb; }
-    .legend-color.marketing { background: #4facfe; }
-    .legend-color.hr { background: #43e97b; }
-    .legend-color.finance { background: #ffeaa7; }
+    .legend-color.engineering { background: #2563eb; }
+    .legend-color.sales { background: #10b981; }
+    .legend-color.marketing { background: #f59e0b; }
+    .legend-color.hr { background: #8b5cf6; }
+    .legend-color.finance { background: #ef4444; }
 
     .loading-state, .error-state {
       text-align: center;
@@ -383,7 +386,7 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
       width: 40px;
       height: 40px;
       border: 4px solid #e2e8f0;
-      border-top: 4px solid #667eea;
+      border-top: 4px solid #2563eb;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto 1rem;
@@ -402,13 +405,22 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
   `]
 })
 export class AnalyticsDashboardComponent implements OnInit {
-  analyticsData: AnalyticsData | null = null;
+  analyticsData: any | null = null;
   loading = true;
   error: string | null = null;
+  userRole: string | null = null;
 
-  constructor(private analyticsService: AnalyticsService) { }
+  constructor(
+    private analyticsService: AnalyticsService,
+    private authService: AuthService,
+    private mockPayrollService: MockPayrollService
+  ) { }
 
   ngOnInit(): void {
+    this.userRole = this.authService.getUserRole();
+    this.authService.currentUser$.subscribe(user => {
+      this.userRole = user?.role || null;
+    });
     this.loadAnalyticsData();
   }
 
@@ -416,9 +428,10 @@ export class AnalyticsDashboardComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    this.analyticsService.getAnalyticsData().subscribe({
+    // Load role-specific analytics data
+    this.mockPayrollService.getDashboardStats().subscribe({
       next: (data) => {
-        this.analyticsData = data;
+        this.analyticsData = this.generateRoleSpecificData(data);
         this.loading = false;
       },
       error: (error) => {
@@ -438,6 +451,100 @@ export class AnalyticsDashboardComponent implements OnInit {
     return `₹${amount.toLocaleString()}`;
   }
 
+  getDashboardTitle(): string {
+    switch(this.userRole) {
+      case 'Manager': return 'Team Analytics Dashboard';
+      case 'Finance': return 'Financial Analytics Dashboard';
+      default: return 'Analytics Dashboard';
+    }
+  }
+  
+  getDashboardSubtitle(): string {
+    switch(this.userRole) {
+      case 'Manager': return 'Team performance and approval insights';
+      case 'Finance': return 'Financial operations and budget analysis';
+      default: return 'Comprehensive insights into operations';
+    }
+  }
+  
+  getMetricValue(index: number): string {
+    const metrics = this.getMetricsForRole();
+    return metrics[index]?.value || '0';
+  }
+  
+  getMetricLabel(index: number): string {
+    const metrics = this.getMetricsForRole();
+    return metrics[index]?.label || '';
+  }
+  
+  private getMetricsForRole() {
+    switch(this.userRole) {
+      case 'Manager':
+        return [
+          { value: '₹485K', label: 'Team Budget' },
+          { value: '8', label: 'Team Members' },
+          { value: '93.8%', label: 'Approval Rate' },
+          { value: '1.2', label: 'Avg Response Days' }
+        ];
+      case 'Finance':
+        return [
+          { value: '₹2.5M', label: 'Total Disbursed' },
+          { value: '45', label: 'Processed This Month' },
+          { value: '96.2%', label: 'Success Rate' },
+          { value: '2.1', label: 'Avg Processing Days' }
+        ];
+      default:
+        return [
+          { value: '₹1.2M', label: 'Total Payroll' },
+          { value: '125', label: 'Active Employees' },
+          { value: '94.5%', label: 'Approval Rate' },
+          { value: '1.8', label: 'Avg Processing Days' }
+        ];
+    }
+  }
+  
+  private generateRoleSpecificData(mockData: any): any {
+    switch(this.userRole) {
+      case 'Manager':
+        return {
+          totalPayroll: 485000,
+          activeEmployees: 8,
+          approvalRate: 93.8,
+          avgProcessingDays: 1.2,
+          departmentDistribution: [
+            { name: 'Engineering', percentage: 45 },
+            { name: 'Sales', percentage: 30 },
+            { name: 'Marketing', percentage: 25 }
+          ]
+        };
+      case 'Finance':
+        return {
+          totalPayroll: 2500000,
+          activeEmployees: 45,
+          approvalRate: 96.2,
+          avgProcessingDays: 2.1,
+          departmentDistribution: [
+            { name: 'Loans', percentage: 55 },
+            { name: 'Reimbursements', percentage: 25 },
+            { name: 'Payroll', percentage: 20 }
+          ]
+        };
+      default:
+        return {
+          totalPayroll: 1200000,
+          activeEmployees: 125,
+          approvalRate: 94.5,
+          avgProcessingDays: 1.8,
+          departmentDistribution: [
+            { name: 'Engineering', percentage: 40 },
+            { name: 'Sales', percentage: 25 },
+            { name: 'Marketing', percentage: 20 },
+            { name: 'HR', percentage: 15 }
+          ]
+        };
+    }
+  }
+  
   refreshData(): void {
     this.loadAnalyticsData();
   }

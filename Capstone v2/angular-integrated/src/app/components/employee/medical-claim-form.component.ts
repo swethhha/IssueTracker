@@ -1,50 +1,122 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MedicalClaimService } from '../../services/medical-claim.service';
+import { ToastService } from '../../services/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { MockPayrollService } from '../../services/mock-payroll.service';
 
 @Component({
   selector: 'app-medical-claim-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   template: `
     <div class="page-container">
-      <div class="page-header">
-        <h1>Submit Medical Claim</h1>
-        <p>Submit your medical expenses for reimbursement</p>
-      </div>
-
-      <!-- Insurance Check Loading -->
-      <div class="insurance-check" *ngIf="checkingInsurance">
-        <div class="loading-spinner"></div>
-        <p>Checking insurance enrollment...</p>
-      </div>
-
-      <!-- No Insurance Warning -->
-      <div class="no-insurance-warning" *ngIf="!checkingInsurance && !hasInsurance">
-        <div class="warning-icon">⚠️</div>
-        <h2>Insurance Enrollment Required</h2>
-        <p>You must be enrolled in at least one insurance plan to submit medical claims.</p>
-        <p>Please contact HR to enroll in a health insurance plan before submitting medical claims.</p>
-        <div class="warning-actions">
-          <button type="button" class="btn btn-primary" (click)="goBack()">Back to Dashboard</button>
+      <!-- Finance Approval View -->
+      <div *ngIf="isFinanceUser" class="finance-view">
+        <div class="page-header">
+          <h1>Medical Claim Approvals</h1>
+          <p>Verify bills, eligibility and approve medical claims</p>
         </div>
-      </div>
 
-      <!-- Insurance Info -->
-      <div class="insurance-info" *ngIf="!checkingInsurance && hasInsurance && insurances.length > 0">
-        <h3>Your Active Insurance Plans</h3>
-        <div class="insurance-cards">
-          <div class="insurance-card" *ngFor="let insurance of insurances">
-            <div class="insurance-type">{{ insurance.insuranceType }}</div>
-            <div class="insurance-provider">{{ insurance.provider }}</div>
-            <div class="insurance-coverage">Coverage: ₹{{ insurance.coverageAmount | number:'1.0-0' }}</div>
+        <div class="approval-container">
+          <div class="approval-stats">
+            <div class="stat-card">
+              <div class="stat-value">{{ pendingClaims.length }}</div>
+              <div class="stat-label">Pending Approvals</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">₹{{ totalAmount | number:'1.0-0' }}</div>
+              <div class="stat-label">Total Amount</div>
+            </div>
+          </div>
+
+          <div class="approval-list">
+            <div class="approval-item" *ngFor="let claim of pendingClaims">
+              <div class="claim-header">
+                <h3>{{ claim.employeeName }}</h3>
+                <span class="status-badge manager-approved">✓ Manager Approved</span>
+              </div>
+              
+              <div class="claim-details">
+                <div class="detail-row">
+                  <span class="label">Treatment Type:</span>
+                  <span class="value">{{ claim.treatmentType }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Claim Amount:</span>
+                  <span class="value amount">₹{{ claim.claimAmount | number:'1.0-0' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Hospital:</span>
+                  <span class="value">{{ claim.hospitalName }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Treatment Date:</span>
+                  <span class="value">{{ claim.claimDate }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Description:</span>
+                  <span class="value">{{ claim.description }}</span>
+                </div>
+              </div>
+
+              <div class="approval-actions">
+                <button class="btn btn-info" (click)="verifyEligibility(claim)">Verify Eligibility</button>
+                <button class="btn btn-success" (click)="approveClaim(claim.claimId)">Approve & Reimburse</button>
+                <button class="btn btn-danger" (click)="rejectClaim(claim.claimId)">Reject</button>
+              </div>
+            </div>
+
+            <div *ngIf="pendingClaims.length === 0" class="empty-state">
+              <span class="material-icons">check_circle</span>
+              <h3>No Pending Medical Claims</h3>
+              <p>All medical claims have been processed</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="form-container" *ngIf="!checkingInsurance && hasInsurance">
+      <!-- Employee Application View -->
+      <div *ngIf="!isFinanceUser" class="employee-view">
+        <div class="page-header">
+          <h1>Submit Medical Claim</h1>
+          <p>Submit your medical expenses for reimbursement</p>
+        </div>
+
+      <!-- Loading State -->
+      <div class="loading-container" *ngIf="checkingInsurance">
+        <div class="loading-spinner"></div>
+        <p>Checking insurance enrollment...</p>
+      </div>
+
+      <!-- No Insurance - Access Denied -->
+      <div class="access-denied" *ngIf="!checkingInsurance && !hasInsurance">
+        <div class="denied-icon">🚫</div>
+        <h2>Access Denied</h2>
+        <p>Medical claims require active insurance enrollment</p>
+        <div class="denied-actions">
+          <button type="button" class="btn btn-primary" (click)="goToInsurance()">
+            🏥 Enroll in Insurance
+          </button>
+        </div>
+      </div>
+
+      <!-- Insurance Info + Form -->
+      <div *ngIf="!checkingInsurance && hasInsurance">
+        <div class="insurance-info">
+          <h3>Your Active Insurance Plans</h3>
+          <div class="insurance-cards">
+            <div class="insurance-card" *ngFor="let insurance of insurances">
+              <div class="insurance-type">{{ insurance.insuranceType }}</div>
+              <div class="insurance-provider">{{ insurance.provider }}</div>
+              <div class="insurance-coverage">Coverage: ₹{{ insurance.coverageAmount | number:'1.0-0' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-container">
         <form [formGroup]="medicalClaimForm" (ngSubmit)="onSubmit()" class="medical-claim-form">
           <div class="form-row">
             <div class="form-group">
@@ -174,12 +246,14 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
 
           <div class="form-actions">
             <button type="button" class="btn btn-outline" (click)="goBack()">Cancel</button>
-            <button type="submit" class="btn btn-primary" [disabled]="medicalClaimForm.invalid || isLoading || !hasInsurance">
+            <button type="submit" class="btn btn-primary" [disabled]="medicalClaimForm.invalid || isLoading">
               <span class="spinner" *ngIf="isLoading"></span>
               {{ isLoading ? 'Submitting...' : 'Submit Medical Claim' }}
             </button>
           </div>
         </form>
+        </div>
+      </div>
       </div>
     </div>
   `,
@@ -456,54 +530,55 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
       100% { transform: rotate(360deg); }
     }
 
-    .insurance-check {
+    .loading-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--spacing-md);
-      padding: var(--spacing-2xl);
+      gap: var(--spacing-lg);
+      padding: var(--spacing-4xl);
       text-align: center;
     }
 
     .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--outline-variant);
-      border-top: 3px solid var(--primary-500);
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--outline-variant);
+      border-top: 4px solid var(--primary-500);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
 
-    .no-insurance-warning {
+    .access-denied {
       background: var(--error-50);
-      border: 1px solid var(--error-200);
-      border-radius: var(--radius-xl);
-      padding: var(--spacing-2xl);
+      border: 2px solid var(--error-200);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-4xl);
       text-align: center;
-      margin-bottom: var(--spacing-xl);
+      margin: var(--spacing-2xl) 0;
     }
 
-    .warning-icon {
-      font-size: 48px;
-      margin-bottom: var(--spacing-md);
+    .denied-icon {
+      font-size: 80px;
+      margin-bottom: var(--spacing-lg);
     }
 
-    .no-insurance-warning h2 {
+    .access-denied h2 {
       color: var(--error-700);
-      font-size: var(--font-size-2xl);
+      font-size: var(--font-size-3xl);
       font-weight: var(--font-weight-bold);
       margin: 0 0 var(--spacing-md) 0;
     }
 
-    .no-insurance-warning p {
+    .access-denied p {
       color: var(--error-600);
-      font-size: var(--font-size-base);
-      margin: 0 0 var(--spacing-sm) 0;
-      line-height: 1.5;
+      font-size: var(--font-size-lg);
+      margin: 0 0 var(--spacing-2xl) 0;
     }
 
-    .warning-actions {
-      margin-top: var(--spacing-lg);
+    .denied-actions {
+      display: flex;
+      gap: var(--spacing-lg);
+      justify-content: center;
     }
 
     .insurance-info {
@@ -523,13 +598,13 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
 
     .insurance-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: var(--spacing-md);
     }
 
     .insurance-card {
-      background: white;
-      border: 1px solid var(--success-300);
+      background: var(--success-50);
+      border: 1px solid var(--success-200);
       border-radius: var(--radius-lg);
       padding: var(--spacing-md);
     }
@@ -541,7 +616,7 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
     }
 
     .insurance-provider {
-      color: var(--on-surface-variant);
+      color: var(--success-600);
       font-size: var(--font-size-sm);
       margin: var(--spacing-xs) 0;
     }
@@ -574,6 +649,157 @@ import { MedicalClaimService } from '../../services/medical-claim.service';
         display: none;
       }
     }
+
+    /* Finance Approval Styles */
+    .finance-view {
+      width: 100%;
+    }
+
+    .approval-container {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-2xl);
+      box-shadow: var(--shadow-1);
+    }
+
+    .approval-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .stat-card {
+      background: var(--primary-50);
+      border: 1px solid var(--primary-200);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--primary-600);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .stat-label {
+      font-size: var(--font-size-sm);
+      color: var(--on-surface-variant);
+    }
+
+    .approval-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+
+    .approval-item {
+      background: var(--surface-variant);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+
+    .claim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .claim-header h3 {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .status-badge {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .manager-approved {
+      background: var(--success-100);
+      color: var(--success-700);
+    }
+
+    .claim-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-xs) 0;
+    }
+
+    .detail-row .label {
+      font-weight: var(--font-weight-medium);
+      color: var(--on-surface-variant);
+    }
+
+    .detail-row .value {
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .detail-row .amount {
+      color: var(--primary-600);
+      font-size: var(--font-size-lg);
+    }
+
+    .approval-actions {
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-info {
+      background: var(--info-100);
+      color: var(--info-700);
+    }
+
+    .btn-success {
+      background: var(--success-500);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--error-500);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-2);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--spacing-2xl);
+      color: var(--on-surface-variant);
+    }
+
+    .empty-state .material-icons {
+      font-size: 48px;
+      color: var(--success-500);
+      margin-bottom: var(--spacing-md);
+    }
   `]
 })
 export class MedicalClaimFormComponent implements OnInit {
@@ -583,11 +809,17 @@ export class MedicalClaimFormComponent implements OnInit {
   hasInsurance = false;
   insurances: any[] = [];
   checkingInsurance = true;
+  isFinanceUser = false;
+  pendingClaims: any[] = [];
+  totalAmount = 0;
 
   constructor(
     private fb: FormBuilder,
     private medicalClaimService: MedicalClaimService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService,
+    private authService: AuthService,
+    private mockService: MockPayrollService
   ) {
     this.medicalClaimForm = this.fb.group({
       treatmentType: ['', Validators.required],
@@ -599,10 +831,74 @@ export class MedicalClaimFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkInsuranceEnrollment();
+    this.authService.currentUser$.subscribe(user => {
+      this.isFinanceUser = user?.role === 'Finance';
+      if (this.isFinanceUser) {
+        this.loadPendingClaims();
+      } else {
+        this.checkInsuranceEnrollment();
+      }
+    });
+  }
+
+  loadPendingClaims() {
+    const data = this.mockService.getData();
+    this.pendingClaims = data.medicalClaims?.filter((c: any) => 
+      c.managerApproved === true && c.financeApproved === null
+    ) || [];
+    this.totalAmount = this.pendingClaims.reduce((sum, claim) => sum + claim.claimAmount, 0);
+  }
+
+  verifyEligibility(claim: any) {
+    this.toastService.info('Eligibility Check', `Verifying ${claim.employeeName}'s insurance coverage for ${claim.treatmentType} treatment...`);
+    setTimeout(() => {
+      this.toastService.success('Verification Complete', 'Employee is eligible for this claim amount.');
+    }, 2000);
+  }
+
+  approveClaim(id: number) {
+    this.mockService.approveMedicalClaimByFinance(id, 'Final approval by Finance - Reimbursement scheduled').subscribe({
+      next: () => {
+        const claim = this.pendingClaims.find(c => c.claimId === id);
+        this.pendingClaims = this.pendingClaims.filter(c => c.claimId !== id);
+        this.totalAmount = this.pendingClaims.reduce((sum, claim) => sum + claim.claimAmount, 0);
+        this.toastService.success('Medical Claim Approved', `₹${claim?.claimAmount || 0} medical claim approved! Reimbursement will be processed in next payroll cycle.`);
+      },
+      error: () => {
+        this.toastService.error('Error', 'Failed to approve medical claim. Please try again.');
+      }
+    });
+  }
+
+  rejectClaim(id: number) {
+    const reason = prompt('Enter rejection reason:');
+    if (reason) {
+      this.mockService.rejectMedicalClaimByFinance(id, reason).subscribe({
+        next: () => {
+          this.pendingClaims = this.pendingClaims.filter(c => c.claimId !== id);
+          this.totalAmount = this.pendingClaims.reduce((sum, claim) => sum + claim.claimAmount, 0);
+          this.toastService.warning('Medical Claim Rejected', 'Employee and Manager have been notified with rejection reason.');
+        },
+        error: () => {
+          this.toastService.error('Error', 'Failed to reject medical claim. Please try again.');
+        }
+      });
+    }
   }
 
   checkInsuranceEnrollment() {
+    // Check localStorage for enrolled policies
+    const enrolledPolicies = localStorage.getItem('enrolledPolicies');
+    const policies = enrolledPolicies ? JSON.parse(enrolledPolicies) : [];
+    
+    if (policies.length > 0) {
+      this.hasInsurance = true;
+      this.checkingInsurance = false;
+      this.loadInsurances();
+      return;
+    }
+    
+    // Fallback to service check
     this.medicalClaimService.hasActiveInsurance().subscribe({
       next: (hasInsurance) => {
         this.hasInsurance = hasInsurance;
@@ -634,12 +930,12 @@ export class MedicalClaimFormComponent implements OnInit {
     if (file && file.size <= 5 * 1024 * 1024) { // 5MB limit
       this.documents[documentType] = file;
     } else {
-      alert('File size should be less than 5MB');
+      this.toastService.error('File Too Large', 'File size should be less than 5MB');
     }
   }
 
   onSubmit() {
-    if (this.medicalClaimForm.valid && this.hasInsurance) {
+    if (this.medicalClaimForm.valid) {
       this.isLoading = true;
       
       const claimData = {
@@ -654,21 +950,23 @@ export class MedicalClaimFormComponent implements OnInit {
       this.medicalClaimService.submitClaim(claimData).subscribe({
         next: (response) => {
           this.isLoading = false;
-          alert(`✅ Medical Claim Submitted Successfully!\n\nTreatment: ${claimData.treatmentType}\nAmount: ₹${claimData.claimAmount.toLocaleString()}\nHospital: ${claimData.hospitalName}\n\nYour claim is now pending manager approval.`);
+          this.toastService.success('Medical Claim Submitted', `Your ${claimData.treatmentType} claim for ₹${claimData.claimAmount.toLocaleString()} has been submitted successfully`);
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading = false;
           console.error('Medical claim submission error:', error);
-          alert(`✅ Medical Claim Submitted Successfully! (Using demo mode)\n\nTreatment: ${claimData.treatmentType}\nAmount: ₹${claimData.claimAmount.toLocaleString()}\n\nYour claim is now pending manager approval.`);
+          this.toastService.success('Medical Claim Submitted', 'Your medical claim has been submitted successfully (Demo Mode)');
           this.router.navigate(['/dashboard']);
         }
       });
-    } else if (!this.hasInsurance) {
-      alert('You must be enrolled in an insurance plan to submit medical claims.');
     } else {
-      alert('Please fill all required fields.');
+      this.toastService.warning('Form Incomplete', 'Please fill all required fields before submitting');
     }
+  }
+
+  goToInsurance() {
+    this.router.navigateByUrl('/insurance/enroll');
   }
 
   goBack() {

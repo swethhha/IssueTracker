@@ -1,125 +1,174 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoanService } from '../../services/loan.service';
-import { ReimbursementService } from '../../services/reimbursement.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-finance-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
-    <div class="content-header">
-      <div class="page-container">
-        <h3>Finance Dashboard</h3>
-        <p>Final approvals and payment processing</p>
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <h1>Finance Dashboard</h1>
+        <p>Manage approvals and financial operations</p>
       </div>
-    </div>
 
-    <div class="content-body">
-      <div class="page-container">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">⏳</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ totalPendingApprovals }}</div>
-              <div class="stat-label">Pending Final Approvals</div>
-            </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span class="material-icons">account_balance_wallet</span>
           </div>
-          <div class="stat-card">
-            <div class="stat-icon">✓</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ totalApprovalsThisMonth }}</div>
-              <div class="stat-label">Approved This Month</div>
-            </div>
+          <div class="stat-content">
+            <div class="stat-value">₹28.5L</div>
+            <div class="stat-label">Monthly Payroll</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-icon">₹</div>
-            <div class="stat-content">
-              <div class="stat-value">₹{{ totalAmountApproved | number:'1.0-0' }}</div>
-              <div class="stat-label">Total Amount Approved</div>
-            </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon pending">
+            <span class="material-icons">pending_actions</span>
           </div>
-          <div class="stat-card">
-            <div class="stat-icon">💳</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ paymentsProcessed }}</div>
-              <div class="stat-label">Payments Processed</div>
+          <div class="stat-content">
+            <div class="stat-value">12</div>
+            <div class="stat-label">Pending Approvals</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon success">
+            <span class="material-icons">check_circle</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">85.2%</div>
+            <div class="stat-label">Approval Rate</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon info">
+            <span class="material-icons">schedule</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">2.3</div>
+            <div class="stat-label">Avg Processing Days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Quick Actions</h3>
+          </div>
+          <div class="card-body">
+            <div class="quick-actions">
+              <a routerLink="/approval-center" class="action-btn">
+                <div class="action-icon primary">
+                  <span class="material-icons">approval</span>
+                </div>
+                <div class="action-text">
+                  <strong>Approval Center</strong>
+                  <small>Review pending requests</small>
+                </div>
+              </a>
+              <a routerLink="/finance/loan-approvals" class="action-btn">
+                <div class="action-icon secondary">
+                  <span class="material-icons">account_balance</span>
+                </div>
+                <div class="action-text">
+                  <strong>Loan Approvals</strong>
+                  <small>5 pending loan requests</small>
+                </div>
+              </a>
+              <a routerLink="/finance/reimbursement-approvals" class="action-btn">
+                <div class="action-icon success">
+                  <span class="material-icons">receipt_long</span>
+                </div>
+                <div class="action-text">
+                  <strong>Reimbursement Approvals</strong>
+                  <small>7 pending reimbursements</small>
+                </div>
+              </a>
+              <a routerLink="/finance/payroll-approvals" class="action-btn">
+                <div class="action-icon warning">
+                  <span class="material-icons">payments</span>
+                </div>
+                <div class="action-text">
+                  <strong>Payroll Approvals</strong>
+                  <small>Review monthly payroll</small>
+                </div>
+              </a>
+              <a routerLink="/finance/insurance-approvals" class="action-btn">
+                <div class="action-icon info">
+                  <span class="material-icons">security</span>
+                </div>
+                <div class="action-text">
+                  <strong>Insurance Approvals</strong>
+                  <small>3 pending enrollments</small>
+                </div>
+              </a>
+              <a routerLink="/analytics" class="action-btn">
+                <div class="action-icon purple">
+                  <span class="material-icons">analytics</span>
+                </div>
+                <div class="action-text">
+                  <strong>Analytics Dashboard</strong>
+                  <small>View financial insights</small>
+                </div>
+              </a>
             </div>
           </div>
         </div>
 
-        <div class="dashboard-row">
-          <div class="card">
-            <div class="card-header">
-              <h4>Pending Final Approvals</h4>
-            </div>
-            <div class="card-body">
-              <div class="approval-tabs">
-                <button class="tab-btn" [class.active]="activeTab === 'loans'" (click)="activeTab = 'loans'">
-                  Loans ({{ pendingLoans.length }})
-                </button>
-                <button class="tab-btn" [class.active]="activeTab === 'reimbursements'" (click)="activeTab = 'reimbursements'">
-                  Reimbursements ({{ pendingReimbursements.length }})
-                </button>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Recent Approvals</h3>
+          </div>
+          <div class="card-body">
+            <div class="approval-list">
+              <div class="approval-item">
+                <div class="approval-info">
+                  <strong>Personal Loan - John Doe</strong>
+                  <span class="approval-amount">₹500,000</span>
+                </div>
+                <div class="approval-status approved">Approved</div>
               </div>
-
-              <div class="approval-content">
-                <div *ngIf="activeTab === 'loans'" class="approval-list">
-                  <div class="approval-item" *ngFor="let item of pendingLoans">
-                    <div class="approval-info">
-                      <h5>{{ item.employeeName }}</h5>
-                      <p>{{ item.loanType }} Loan | Amount: ₹{{ item.amount | number:'1.0-0' }}</p>
-                      <p class="status-badge manager-approved">✓ Manager Approved</p>
-                    </div>
-                    <div class="approval-actions">
-                      <button class="btn btn-success btn-sm" (click)="approveLoan(item.loanId)">Final Approve</button>
-                      <button class="btn btn-danger btn-sm" (click)="rejectLoan(item.loanId)">Reject</button>
-                    </div>
-                  </div>
+              <div class="approval-item">
+                <div class="approval-info">
+                  <strong>Travel Reimbursement - Jane Smith</strong>
+                  <span class="approval-amount">₹2,500</span>
                 </div>
-
-                <div *ngIf="activeTab === 'reimbursements'" class="approval-list">
-                  <div class="approval-item" *ngFor="let item of pendingReimbursements">
-                    <div class="approval-info">
-                      <h5>{{ item.employeeName }}</h5>
-                      <p>{{ item.category }} | Amount: ₹{{ item.amount | number:'1.0-0' }}</p>
-                      <p class="status-badge manager-approved">✓ Manager Approved</p>
-                    </div>
-                    <div class="approval-actions">
-                      <button class="btn btn-success btn-sm" (click)="approveReimbursement(item.requestId)">Approve & Pay</button>
-                      <button class="btn btn-danger btn-sm" (click)="rejectReimbursement(item.requestId)">Reject</button>
-                    </div>
-                  </div>
+                <div class="approval-status approved">Approved</div>
+              </div>
+              <div class="approval-item">
+                <div class="approval-info">
+                  <strong>Insurance Enrollment - Mike Johnson</strong>
+                  <span class="approval-amount">₹25,000</span>
                 </div>
-
-                <div *ngIf="getCurrentItems().length === 0" class="text-center">
-                  <div class="empty-message">
-                    <span class="material-icons">check_circle</span>
-                    <p>No pending {{ activeTab }} for final approval</p>
-                  </div>
-                </div>
+                <div class="approval-status rejected">Rejected</div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="chart-container">
-            <h4>Monthly Finance Analytics</h4>
-            <div class="analytics-grid">
-              <div class="analytics-item">
-                <div class="analytics-label">Loans Approved</div>
-                <div class="analytics-value">₹{{ monthlyLoansApproved | number:'1.0-0' }}</div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Financial Summary</h3>
+          </div>
+          <div class="card-body">
+            <div class="summary-list">
+              <div class="summary-item">
+                <span class="summary-label">Total Disbursed</span>
+                <span class="summary-value">₹15.2L</span>
               </div>
-              <div class="analytics-item">
-                <div class="analytics-label">Reimbursements Paid</div>
-                <div class="analytics-value">₹{{ monthlyReimbursementsPaid | number:'1.0-0' }}</div>
+              <div class="summary-item">
+                <span class="summary-label">Pending Amount</span>
+                <span class="summary-value">₹3.8L</span>
               </div>
-              <div class="analytics-item">
-                <div class="analytics-label">Processing Time</div>
-                <div class="analytics-value">2.3 days</div>
+              <div class="summary-item">
+                <span class="summary-label">Monthly Budget</span>
+                <span class="summary-value">₹50L</span>
               </div>
-              <div class="analytics-item">
-                <div class="analytics-label">Approval Rate</div>
-                <div class="analytics-value">94%</div>
+              <div class="summary-item">
+                <span class="summary-label">Budget Utilized</span>
+                <span class="summary-value">38%</span>
               </div>
             </div>
           </div>
@@ -128,367 +177,221 @@ import { ReimbursementService } from '../../services/reimbursement.service';
     </div>
   `,
   styles: [`
-    .content-header h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
+    .dashboard-container {
+      padding: var(--spacing-lg);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .dashboard-header {
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .dashboard-header h1 {
+      font-size: var(--font-size-4xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--on-surface);
       margin: 0;
     }
 
-    .content-header p {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      margin: 0.25rem 0 0 0;
+    .dashboard-header p {
+      color: var(--on-surface-variant);
+      font-size: var(--font-size-lg);
+      margin: var(--spacing-sm) 0 0 0;
     }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-2xl);
     }
 
     .stat-card {
-      background: var(--bg-primary);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 1rem;
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: var(--spacing-lg);
+      box-shadow: var(--shadow-1);
     }
 
     .stat-icon {
-      width: 40px;
-      height: 40px;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
+      width: 64px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      color: var(--primary-color);
+      border-radius: var(--radius-xl);
+      background: var(--primary-100);
+      color: var(--primary-700);
     }
 
-    .stat-content {
-      flex: 1;
-    }
+    .stat-icon.pending { background: var(--warning-100); color: var(--warning-700); }
+    .stat-icon.success { background: var(--success-100); color: var(--success-700); }
+    .stat-icon.info { background: var(--secondary-100); color: var(--secondary-700); }
 
     .stat-value {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin: 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--on-surface);
     }
 
     .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin: 0.25rem 0 0 0;
+      color: var(--on-surface-variant);
+      font-size: var(--font-size-sm);
     }
 
-    .approval-tabs {
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--spacing-xl);
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-1);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--spacing-xl);
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--on-surface);
+    }
+
+    .card-body {
+      padding: var(--spacing-xl);
+    }
+
+    .quick-actions {
       display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 1rem;
+      flex-direction: column;
+      gap: var(--spacing-md);
     }
 
-    .tab-btn {
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--border-color);
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-size: 0.75rem;
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      color: var(--on-surface);
       transition: all 0.2s ease;
     }
 
-    .tab-btn.active {
-      background: var(--primary-color);
+    .action-btn:hover {
+      background: var(--surface-variant);
+      border-color: var(--primary-500);
+    }
+
+    .action-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-lg);
       color: white;
-      border-color: var(--primary-color);
     }
 
-    .approval-content {
-      min-height: 300px;
+    .action-icon.primary { background: var(--primary-500); }
+    .action-icon.secondary { background: var(--secondary-500); }
+    .action-icon.success { background: var(--success-500); }
+    .action-icon.warning { background: var(--warning-500); }
+    .action-icon.info { background: var(--info-500); }
+    .action-icon.purple { background: #8b5cf6; }
+
+    .action-text strong {
+      display: block;
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: var(--spacing-xs);
     }
 
-    .approval-list {
+    .action-text small {
+      color: var(--on-surface-variant);
+      font-size: var(--font-size-sm);
+    }
+
+    .approval-list, .summary-list {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: var(--spacing-md);
     }
 
-    .approval-item {
+    .approval-item, .summary-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-    }
-
-    .approval-info h5 {
-      margin: 0 0 0.25rem 0;
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-
-    .approval-info p {
-      margin: 0.25rem 0;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.625rem;
-      font-weight: 600;
-    }
-
-    .manager-approved {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .approval-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .chart-container {
-      background: var(--bg-primary);
+      padding: var(--spacing-md);
+      border: 1px solid var(--outline-variant);
       border-radius: var(--radius-lg);
-      padding: 1rem;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
     }
 
-    .chart-container h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin: 0 0 1rem 0;
+    .approval-info strong {
+      display: block;
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: var(--spacing-xs);
     }
 
-    .analytics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+    .approval-amount {
+      color: var(--primary-500);
+      font-weight: var(--font-weight-semibold);
     }
 
-    .analytics-item {
-      text-align: center;
-      padding: 1rem;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
+    .approval-status {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      text-transform: uppercase;
     }
 
-    .analytics-label {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-bottom: 0.5rem;
+    .approval-status.approved {
+      background: var(--success-100);
+      color: var(--success-700);
     }
 
-    .analytics-value {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--primary-color);
+    .approval-status.rejected {
+      background: var(--error-100);
+      color: var(--error-700);
     }
 
-    .card-header h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0;
+    .summary-label {
+      color: var(--on-surface-variant);
     }
 
-    .empty-message {
-      text-align: center;
-      padding: 2rem;
-      color: var(--text-secondary);
+    .summary-value {
+      font-weight: var(--font-weight-semibold);
+      color: var(--on-surface);
     }
 
-    .empty-message .material-icons {
-      font-size: 48px;
-      color: var(--success-color);
-      margin-bottom: 1rem;
-    }
-
-    .btn {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-size: 0.75rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .btn-success {
-      background: var(--success-color);
-      color: white;
-    }
-
-    .btn-success:hover {
-      background: var(--success-dark);
-    }
-
-    .btn-danger {
-      background: var(--error-color);
-      color: white;
-    }
-
-    .btn-danger:hover {
-      background: var(--error-dark);
-    }
-
-    .btn-sm {
-      padding: 0.375rem 0.75rem;
-      font-size: 0.625rem;
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: var(--spacing-md);
+      }
+      
+      .stats-grid,
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
     }
   `]
 })
 export class FinanceDashboardComponent implements OnInit {
-  activeTab = 'loans';
-  totalPendingApprovals = 0;
-  totalApprovalsThisMonth = 15;
-  totalAmountApproved = 2850000;
-  paymentsProcessed = 42;
-  monthlyLoansApproved = 1800000;
-  monthlyReimbursementsPaid = 125000;
-  
-  pendingLoans: any[] = [];
-  pendingReimbursements: any[] = [];
 
-  constructor(
-    private loanService: LoanService,
-    private reimbursementService: ReimbursementService
-  ) {}
+  constructor() { }
 
-  ngOnInit() {
-    this.loadDashboardData();
-  }
-
-  loadDashboardData() {
-    // Load pending finance approvals for loans
-    this.loanService.getPendingFinanceApprovals().subscribe({
-      next: (loans) => {
-        this.pendingLoans = loans;
-        this.updateStats();
-      },
-      error: (error) => {
-        console.error('Failed to load pending loans:', error);
-        this.pendingLoans = [];
-        this.updateStats();
-      }
-    });
-
-    // Load pending finance approvals for reimbursements
-    this.reimbursementService.getPendingManagerApprovals().subscribe({
-      next: (reimbursements) => {
-        // Filter only manager-approved items
-        this.pendingReimbursements = reimbursements.filter(r => r.status === 'ManagerApproved');
-        this.updateStats();
-      },
-      error: (error) => {
-        console.error('Failed to load pending reimbursements:', error);
-        this.pendingReimbursements = [];
-        this.updateStats();
-      }
-    });
-  }
-
-  updateStats() {
-    this.totalPendingApprovals = this.pendingLoans.length + this.pendingReimbursements.length;
-  }
-
-  getCurrentItems() {
-    switch (this.activeTab) {
-      case 'loans': return this.pendingLoans;
-      case 'reimbursements': return this.pendingReimbursements;
-      default: return [];
-    }
-  }
-
-  approveLoan(id: number) {
-    this.loanService.approveByFinance(id, 'Final approval by Finance').subscribe({
-      next: () => {
-        this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
-        this.totalApprovalsThisMonth++;
-        this.paymentsProcessed++;
-        this.updateStats();
-        alert('Loan finally approved! Amount will be disbursed to employee account.');
-      },
-      error: () => {
-        // Fallback for demo
-        this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
-        this.totalApprovalsThisMonth++;
-        this.paymentsProcessed++;
-        this.updateStats();
-        alert('Loan finally approved! Amount will be disbursed to employee account.');
-      }
-    });
-  }
-
-  rejectLoan(id: number) {
-    const reason = prompt('Enter rejection reason:');
-    if (reason) {
-      this.loanService.rejectByFinance(id, reason).subscribe({
-        next: () => {
-          this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
-          this.updateStats();
-          alert('Loan rejected by Finance. Employee will be notified.');
-        },
-        error: () => {
-          // Fallback for demo
-          this.pendingLoans = this.pendingLoans.filter(l => l.loanId !== id);
-          this.updateStats();
-          alert('Loan rejected by Finance. Employee will be notified.');
-        }
-      });
-    }
-  }
-
-  approveReimbursement(id: number) {
-    this.reimbursementService.approveByFinance(id, 'Payment processed').subscribe({
-      next: () => {
-        this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
-        this.totalApprovalsThisMonth++;
-        this.paymentsProcessed++;
-        this.updateStats();
-        alert('Reimbursement approved and payment initiated to employee account!');
-      },
-      error: () => {
-        // Fallback for demo
-        this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
-        this.totalApprovalsThisMonth++;
-        this.paymentsProcessed++;
-        this.updateStats();
-        alert('Reimbursement approved and payment initiated to employee account!');
-      }
-    });
-  }
-
-  rejectReimbursement(id: number) {
-    const reason = prompt('Enter rejection reason:');
-    if (reason) {
-      this.reimbursementService.rejectByFinance(id, reason).subscribe({
-        next: () => {
-          this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
-          this.updateStats();
-          alert('Reimbursement rejected by Finance. Employee will be notified.');
-        },
-        error: () => {
-          // Fallback for demo
-          this.pendingReimbursements = this.pendingReimbursements.filter(r => r.requestId !== id);
-          this.updateStats();
-          alert('Reimbursement rejected by Finance. Employee will be notified.');
-        }
-      });
-    }
+  ngOnInit(): void {
   }
 }

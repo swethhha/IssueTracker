@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoanService } from '../../services/loan.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-loan-application',
@@ -216,7 +217,8 @@ export class LoanApplicationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private loanService: LoanService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.loanForm = this.fb.group({
       loanType: ['', Validators.required],
@@ -239,7 +241,7 @@ export class LoanApplicationComponent implements OnInit {
     if (file) {
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('File size should not exceed 5MB');
+        this.toastService.error('File Too Large', 'File size should not exceed 5MB');
         return;
       }
       
@@ -314,19 +316,19 @@ export class LoanApplicationComponent implements OnInit {
 
         await this.loanService.applyForLoan(formData as any).toPromise();
         
-        alert('Loan application submitted successfully!');
+        this.toastService.success('Application Submitted', 'Loan application submitted successfully! You will be notified once reviewed.');
         this.router.navigate(['/loans']);
         
       } catch (error) {
         console.error('Error submitting loan application:', error);
-        alert('Error submitting application. Please try again.');
+        this.toastService.error('Submission Failed', 'Error submitting application. Please try again.');
       } finally {
         this.isSubmitting = false;
       }
     } else {
       this.markFormGroupTouched();
       if (!this.areAllDocumentsUploaded()) {
-        alert('Please upload all required documents');
+        this.toastService.warning('Documents Required', 'Please upload all required documents before submitting.');
       }
     }
   }

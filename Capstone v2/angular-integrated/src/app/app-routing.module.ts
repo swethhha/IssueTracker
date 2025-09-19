@@ -7,6 +7,7 @@ import { LoanApplicationComponent } from './components/employee/loan-application
 import { ReimbursementFormComponent } from './components/employee/reimbursement-form.component';
 import { MedicalClaimFormComponent } from './components/employee/medical-claim-form.component';
 import { InsuranceEnrollmentComponent } from './components/employee/insurance-enrollment.component';
+import { RequestWorkflowComponent } from './components/workflow/request-workflow.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -16,8 +17,15 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard]
   },
+  // Employee/Manager routes
   { 
     path: 'loans/apply', 
+    component: LoanApplicationComponent,
+    canActivate: [AuthGuard]
+  },
+  // Finance routes (same components but role-based views)
+  { 
+    path: 'loans', 
     component: LoanApplicationComponent,
     canActivate: [AuthGuard]
   },
@@ -27,7 +35,17 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { 
+    path: 'reimbursements', 
+    component: ReimbursementFormComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
     path: 'medical-claims/submit', 
+    component: MedicalClaimFormComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'medical-claims', 
     component: MedicalClaimFormComponent,
     canActivate: [AuthGuard]
   },
@@ -37,8 +55,44 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { 
+    path: 'insurance', 
+    component: InsuranceEnrollmentComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'payroll', 
+    component: LoanApplicationComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
     path: 'analytics', 
     component: DashAnalyticsComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'workflow', 
+    component: RequestWorkflowComponent,
+    canActivate: [AuthGuard]
+  },
+  // Finance-specific routes
+  { 
+    path: 'finance/dashboard', 
+    loadComponent: () => import('./components/dashboard/finance-dashboard.component').then(m => m.FinanceDashboardComponent),
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'finance/approvals', 
+    loadComponent: () => import('./components/finance/finance-dashboard.component').then(m => m.FinanceDashboardComponent),
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'finance/reports', 
+    loadComponent: () => import('./components/finance/modern-reports.component').then(m => m.ModernReportsComponent),
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'approvals', 
+    component: RequestWorkflowComponent,
     canActivate: [AuthGuard]
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -46,7 +100,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { enableTracing: false })],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

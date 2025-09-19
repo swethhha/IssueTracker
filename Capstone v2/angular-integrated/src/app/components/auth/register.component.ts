@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -330,7 +331,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -366,7 +368,7 @@ export class RegisterComponent {
       this.authService.register(formData).subscribe({
         next: () => {
           this.isLoading = false;
-          alert('Account created successfully! Please login.');
+          this.toastService.success('Account Created', 'Account created successfully! Please login.');
           this.router.navigate(['/login']);
         },
         error: (error: any) => {

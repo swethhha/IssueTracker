@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { PayrollService } from '../../services/payroll.service';
 import { LoanService } from '../../services/loan.service';
 import { ReimbursementService } from '../../services/reimbursement.service';
@@ -317,6 +319,8 @@ export class RequestTrackerComponent implements OnInit {
   selectedStatus = '';
 
   constructor(
+    private router: Router,
+    private authService: AuthService,
     private payrollService: PayrollService,
     private loanService: LoanService,
     private reimbursementService: ReimbursementService,
@@ -325,6 +329,13 @@ export class RequestTrackerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Check if user should access this component
+    const userRole = this.authService.getUserRole();
+    if (userRole === 'Finance') {
+      // Finance users should not see request tracker, redirect to reports
+      this.router.navigate(['/finance/reports']);
+      return;
+    }
     this.loadAllRequests();
   }
 
